@@ -1,4 +1,5 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 /**
  * Get stored auth token
@@ -99,11 +100,16 @@ export const userAPI = {
    ============================================ */
 export const servicesAPI = {
   // 🔓 CUSTOMER / PUBLIC – only ACTIVE services
-  getPublic: () => apiRequest("/services"),
+  getPublic: () =>
+    apiRequest("/services"),
 
   // 🔐 ADMIN – active / inactive / all
   getAdmin: (status) =>
-    apiRequest(status ? `/admin/services?status=${status}` : `/admin/services`),
+    apiRequest(
+      status
+        ? `/admin/services?status=${status}`
+        : `/admin/services`
+    ),
 
   update: (id, data) =>
     apiRequest(`/services/${id}`, {
