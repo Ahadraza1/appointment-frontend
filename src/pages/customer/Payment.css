@@ -1,0 +1,435 @@
+/* ============================================
+   PAYMENT PAGE - PREMIUM SaaS STYLES
+   ============================================ */
+
+.payment-page {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  padding: 2rem 1.5rem 8rem 1.5rem;
+  font-family: var(--font-family);
+}
+
+/* 1) PROGRESS HEADER */
+.payment-header {
+  max-width: 1000px;
+  margin: 0 auto 3rem auto;
+  padding-top: 1rem;
+}
+
+.progress-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--neutral-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--neutral-400);
+  transition: all 0.3s ease;
+}
+
+.step.active .step-num {
+  background: var(--primary-600);
+  border-color: var(--primary-600);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.step.completed .step-num {
+  background: var(--secondary-500);
+  border-color: var(--secondary-500);
+  color: white;
+}
+
+.step-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.step.active .step-label {
+  color: var(--neutral-900);
+}
+
+.step-line {
+  height: 2px;
+  background: var(--neutral-200);
+  width: 60px;
+  margin-top: -1.5rem;
+}
+
+.step-line.active {
+  background: var(--secondary-500);
+}
+
+/* 2) MAIN CONTAINER */
+.payment-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .payment-container {
+    grid-template-columns: 1fr 380px;
+  }
+}
+
+/* 3) PAYMENT MAIN SECTION */
+.payment-main {
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.payment-title {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--neutral-900);
+  margin-bottom: 0.75rem;
+}
+
+.payment-subtitle {
+  color: var(--neutral-500);
+  margin-bottom: 2.5rem;
+  font-weight: 500;
+}
+
+/* 4) PAYMENT METHODS */
+.payment-method-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.method-tab {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  color: var(--neutral-600);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.method-tab.active {
+  border-color: var(--primary-600);
+  background: rgba(79, 70, 229, 0.02);
+  color: var(--primary-600);
+  box-shadow: 0 0 0 1px var(--primary-600);
+}
+
+.method-tab.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f1f5f9;
+}
+
+.tab-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* 5) PAYMENT FORM */
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--neutral-700);
+}
+
+.payment-form input {
+  padding: 0.875rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  color: var(--neutral-900);
+  transition: all 0.2s;
+  background: #fdfdfd;
+}
+
+.payment-form input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+  background: white;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding-right: 3rem;
+}
+
+.input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--neutral-300);
+}
+
+.pay-button {
+  margin-top: 1rem;
+  padding: 1.125rem;
+  border-radius: 12px;
+  background: var(--primary-600);
+  color: white;
+  font-weight: 800;
+  font-size: 1.125rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
+}
+
+.pay-button:hover {
+  background: var(--primary-700);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.3);
+}
+
+.pay-button:active {
+  transform: translateY(0);
+}
+
+.pay-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner for processing state */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 6) SECURITY BADGES */
+.security-badges {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px dashed #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.security-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--secondary-600);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.security-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.payment-partners {
+  display: flex;
+  gap: 2rem;
+  opacity: 0.6;
+  filter: grayscale(1);
+}
+
+.partner-logo {
+  height: 24px;
+  width: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Placeholders for logos */
+.partner-logo.visa { background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg'); }
+.partner-logo.mastercard { background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg'); }
+.partner-logo.pci { width: 80px; background-image: url('https://upload.wikimedia.org/wikipedia/en/b/b5/PCI_DSS_logo.png'); }
+
+/* 7) ORDER SUMMARY CARD */
+.order-summary-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 2rem;
+}
+
+.summary-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--neutral-900);
+  margin-bottom: 2rem;
+}
+
+.plan-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-name {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--neutral-900);
+}
+
+.plan-cycle {
+  font-size: 0.875rem;
+  color: var(--neutral-500);
+  font-weight: 500;
+}
+
+.plan-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.change-plan-btn {
+  background: none;
+  border: none;
+  color: var(--primary-600);
+  font-weight: 700;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.summary-divider {
+  height: 1px;
+  background: #cbd5e1;
+  margin: 1.5rem 0;
+}
+
+.summary-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--neutral-600);
+}
+
+.summary-row.discount {
+  color: var(--secondary-600);
+  font-weight: 600;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.summary-total span:first-child {
+  font-weight: 800;
+  color: var(--neutral-900);
+  font-size: 1.125rem;
+}
+
+.total-amount {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--neutral-900);
+}
+
+.summary-hint {
+  margin-top: 2rem;
+  font-size: 0.8125rem;
+  color: var(--neutral-400);
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .payment-main, .order-summary-card {
+    padding: 1.5rem;
+  }
+  
+  .payment-title {
+    font-size: 1.5rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .progress-indicator {
+    display: none; /* Hide on very small screens for space */
+  }
+}

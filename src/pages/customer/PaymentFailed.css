@@ -1,0 +1,220 @@
+/* ============================================
+   PAYMENT FAILED PAGE - CALM SaaS STYLES
+   ============================================ */
+
+.fail-page {
+  min-height: calc(100vh - var(--header-height));
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+}
+
+.fail-container {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* 1) HERO SECTION */
+.fail-hero {
+  margin-bottom: 2.5rem;
+}
+
+.fail-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  background-color: #fef2f2;
+  color: #ef4444;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+}
+
+.fail-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.fail-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--neutral-900);
+  margin-bottom: 0.5rem;
+}
+
+.fail-subtitle {
+  font-size: 1.1rem;
+  color: var(--neutral-500);
+  font-weight: 500;
+}
+
+/* 2) REASONS CARD */
+.fail-reasons-card {
+  background: #fff;
+  border: 1px solid #fef2f2;
+  border-left: 4px solid #ef4444;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+}
+
+.reasons-intro {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--neutral-900);
+  margin-bottom: 0.75rem;
+}
+
+.reasons-list {
+  list-style: disc;
+  padding-left: 1.25rem;
+  color: var(--neutral-500);
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* 3) SUMMARY CARD */
+.fail-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #cbd5e1;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.fail-card-header {
+  padding: 1.25rem 2rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #cbd5e1;
+  text-align: left;
+}
+
+.fail-card-header h3 {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--neutral-900);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fail-card-body {
+  padding: 1.5rem 2rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+}
+
+.summary-row:last-child {
+  margin-bottom: 0;
+}
+
+.summary-row .label {
+  color: var(--neutral-500);
+  font-weight: 500;
+}
+
+.summary-row .value {
+  color: var(--neutral-900);
+  font-weight: 700;
+}
+
+.status-failed {
+  color: #ef4444;
+  background: #fef2f2;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+}
+
+/* 4) ACTIONS */
+.fail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.btn-retry {
+  height: 54px;
+  background: #004e70;
+  color: white;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(56, 189, 248, 0.2);
+}
+
+.btn-retry:hover {
+  background:#004e70;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(56, 189, 248, 0.3);
+}
+
+.btn-change-plan {
+  height: 54px;
+  background: white;
+  color: var(--neutral-600);
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-change-plan:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: var(--neutral-900);
+}
+
+/* 5) FOOTER */
+.fail-footer {
+  font-size: 0.875rem;
+  color: var(--neutral-400);
+  line-height: 1.6;
+}
+
+.fail-footer p {
+  margin-bottom: 0.5rem;
+}
+
+.support-link a {
+  color: var(--primary-600);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 640px) {
+  .fail-actions {
+    flex-direction: row;
+  }
+  
+  .btn-retry { flex: 2; }
+  .btn-change-plan { flex: 1; }
+}

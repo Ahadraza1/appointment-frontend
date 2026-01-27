@@ -1,0 +1,121 @@
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+
+// Customer Pages
+import CustomerLayout from "./layouts/CustomerLayout";
+import Home from "./pages/customer/Home";
+import Services from "./pages/customer/Services";
+import BookAppointment from "./pages/customer/BookAppointment";
+import AppointmentConfirmation from "./pages/customer/AppointmentConfirmation";
+import MyAppointments from "./pages/customer/MyAppointments";
+import CustomerProfile from "./pages/customer/Profile";
+import CustomerLogin from "./pages/customer/Login";
+import CustomerRegister from "./pages/customer/Register";
+import Pricing from "./pages/customer/Pricing";
+import Payment from "./pages/customer/Payment";
+import PaymentSuccess from "./pages/customer/PaymentSuccess";
+import PaymentFailed from "./pages/customer/PaymentFailed";
+
+// Static Pages
+import About from "./pages/static/About";
+import PrivacyPolicy from "./pages/static/PrivacyPolicy";
+import Terms from "./pages/static/Terms";
+import Contact from "./pages/static/Contact";
+import HelpCenter from "./pages/static/HelpCenter";
+
+// Admin Pages
+import AdminLayout from "./layouts/AdminLayout";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminAppointments from "./pages/admin/Appointments";
+import AdminCustomers from "./pages/admin/Customers";
+import AdminCustomerAppointments from "./pages/admin/CustomerAppointments";
+import AdminServices from "./pages/admin/Services";
+import AdminAvailability from "./pages/admin/Availability";
+import AdminSettings from "./pages/admin/Settings";
+import AdminLogin from "./pages/admin/Login";
+
+// Protected Route Components
+import ProtectedRoute from "./components/common/ProtectedRoute";
+import AdminRoute from "./components/common/AdminRoute";
+
+import { Toaster } from "react-hot-toast";
+
+function App() {
+  return (
+    <AuthProvider>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "#0f172a",
+            color: "#fff",
+            borderRadius: "12px",
+            padding: "16px",
+            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+          },
+        }}
+      />
+      <Routes>
+        {/* Customer Routes */}
+        <Route path="/" element={<CustomerLayout />}>
+          <Route index element={<Home />} />
+          <Route path="services" element={<Services />} />
+          <Route path="login" element={<CustomerLogin />} />
+          <Route path="register" element={<CustomerRegister />} />
+          <Route path="pricing" element={<Pricing />} />
+          <Route path="checkout" element={<Payment />} />
+          <Route path="payment-success" element={<PaymentSuccess />} />
+          <Route path="payment-failed" element={<PaymentFailed />} />
+
+          {/* Protected Customer Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="book/:serviceId" element={<BookAppointment />} />
+            <Route
+              path="confirmation/:appointmentId"
+              element={<AppointmentConfirmation />}
+            />
+            <Route path="my-appointments" element={<MyAppointments />} />
+            <Route path="profile" element={<CustomerProfile />} />
+          </Route>
+
+          {/* Static Pages */}
+          <Route path="about" element={<About />} />
+          <Route path="privacy" element={<PrivacyPolicy />} />
+          <Route path="terms" element={<Terms />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="help-center" element={<HelpCenter />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminLayout />
+            </AdminRoute>
+          }
+        >
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="appointments" element={<AdminAppointments />} />
+          <Route path="customers" element={<AdminCustomers />} />
+          <Route
+            path="customers/:id/appointments"
+            element={<AdminCustomerAppointments />}
+          />
+          <Route path="services" element={<AdminServices />} />
+          <Route path="availability" element={<AdminAvailability />} />
+          <Route path="settings" element={<AdminSettings />} />
+        </Route>
+
+        {/* 404 Redirect */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AuthProvider>
+  );
+}
+
+export default App;

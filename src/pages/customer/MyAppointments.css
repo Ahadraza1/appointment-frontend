@@ -1,0 +1,472 @@
+/* ============================================
+   MY APPOINTMENTS - ENTERPRISE SAAS SYSTEM
+   ============================================ */
+
+.my-appointments-page {
+  min-height: 100vh;
+  background-color: transparent; /* Use layout background */
+  color: #1e293b;
+}
+
+/* 1) PAGE HEADER */
+.appointments-hero {
+  background-color: #0f172a;
+  background-image: 
+    radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  background-size: 32px 32px;
+  padding: 5rem 0 4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+/* Subtle glow effect */
+.appointments-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 50%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.appointments-hero .hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.appointments-hero .hero-description {
+  font-size: 1.15rem;
+  color: #94a3b8;
+  font-weight: 400;
+  max-width: 600px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+
+/* 2) FILTER & SEARCH TOOLBAR */
+.appointments-toolbar-wrapper {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 0.75rem 0;
+}
+
+.appointments-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Search Box */
+.toolbar-search {
+  flex: 1.5;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: #94a3b8;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.65rem 1rem 0.65rem 2.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  transition: all 0.2s;
+}
+
+.search-box input::placeholder {
+  color: #64748b;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+/* Date Picker */
+.toolbar-date {
+  flex: 1;
+}
+
+.date-picker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.calendar-icon {
+  position: absolute;
+  left: 1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.date-picker-wrapper input {
+  width: 100%;
+  padding: 0.65rem 1rem 0.65rem 2.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  cursor: pointer;
+}
+
+/* Status Tabs */
+.toolbar-status {
+  flex: 2;
+}
+
+.status-tabs {
+  display: flex;
+  background: #f1f5f9;
+  padding: 0.25rem;
+  border-radius: 50px;
+  gap: 0.25rem;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: center;
+}
+
+.tab-btn:hover {
+  color: #1e293b;
+}
+
+.tab-btn.active {
+  background: white;
+  color: #4f46e5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* 3) APPOINTMENT LISTING */
+.appointments-list-wrapper {
+  padding: 3rem 0;
+}
+
+.appointments-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* APPOINTMENT CARD */
+.appointment-card {
+  background: white;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 1.25rem;
+  gap: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+}
+
+.appointment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.05);
+  border-color: #cbd5e1;
+}
+
+/* Date Block */
+.card-date-block {
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #1e293b;
+}
+
+.card-date-block .day {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.card-date-block .month {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-top: 0.1rem;
+}
+
+/* Details Section */
+.card-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.service-main .service-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.4rem;
+}
+
+.service-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.spec-item svg {
+  width: 16px;
+  height: 16px;
+  color: #94a3b8;
+}
+
+.spec-item.price {
+  color: #10b981;
+  font-weight: 700;
+}
+
+/* Rejection Note */
+.rejection-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: #e11d48;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  animation: slideInUp 0.3s ease;
+}
+
+.rejection-note svg {
+  width: 14px;
+  height: 14px;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+/* Actions Wrapper */
+.card-actions-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  min-width: 140px;
+}
+
+.status-pill {
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-pill.approved { background: #dcfce7; color: #15803d; }
+.status-pill.pending { background: #fef3c7; color: #b45309; }
+.status-pill.rejected { background: #fee2e2; color: #b91c1c; }
+.status-pill.cancelled { background: #f1f5f9; color: #475569; }
+
+.cancel-btn {
+  padding: 0.4rem 1.25rem;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #e11d48;
+  font-size: 0.75rem;
+  font-weight: 800;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #ffe4e6;
+  border-color: #fda4af;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  background: white;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 5rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.empty-state-icon svg {
+  width: 80px;
+  height: 80px;
+  color: #cbd5e1;
+}
+
+.empty-state-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.empty-state-text {
+  color: #64748b;
+  max-width: 360px;
+  line-height: 1.5;
+}
+
+.btn-primary-action {
+  background: #0f172a;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.btn-primary-action:hover {
+  background: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+/* RESPONSIVENESS */
+
+@media (max-width: 1024px) {
+  .appointments-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .appointment-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .card-date-block {
+    width: 100%;
+    height: 50px;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .card-actions-wrapper {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 1rem;
+  }
+
+  .cancel-btn {
+    flex: 1;
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.75rem !important;
+  }
+  
+  .service-specs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .status-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1 0 40%;
+  }
+}
+
+/* Animations */
+.appointment-card {
+  animation: slideInUp 0.4s ease forwards;
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
