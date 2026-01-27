@@ -18,14 +18,14 @@ const Appointments = () => {
   }, []);
 
   useEffect(() => {
-    setCurrentPage(1); // Reset to first page when search or filters change
+    setCurrentPage(1);
   }, [searchTerm, filter, selectedDate]);
 
   const fetchAppointments = async () => {
     try {
       setLoading(true);
       const data = await appointmentsAPI.getAll();
-      setAppointments(data);
+      setAppointments(data.appointments || []);
     } catch (err) {
       console.error('Error:', err);
     } finally {
@@ -61,21 +61,19 @@ const Appointments = () => {
   };
 
   const filteredAppointments = appointments.filter(apt => {
-    // 1. Status Filter
     const statusMatch = filter === 'all' || apt.status === filter;
-    
-    // 2. Date Filter
+
     let dateMatch = true;
     if (selectedDate) {
       const aptDate = new Date(apt.date).toDateString();
       dateMatch = aptDate === selectedDate.toDateString();
     }
 
-    // 3. Search Filter
     const customerName = apt.userId?.name || '';
-    const searchMatch = customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                       (apt.serviceId?.name || '').toLowerCase().includes(searchTerm.toLowerCase());
-    
+    const searchMatch =
+      customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (apt.serviceId?.name || '').toLowerCase().includes(searchTerm.toLowerCase());
+
     return statusMatch && dateMatch && searchMatch;
   });
 
