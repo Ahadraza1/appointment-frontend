@@ -2,7 +2,10 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Payment.css";
 
+const API_BASE = process.env.REACT_APP_API_URL;
+
 const OrderSummary = ({ plan, onChangePlan }) => (
+  
   <div className="order-summary-card">
     <h2 className="summary-title">Order Summary</h2>
 
@@ -80,9 +83,7 @@ const Payment = () => {
       window.paypal
         .Buttons({
           createOrder: async () => {
-            const res = await fetch(
-              "http://localhost:5000/api/payment/paypal/create-order",
-              {
+            const res = await fetch(`${API_BASE}/payment/paypal/create-order`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -98,9 +99,7 @@ const Payment = () => {
           },
 
           onApprove: async (data) => {
-            const res = await fetch(
-              "http://localhost:5000/api/payment/paypal/capture",
-              {
+            const res = await fetch(`${API_BASE}/payment/paypal/capture`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -130,7 +129,7 @@ const Payment = () => {
           },
 
           onError: async (err) => {
-            await fetch("http://localhost:5000/api/payment/failed", {
+            await fetch(`${API_BASE}/payment/failed`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

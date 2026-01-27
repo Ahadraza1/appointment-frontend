@@ -21,7 +21,7 @@ const MyAppointments = () => {
     try {
       setLoading(true);
       const data = await appointmentsAPI.getMyAppointments();
-      setAppointments(data);
+       setAppointments(data.appointments || []);
     } catch (err) {
       setError(err.message);
     } finally {

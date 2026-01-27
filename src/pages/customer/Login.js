@@ -30,11 +30,9 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const userData = await login(formData.email, formData.password);
 
-      // 🔥 THIS LINE WAS MISSING
-      localStorage.setItem("userInfo", JSON.stringify(userData));
-      localStorage.setItem("token", userData.token);
+      // ✅ AuthContext already handles token & user storage
+      await login(formData.email, formData.password);
 
       navigate(from, { replace: true });
     } catch (err) {
@@ -51,7 +49,16 @@ const Login = () => {
           <div className="auth-header">
             <Link to="/" className="auth-logo">
               <div className="auth-logo-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                   <path d="M7.5 4.21l4.5 2.6 4.5-2.6"></path>
                   <path d="M7.5 19.79l4.5-2.6 4.5 2.6"></path>
@@ -61,7 +68,9 @@ const Login = () => {
               <span>BOOKME</span>
             </Link>
             <h1 className="auth-title">Welcome Back</h1>
-            <p className="auth-subtitle">Sign in to your account to continue</p>
+            <p className="auth-subtitle">
+              Sign in to your account to continue
+            </p>
           </div>
 
           {error && (
@@ -151,7 +160,8 @@ const Login = () => {
 
           <div className="auth-footer">
             <p>
-              Don't have an account? <Link to="/register">Create Account</Link>
+              Don't have an account?{" "}
+              <Link to="/register">Create Account</Link>
             </p>
           </div>
         </div>

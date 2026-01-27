@@ -3,6 +3,8 @@ import { useAuth } from '../../context/AuthContext';
 import { userAPI } from '../../services/api';
 import './Profile.css';
 
+const API_URL = process.env.REACT_APP_API_URL?.replace("/api", "");
+
 const Profile = () => {
   const { user, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
@@ -113,7 +115,7 @@ const Profile = () => {
     }
   };
 
-  const API_URL = "http://localhost:5000";
+
 
   const getInitials = (name) => {
     if (!name) return 'U';
