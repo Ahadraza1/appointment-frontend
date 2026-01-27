@@ -67,19 +67,19 @@ const Services = () => {
     e.preventDefault();
     try {
       setSubmitting(true);
+      
+      const payload = {
+      ...formData,
+      duration: Number(formData.duration),
+      price: Number(formData.price),
+    };
+
       if (editingService) {
-        await servicesAPI.update(editingService._id, {
-          ...formData,
-          duration: Number(formData.duration),
-          price: Number(formData.price),
-        });
-      } else {
-        await servicesAPI.create({
-          ...formData,
-          duration: Number(formData.duration),
-          price: Number(formData.price),
-        });
-      }
+      await servicesAPI.update(editingService._id, payload);
+    } else {
+      // ✅ FIX: use existing bulkCreate API
+      await servicesAPI.bulkCreate([payload]);
+    }
       handleCloseModal();
       fetchServices();
     } catch (err) {
