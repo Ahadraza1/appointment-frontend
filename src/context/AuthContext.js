@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Check for existing session on mount
+  // 🔥 FIX 1: Properly restore auth state on refresh
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
@@ -24,86 +24,88 @@ export const AuthProvider = ({ children }) => {
     if (token && userData) {
       try {
         setUser(JSON.parse(userData));
-      } catch (e) {
+      } catch {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        setUser(null);
       }
+    } else {
+      setUser(null);
     }
+
     setLoading(false);
   }, []);
 
+  // 🔥 FIX 2: Normalized login response handling
   const login = async (email, password) => {
     try {
       setError(null);
+
       const response = await authAPI.login({ email, password });
 
-      localStorage.setItem("token", response.token);
-      const userData = response.user || response;
+      const token = response.token;
+      const userData = response.user;
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          _id: userData._id,
-          name: userData.name,
-          email: userData.email,
-          role: userData.role,
-          profilePhoto: userData.profilePhoto, // ⭐ IMPORTANT
-        }),
-      );
+      if (!token || !userData) {
+        throw new Error("Invalid login response");
+      }
 
-      setUser({
-        _id: userData._id,
-        name: userData.name,
-        email: userData.email,
-        role: userData.role,
-        profilePhoto: userData.profilePhoto,
-      });
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(userData));
 
+      setUser(userData);
       return response;
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Login failed");
       throw err;
     }
   };
 
-  const register = async (userData) => {
+  // 🔥 FIX 3: Register flow aligned with login
+  const register = async (data) => {
     try {
       setError(null);
-      const response = await authAPI.register(userData);
 
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("user", JSON.stringify(response.user || response));
+      const response = await authAPI.register(data);
 
-      setUser(response.user || response);
+      const token = response.token;
+      const userData = response.user;
+
+      if (!token || !userData) {
+        throw new Error("Invalid register response");
+      }
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      setUser(userData);
       return response;
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Registration failed");
       throw err;
     }
   };
 
+  // 🔥 FIX 4: Clean logout (prevents ghost auth)
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
   };
 
-  const updateUser = (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    setUser(userData);
+  // 🔥 FIX 5: Central user update (profile / photo / role)
+  const updateUser = (updatedUser) => {
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
   };
-
-  const isAuthenticated = !!user;
-  const isAdmin = user?.role === "admin";
-  const isCustomer = user?.role === "customer";
 
   const value = {
     user,
     loading,
     error,
-    isAuthenticated,
-    isAdmin,
-    isCustomer,
+    isAuthenticated: !!user,
+    isAdmin: user?.role === "admin",
+    isCustomer: user?.role === "customer",
     login,
     register,
     logout,
