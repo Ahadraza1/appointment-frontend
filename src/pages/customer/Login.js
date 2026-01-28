@@ -68,9 +68,7 @@ const Login = () => {
               <span>BOOKME</span>
             </Link>
             <h1 className="auth-title">Welcome Back</h1>
-            <p className="auth-subtitle">
-              Sign in to your account to continue
-            </p>
+            <p className="auth-subtitle">Sign in to your account to continue</p>
           </div>
 
           {error && (
@@ -160,8 +158,7 @@ const Login = () => {
 
           <div className="auth-footer">
             <p>
-              Don't have an account?{" "}
-              <Link to="/register">Create Account</Link>
+              Don't have an account? <Link to="/register">Create Account</Link>
             </p>
           </div>
         </div>
