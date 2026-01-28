@@ -12,7 +12,9 @@ const CustomerDetails = () => {
     const fetchCustomer = async () => {
       try {
         const data = await adminAPI.getCustomerById(id);
-        setCustomer(data.customer || data);
+
+        // ✅ FIX: backend direct object bhej raha hai
+        setCustomer(data);
       } catch (error) {
         console.error("Failed to fetch customer", error);
       } finally {
@@ -58,7 +60,9 @@ const CustomerDetails = () => {
         </p>
         <p>
           <strong>Joined:</strong>{" "}
-          {new Date(customer.createdAt).toLocaleDateString()}
+          {customer.createdAt
+            ? new Date(customer.createdAt).toLocaleDateString()
+            : "N/A"}
         </p>
       </div>
     </div>
