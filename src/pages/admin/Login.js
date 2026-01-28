@@ -27,11 +27,11 @@ const AdminLogin = () => {
 
     try {
       setLoading(true);
+      setError("");
 
-      const response = await login(formData.email, formData.password);
-      const user = response?.user;
+      const user = await login(formData.email, formData.password);
 
-      if (!user || user.role !== "admin") {
+      if (user.role !== "admin") {
         setError("Access denied. Admin credentials required.");
         return;
       }
