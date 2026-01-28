@@ -11,9 +11,14 @@ const CustomerAppointments = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const data = await adminAPI.getCustomerAppointments(id);
+        const res = await adminAPI.getCustomerAppointments(id);
+
         // ✅ FIX: backend returns { appointments: [...] }
-        setAppointments(data.appointments || []);
+        const list = Array.isArray(res)
+          ? res
+          : res.appointments || [];
+
+        setAppointments(list);
       } catch (error) {
         console.error("Failed to fetch appointments", error);
         setAppointments([]);
@@ -28,10 +33,11 @@ const CustomerAppointments = () => {
   return (
     <div className="admin-customer-appointments">
       <div className="page-header">
-        <div className="header-content">
+        <div>
           <h1>Customer Appointments</h1>
-          <p className="subtitle">Appointment history</p>
+          <p>Appointment history</p>
         </div>
+
         <button
           className="btn btn-secondary"
           onClick={() => navigate("/admin/customers")}
@@ -40,7 +46,7 @@ const CustomerAppointments = () => {
         </button>
       </div>
 
-      <div className="data-card" style={{ padding: "1rem" }}>
+      <div className="data-card">
         {loading ? (
           <p>Loading appointments...</p>
         ) : appointments.length === 0 ? (
@@ -63,20 +69,10 @@ const CustomerAppointments = () => {
                   <td>
                     {appt.serviceId?.name ||
                       appt.service?.name ||
-                      appt.serviceName ||
                       "N/A"}
                   </td>
                   <td>{new Date(appt.date).toLocaleDateString()}</td>
-                  <td>
-                    {appt.time
-                      ? appt.time
-                      : appt.date
-                        ? new Date(appt.date).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : "N/A"}
-                  </td>
+                  <td>{appt.timeSlot || "N/A"}</td>
                   <td>{appt.status}</td>
                 </tr>
               ))}
