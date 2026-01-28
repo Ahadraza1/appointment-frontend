@@ -28,18 +28,16 @@ const Login = () => {
       return;
     }
 
-    try {
-      setLoading(true);
-
-      // ✅ AuthContext already handles token & user storage
-      await login(formData.email, formData.password);
-
-      navigate(from, { replace: true });
-    } catch (err) {
-      setError(err.message || "Login failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+   try {
+    setLoading(true);
+    await login(formData.email, formData.password);
+    setError("");
+    navigate("/");
+  } catch (err) {
+    setError(err.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
   };
 
   return (
