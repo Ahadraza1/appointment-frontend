@@ -3,6 +3,9 @@ import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './AdminLayout.css';
 
+
+const API_URL = process.env.REACT_APP_API_URL?.replace("/api", "");
+
 const AdminLayout = () => {
   const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,8 +22,6 @@ const AdminLayout = () => {
     if (!name) return 'A';
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
-
-  const API_URL = "http://localhost:5000";
 
   const getPageTitle = () => {
     const path = location.pathname.split('/').pop();

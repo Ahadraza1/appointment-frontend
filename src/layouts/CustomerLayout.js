@@ -3,6 +3,8 @@ import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./CustomerLayout.css";
 
+const API_URL = process.env.REACT_APP_API_URL?.replace("/api", "");
+
 const CustomerLayout = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -25,9 +27,9 @@ const CustomerLayout = () => {
       .slice(0, 2);
   };
 
-  const API_URL = "http://localhost:5000";
-  const avatarUrl = useMemo(() => {
+const avatarUrl = useMemo(() => {
     if (!user?.profilePhoto) return null;
+    if (user.profilePhoto.startsWith("http")) return user.profilePhoto;
     return `${API_URL}${user.profilePhoto}`;
   }, [user?.profilePhoto]);
 
