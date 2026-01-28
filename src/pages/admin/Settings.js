@@ -29,19 +29,19 @@ const Settings = () => {
     try {
       setLoading(true);
       const data = await adminAPI.getSettings();
-      if (data) {
-        setSettings({
-          businessName: data.businessName || '',
-          businessAddress: data.businessAddress || '',
-          contactEmail: data.contactEmail || '',
-          contactPhone: data.contactPhone || '',
-          notifications: data.notifications || {
-            emailOnBooking: true,
-            emailOnApproval: true,
-            emailOnCancellation: false,
-          },
-        });
-      }
+      const s = data.settings || {};
+
+      setSettings({
+        businessName: s.businessName || '',
+        businessAddress: s.businessAddress || '',
+        contactEmail: s.contactEmail || '',
+        contactPhone: s.contactPhone || '',
+        notifications: s.notifications || {
+          emailOnBooking: true,
+          emailOnApproval: true,
+          emailOnCancellation: false,
+        },
+      });
     } catch (err) {
       console.error('Error:', err);
     } finally {
