@@ -140,15 +140,21 @@ const Availability = () => {
         </div>
         <div className="availability-card-body">
           <div className="days-grid">
-            {DAYS.map((day) => (
-              <button
-                key={day}
-                className={`day-btn ${formData.workingDays.includes(day) ? "selected" : ""}`}
-                onClick={() => handleDayToggle(day)}
-              >
-                {day.substring(0, 3)}
-              </button>
-            ))}
+            {DAYS.map((day) => {
+              const shortDay = day.substring(0, 3);
+
+              return (
+                <button
+                  key={day}
+                  className={`day-btn ${
+                    formData.workingDays.includes(day) ? "selected" : ""
+                  }`}
+                  onClick={() => handleDayToggle(day)}
+                >
+                  {shortDay}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

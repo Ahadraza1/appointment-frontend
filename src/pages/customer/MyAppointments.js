@@ -4,6 +4,9 @@ import { appointmentsAPI } from "../../services/api";
 import DatePicker from "../../components/common/DatePicker";
 import "./MyAppointments.css";
 
+// Pagination configuration
+const PAGE_SIZE = 6;
+
 const MyAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,10 +15,19 @@ const MyAppointments = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dateFilter, setDateFilter] = useState(null);
   const [cancellingId, setCancellingId] = useState(null);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginationLoading, setPaginationLoading] = useState(false);
 
   useEffect(() => {
     fetchAppointments();
   }, []);
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter, searchTerm, dateFilter]);
 
   const fetchAppointments = async () => {
     try {
@@ -86,6 +98,82 @@ const MyAppointments = () => {
 
     return statusMatch && searchMatch && dateMatch;
   });
+
+  // Pagination calculations
+  const totalItems = filteredAppointments.length;
+  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = Math.min(startIndex + PAGE_SIZE, totalItems);
+  const paginatedAppointments = filteredAppointments.slice(startIndex, endIndex);
+
+  // Auto-correct if current page is out of range (e.g., after filter change)
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  // Pagination handlers
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    
+    // Add subtle loading state for smooth transition
+    setPaginationLoading(true);
+    setTimeout(() => {
+      setCurrentPage(page);
+      setPaginationLoading(false);
+    }, 100);
+  };
+
+  const handlePrevPage = () => handlePageChange(currentPage - 1);
+  const handleNextPage = () => handlePageChange(currentPage + 1);
+
+  // Generate page numbers for desktop pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if total is small
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always show first page
+      pages.push(1);
+      
+      // Calculate range around current page
+      let start = Math.max(2, currentPage - 1);
+      let end = Math.min(totalPages - 1, currentPage + 1);
+      
+      // Adjust if at boundaries
+      if (currentPage <= 2) {
+        end = 4;
+      } else if (currentPage >= totalPages - 1) {
+        start = totalPages - 3;
+      }
+      
+      // Add ellipsis before middle section if needed
+      if (start > 2) {
+        pages.push("ellipsis-start");
+      }
+      
+      // Add middle pages
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      
+      // Add ellipsis after middle section if needed
+      if (end < totalPages - 1) {
+        pages.push("ellipsis-end");
+      }
+      
+      // Always show last page
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
 
   if (loading) {
     return (
@@ -215,96 +303,180 @@ const MyAppointments = () => {
               </Link>
             </div>
           ) : (
-            <div className="appointments-grid">
-              {filteredAppointments.map((appointment) => {
-                const dateParts = formatDate(appointment.date);
-                return (
-                  <div
-                    key={appointment._id}
-                    className={`appointment-card ${appointment.status}`}
-                  >
-                    {/* Date Block */}
-                    <div className="card-date-block">
-                      <span className="day">{dateParts.day}</span>
-                      <span className="month">{dateParts.month}</span>
-                    </div>
-
-                    {/* Details Section */}
-                    <div className="card-details">
-                      <div className="service-main">
-                        <h3 className="service-name">
-                          {appointment.serviceId?.name || "Service"}
-                        </h3>
-                        <div className="service-specs">
-                          <span className="spec-item">
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <circle cx="12" cy="12" r="10" />
-                              <polyline points="12 6 12 12 16 14" />
-                            </svg>
-                            {appointment.timeSlot}
-                          </span>
-                          <span className="spec-item">
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <path d="M12 2v10l4.5 4.5" />
-                            </svg>
-                            {appointment.serviceId?.duration || 0} min
-                          </span>
-                          <span className="spec-item price">
-                            ${appointment.serviceId?.price || 0}
-                          </span>
-                        </div>
+            <>
+              {/* Appointments Grid with loading state */}
+              <div className={`appointments-grid ${paginationLoading ? 'pagination-loading' : ''}`}>
+                {paginatedAppointments.map((appointment) => {
+                  const dateParts = formatDate(appointment.date);
+                  return (
+                    <div
+                      key={appointment._id}
+                      className={`appointment-card ${appointment.status}`}
+                    >
+                      {/* Date Block */}
+                      <div className="card-date-block">
+                        <span className="day">{dateParts.day}</span>
+                        <span className="month">{dateParts.month}</span>
                       </div>
 
-                      {appointment.status === "rejected" &&
-                        appointment.rejectionReason && (
-                          <div className="rejection-note">
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <circle cx="12" cy="12" r="10" />
-                              <line x1="12" y1="8" x2="12" y2="12" />
-                              <line x1="12" y1="16" x2="12.01" y2="16" />
-                            </svg>
-                            <span>Reason: {appointment.rejectionReason}</span>
+                      {/* Details Section */}
+                      <div className="card-details">
+                        <div className="service-main">
+                          <h3 className="service-name">
+                            {appointment.serviceId?.name || "Service"}
+                          </h3>
+                          <div className="service-specs">
+                            <span className="spec-item">
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                              </svg>
+                              {appointment.timeSlot}
+                            </span>
+                            <span className="spec-item">
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path d="M12 2v10l4.5 4.5" />
+                              </svg>
+                              {appointment.serviceId?.duration || 0} min
+                            </span>
+                            <span className="spec-item price">
+                              ${appointment.serviceId?.price || 0}
+                            </span>
                           </div>
+                        </div>
+
+                        {appointment.status === "rejected" &&
+                          appointment.rejectionReason && (
+                            <div className="rejection-note">
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
+                              </svg>
+                              <span>Reason: {appointment.rejectionReason}</span>
+                            </div>
+                          )}
+                      </div>
+
+                      {/* Status & Actions */}
+                      <div className="card-actions-wrapper">
+                        <span className={`status-pill ${appointment.status}`}>
+                          {appointment.status}
+                        </span>
+
+                        {["pending", "approved"].includes(appointment.status) && (
+                          <button
+                            className="cancel-btn"
+                            onClick={() => handleCancel(appointment._id)}
+                            disabled={cancellingId === appointment._id}
+                          >
+                            {cancellingId === appointment._id
+                              ? "Processing..."
+                              : "Cancel"}
+                          </button>
                         )}
+                      </div>
                     </div>
+                  );
+                })}
+              </div>
 
-                    {/* Status & Actions */}
-                    <div className="card-actions-wrapper">
-                      <span className={`status-pill ${appointment.status}`}>
-                        {appointment.status}
-                      </span>
-
-                      {["pending", "approved"].includes(appointment.status) && (
-                        <button
-                          className="cancel-btn"
-                          onClick={() => handleCancel(appointment._id)}
-                          disabled={cancellingId === appointment._id}
-                        >
-                          {cancellingId === appointment._id
-                            ? "Processing..."
-                            : "Cancel"}
-                        </button>
-                      )}
-                    </div>
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="pagination-container">
+                  {/* Results Summary - Desktop */}
+                  <div className="pagination-summary hide-mobile">
+                    Showing {startIndex + 1}–{endIndex} of {totalItems} appointments
                   </div>
-                );
-              })}
-            </div>
+
+                  {/* Pagination Controls */}
+                  <div className="pagination-controls">
+                    {/* Previous Button */}
+                    <button
+                      className="pagination-btn pagination-nav"
+                      onClick={handlePrevPage}
+                      disabled={currentPage === 1}
+                      aria-label="Previous page"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="15 18 9 12 15 6" />
+                      </svg>
+                      <span className="hide-mobile">Previous</span>
+                    </button>
+
+                    {/* Desktop: Page Numbers */}
+                    <div className="pagination-pages hide-mobile">
+                      {getPageNumbers().map((page, index) => (
+                        typeof page === 'number' ? (
+                          <button
+                            key={page}
+                            className={`pagination-btn pagination-page ${currentPage === page ? 'active' : ''}`}
+                            onClick={() => handlePageChange(page)}
+                            aria-label={`Go to page ${page}`}
+                            aria-current={currentPage === page ? 'page' : undefined}
+                          >
+                            {page}
+                          </button>
+                        ) : (
+                          <span key={page} className="pagination-ellipsis">
+                            •••
+                          </span>
+                        )
+                      ))}
+                    </div>
+
+                    {/* Mobile: Current Page Indicator */}
+                    <div className="pagination-mobile-indicator hide-desktop hide-tablet">
+                      <span className="current-page">{currentPage}</span>
+                      <span className="page-separator">/</span>
+                      <span className="total-pages">{totalPages}</span>
+                    </div>
+
+                    {/* Next Button */}
+                    <button
+                      className="pagination-btn pagination-nav"
+                      onClick={handleNextPage}
+                      disabled={currentPage === totalPages}
+                      aria-label="Next page"
+                    >
+                      <span className="hide-mobile">Next</span>
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
