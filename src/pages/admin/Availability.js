@@ -152,21 +152,17 @@ const Availability = () => {
         </div>
         <div className="availability-card-body">
           <div className="days-grid">
-            {Object.keys(DAY_MAP).map((shortDay) => {
-              const fullDay = DAY_MAP[shortDay];
-
-              return (
-                <button
-                  key={shortDay}
-                  className={`day-btn ${
-                    formData.workingDays.includes(shortDay) ? "active" : ""
-                  }`}
-                  onClick={() => toggleDay(shortDay)}
-                >
-                  {shortDay}
-                </button>
-              );
-            })}
+            {Object.keys(DAY_MAP).map((shortDay) => (
+              <button
+                key={shortDay}
+                className={`day-btn ${
+                  formData.workingDays.includes(shortDay) ? "active" : ""
+                }`}
+                onClick={() => toggleDay(shortDay)}
+              >
+                {shortDay}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -214,7 +210,8 @@ const Availability = () => {
             {/* {formData.breaks.map((breakItem, index) => ( */}
             {Array.isArray(formData.breaks) &&
               formData.breaks.map((breakItem, index) => (
-                <div key={index} className="break-item">
+                <div key={breakItem._id || index} className="break-item">
+
                   <input
                     type="time"
                     className="form-input"

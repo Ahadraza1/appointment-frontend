@@ -32,8 +32,8 @@ const apiRequest = async (endpoint, options = {}) => {
   });
 
   const data = await response.json();
-console.log(response.status)
-  if (!response.status==200 && !response.status==201) {
+  // console.log(response.status);
+  if (!response.ok) {
     const error = new Error(data.message || "Something went wrong");
     error.data = data; // Attach full response data (includes error codes)
     error.response = { data }; // Also attach in a common axios-like format
@@ -100,16 +100,11 @@ export const userAPI = {
    ============================================ */
 export const servicesAPI = {
   // 🔓 CUSTOMER / PUBLIC – only ACTIVE services
-  getPublic: () =>
-    apiRequest("/services"),
+  getPublic: () => apiRequest("/services"),
 
   // 🔐 ADMIN – active / inactive / all
   getAdmin: (status) =>
-    apiRequest(
-      status
-        ? `/admin/services?status=${status}`
-        : `/admin/services`
-    ),
+    apiRequest(status ? `/admin/services?status=${status}` : `/admin/services`),
 
   update: (id, data) =>
     apiRequest(`/services/${id}`, {
