@@ -26,6 +26,7 @@ const Customers = () => {
       setCustomers(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Error:", err);
+      setCustomers([]);
     } finally {
       setLoading(false);
     }
