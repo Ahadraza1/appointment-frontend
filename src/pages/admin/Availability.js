@@ -3,15 +3,15 @@ import { availabilityAPI } from "../../services/api";
 import "./AdminPages.css";
 import "./Availability.css";
 
-const DAYS = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
+const DAY_MAP = {
+  Mon: "Monday",
+  Tue: "Tuesday",
+  Wed: "Wednesday",
+  Thu: "Thursday",
+  Fri: "Friday",
+  Sat: "Saturday",
+  Sun: "Sunday",
+};
 
 const Availability = () => {
   const [loading, setLoading] = useState(true);
@@ -52,7 +52,7 @@ const Availability = () => {
     }
   };
 
-  const handleDayToggle = (day) => {
+  const toggleDay = (day) => {
     setFormData((prev) => ({
       ...prev,
       workingDays: prev.workingDays.includes(day)
@@ -140,17 +140,21 @@ const Availability = () => {
         </div>
         <div className="availability-card-body">
           <div className="days-grid">
-            {DAYS.map((day) => (
-              <button
-                key={day}
-                className={`day-btn ${
-                  formData.workingDays.includes(day) ? "selected" : ""
-                }`}
-                onClick={() => handleDayToggle(day)}
-              >
-                {day.slice(0, 3)}
-              </button>
-            ))}
+            {Object.keys(DAY_MAP).map((shortDay) => {
+              const fullDay = DAY_MAP[shortDay];
+
+              return (
+                <button
+                  key={shortDay}
+                  className={`day-btn ${
+                    formData.workingDays.includes(fullDay) ? "active" : ""
+                  }`}
+                  onClick={() => toggleDay(fullDay)}
+                >
+                  {shortDay}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
