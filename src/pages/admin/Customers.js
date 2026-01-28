@@ -20,17 +20,18 @@ const Customers = () => {
   }, [searchTerm]);
 
   const fetchCustomers = async () => {
-    try {
-      setLoading(true);
-      const res = await adminAPI.getCustomers();
-      setCustomers(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {
-      console.error("Error:", err);
-      setCustomers([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+    const data = await adminAPI.getCustomers(); 
+    setCustomers(Array.isArray(data) ? data : []);
+  } catch (err) {
+    console.error("Error:", err);
+    setCustomers([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const getInitials = (name) => {
     if (!name) return "U";
