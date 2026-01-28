@@ -61,7 +61,7 @@
 
 .day-btn.selected {
   background: #004e70;
-  color: white;
+  color: #004e70;
   border-color: var(--primary-700, #2563eb);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
