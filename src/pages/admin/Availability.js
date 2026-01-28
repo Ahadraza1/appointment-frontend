@@ -40,10 +40,11 @@ const Availability = () => {
       const availability = data.availability || {};
       setFormData({
         workingDays: availability.workingDays || [],
-        startTime: availability.startTime || "09:00",
-        endTime: availability.endTime || "18:00",
+        startTime: availability.startTime || "",
+        endTime: availability.endTime || "",
         breaks: availability.breaks || [],
         holidays: availability.holidays || [],
+        bookingOpen: availability.bookingOpen ?? true,
       });
     } catch (err) {
       console.error("Error:", err);
