@@ -159,9 +159,9 @@ const Availability = () => {
                 <button
                   key={shortDay}
                   className={`day-btn ${
-                    formData.workingDays.includes(fullDay) ? "active" : ""
+                    formData.workingDays.includes(shortDay) ? "active" : ""
                   }`}
-                  onClick={() => toggleDay(fullDay)}
+                  onClick={() => toggleDay(shortDay)}
                 >
                   {shortDay}
                 </button>
@@ -211,43 +211,45 @@ const Availability = () => {
         </div>
         <div className="availability-card-body">
           <div className="breaks-list">
-            {formData.breaks.map((breakItem, index) => (
-              <div key={index} className="break-item">
-                <input
-                  type="time"
-                  className="form-input"
-                  value={breakItem.start}
-                  onChange={(e) =>
-                    handleBreakChange(index, "start", e.target.value)
-                  }
-                />
-                <span>to</span>
-                <input
-                  type="time"
-                  className="form-input"
-                  value={breakItem.end}
-                  onChange={(e) =>
-                    handleBreakChange(index, "end", e.target.value)
-                  }
-                />
-                <button
-                  className="break-remove-btn"
-                  onClick={() => handleRemoveBreak(index)}
-                >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
+            {/* {formData.breaks.map((breakItem, index) => ( */}
+            {Array.isArray(formData.breaks) &&
+              formData.breaks.map((breakItem, index) => (
+                <div key={index} className="break-item">
+                  <input
+                    type="time"
+                    className="form-input"
+                    value={breakItem.start}
+                    onChange={(e) =>
+                      handleBreakChange(index, "start", e.target.value)
+                    }
+                  />
+                  <span>to</span>
+                  <input
+                    type="time"
+                    className="form-input"
+                    value={breakItem.end}
+                    onChange={(e) =>
+                      handleBreakChange(index, "end", e.target.value)
+                    }
+                  />
+                  <button
+                    className="break-remove-btn"
+                    onClick={() => handleRemoveBreak(index)}
                   >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
-              </div>
-            ))}
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
           </div>
           <button className="add-break-btn" onClick={handleAddBreak}>
             <svg
@@ -273,27 +275,28 @@ const Availability = () => {
         </div>
         <div className="availability-card-body">
           <div className="holidays-list">
-            {formData.holidays.map((holiday, index) => (
-              <div key={index} className="holiday-tag">
-                {holiday}
-                <button
-                  className="holiday-remove"
-                  onClick={() => handleRemoveHoliday(holiday)}
-                >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
+            {Array.isArray(formData.holidays) &&
+              formData.holidays.map((holiday, index) => (
+                <div key={index} className="holiday-tag">
+                  {holiday}
+                  <button
+                    className="holiday-remove"
+                    onClick={() => handleRemoveHoliday(holiday)}
                   >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
-              </div>
-            ))}
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
           </div>
           <div className="holiday-input-row">
             <input
