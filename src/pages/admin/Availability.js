@@ -39,7 +39,8 @@ const Availability = () => {
       setLoading(true);
       const data = await availabilityAPI.adminGet();
 
-      const availability = data?.availability || {};
+      const availability = data?.availability ?? data;
+      if (!availability) return;
 
       setFormData({
         workingDays: Array.isArray(availability.workingDays)
@@ -211,7 +212,6 @@ const Availability = () => {
             {Array.isArray(formData.breaks) &&
               formData.breaks.map((breakItem, index) => (
                 <div key={breakItem._id || index} className="break-item">
-
                   <input
                     type="time"
                     className="form-input"
