@@ -23,7 +23,7 @@ const Customers = () => {
     try {
       setLoading(true);
       const data = await adminAPI.getCustomers();
-      setCustomers(data);
+       setCustomers(data.customers || []);;
     } catch (err) {
       console.error("Error:", err);
     } finally {
