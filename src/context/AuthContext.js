@@ -38,35 +38,32 @@ export const AuthProvider = ({ children }) => {
 
   // 🔥 FIX 2: Normalized login response handling
   const login = async (email, password) => {
-  try {
-    const data = await authAPI.login({ email, password });
+    try {
+      const data = await authAPI.login({ email, password });
 
-    // ✅ backend response validation
-    if (!data || !data.token) {
-      throw new Error("Invalid login response");
+      // ✅ backend response validation
+      if (!data || !data.token) {
+        throw new Error("Invalid login response");
+      }
+
+      const userData = {
+        _id: data._id,
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        profilePhoto: data.profilePhoto,
+      };
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      setUser(userData);
+
+      return userData;
+    } catch (err) {
+      throw new Error(err.response?.data?.message || "Invalid login response");
     }
-
-    const userData = {
-      _id: data._id,
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      profilePhoto: data.profilePhoto,
-    };
-
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(userData));
-
-    setUser(userData);
-
-    return userData;
-  } catch (err) {
-    throw new Error(
-      err.response?.data?.message || "Invalid login response"
-    );
-  }
-};
-
+  };
 
   // 🔥 FIX 3: Register flow aligned with login
   const register = async (data) => {
