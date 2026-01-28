@@ -32,8 +32,8 @@ const apiRequest = async (endpoint, options = {}) => {
   });
 
   const data = await response.json();
-
-  if (!response.ok) {
+console.log(response.status)
+  if (!response.status==200 && !response.status==201) {
     const error = new Error(data.message || "Something went wrong");
     error.data = data; // Attach full response data (includes error codes)
     error.response = { data }; // Also attach in a common axios-like format
