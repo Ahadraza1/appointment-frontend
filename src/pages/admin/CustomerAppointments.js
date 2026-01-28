@@ -12,9 +12,11 @@ const CustomerAppointments = () => {
     const fetchAppointments = async () => {
       try {
         const data = await adminAPI.getCustomerAppointments(id);
-        setAppointments(data);
+        // ✅ FIX: backend returns { appointments: [...] }
+        setAppointments(data.appointments || []);
       } catch (error) {
         console.error("Failed to fetch appointments", error);
+        setAppointments([]);
       } finally {
         setLoading(false);
       }
@@ -58,16 +60,13 @@ const CustomerAppointments = () => {
               {appointments.map((appt, index) => (
                 <tr key={appt._id}>
                   <td>{index + 1}</td>
-
                   <td>
                     {appt.serviceId?.name ||
                       appt.service?.name ||
                       appt.serviceName ||
                       "N/A"}
                   </td>
-
                   <td>{new Date(appt.date).toLocaleDateString()}</td>
-
                   <td>
                     {appt.time
                       ? appt.time
@@ -78,7 +77,6 @@ const CustomerAppointments = () => {
                           })
                         : "N/A"}
                   </td>
-
                   <td>{appt.status}</td>
                 </tr>
               ))}
