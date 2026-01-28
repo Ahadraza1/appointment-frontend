@@ -44,11 +44,18 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.login({ email, password });
 
       const token = response.token;
-      const userData = response.user;
 
-      if (!token || !userData) {
-        throw new Error("Invalid login response");
-      }
+      if (!response.token) {
+      throw new Error("Invalid login response");
+    }
+
+    const userData = {
+      _id: response._id,
+      name: response.name,
+      email: response.email,
+      role: response.role,
+      profilePhoto: response.profilePhoto,
+    };
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(userData));
