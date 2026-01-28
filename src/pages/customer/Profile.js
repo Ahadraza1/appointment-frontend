@@ -1,40 +1,40 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { userAPI } from '../../services/api';
-import './Profile.css';
+import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { userAPI } from "../../services/api";
+import "./Profile.css";
 
 const API_URL = process.env.REACT_APP_API_URL?.replace("/api", "");
 
 const Profile = () => {
   const { user, updateUser } = useAuth();
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const [profileData, setProfileData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
   });
 
   const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const handleProfileChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
   };
 
   const handlePasswordChange = (e) => {
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
   };
 
   const handleProfileSubmit = async (e) => {
@@ -43,7 +43,7 @@ const Profile = () => {
       setLoading(true);
       await userAPI.updateProfile(profileData);
       updateUser({ ...user, ...profileData });
-      setSuccess('Profile updated successfully!');
+      setSuccess("Profile updated successfully!");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -53,14 +53,14 @@ const Profile = () => {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     if (passwordData.newPassword.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError("Password must be at least 6 characters");
       return;
     }
 
@@ -70,8 +70,12 @@ const Profile = () => {
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
       });
-      setSuccess('Password updated successfully!');
-      setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      setSuccess("Password updated successfully!");
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -84,42 +88,55 @@ const Profile = () => {
     if (!file) return;
 
     // Validate file type
-    if (!file.type.match('image.*')) {
-      setError('Please upload an image file (jpg, jpeg, or png)');
+    if (!file.type.match("image.*")) {
+      setError("Please upload an image file (jpg, jpeg, or png)");
       return;
     }
 
     // Validate file size (2MB)
     if (file.size > 2 * 1024 * 1024) {
-      setError('File size must be less than 2MB');
+      setError("File size must be less than 2MB");
       return;
     }
 
     const formData = new FormData();
-    formData.append('photo', file);
+    formData.append("photo", file);
 
     try {
       setUploadingPhoto(true);
-      setError('');
-      setSuccess('');
+      setError("");
+      setSuccess("");
 
       const response = await userAPI.uploadProfilePhoto(formData);
-      
+
       // Update local context/state
       updateUser({ ...user, profilePhoto: response.profilePhoto });
-      setSuccess('Profile photo updated successfully!');
+      setSuccess("Profile photo updated successfully!");
     } catch (err) {
-      setError(err.message || 'Error uploading photo');
+      setError(err.message || "Error uploading photo");
     } finally {
       setUploadingPhoto(false);
     }
   };
 
-
-
   const getInitials = (name) => {
-    if (!name) return 'U';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    if (!name) return "U";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const getProfileImage = () => {
+    if (!user?.profilePhoto) return null;
+
+    if (user.profilePhoto.startsWith("http")) {
+      return user.profilePhoto;
+    }
+
+    return `${API_URL}${user.profilePhoto}?v=${Date.now()}`;
   };
 
   return (
@@ -134,15 +151,15 @@ const Profile = () => {
           {/* Sidebar */}
           <div className="profile-sidebar">
             <div className="profile-avatar-section">
-              <div 
-                className={`profile-avatar-container ${uploadingPhoto ? 'uploading' : ''}`}
-                onClick={() => document.getElementById('photoInput').click()}
+              <div
+                className={`profile-avatar-container ${uploadingPhoto ? "uploading" : ""}`}
+                onClick={() => document.getElementById("photoInput").click()}
               >
                 <div className="profile-avatar">
                   {user?.profilePhoto ? (
-                    <img 
-                      src={`${API_URL}${user.profilePhoto}?v=${Date.now()}`} 
-                      alt={user.name} 
+                    <img
+                      src={getProfileImage()}
+                      alt={user.name}
                       className="avatar-image"
                     />
                   ) : (
@@ -150,9 +167,14 @@ const Profile = () => {
                   )}
                 </div>
                 <div className="avatar-overlay">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                    <circle cx="12" cy="13" r="4"/>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                    <circle cx="12" cy="13" r="4" />
                   </svg>
                 </div>
                 {uploadingPhoto && (
@@ -173,23 +195,33 @@ const Profile = () => {
             </div>
 
             <nav className="profile-nav">
-              <button 
-                className={`profile-nav-item ${activeTab === 'profile' ? 'active' : ''}`}
-                onClick={() => setActiveTab('profile')}
+              <button
+                className={`profile-nav-item ${activeTab === "profile" ? "active" : ""}`}
+                onClick={() => setActiveTab("profile")}
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
                 </svg>
                 Profile
               </button>
-              <button 
-                className={`profile-nav-item ${activeTab === 'security' ? 'active' : ''}`}
-                onClick={() => setActiveTab('security')}
+              <button
+                className={`profile-nav-item ${activeTab === "security" ? "active" : ""}`}
+                onClick={() => setActiveTab("security")}
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
                 Security
               </button>
@@ -199,7 +231,10 @@ const Profile = () => {
           {/* Content */}
           <div className="profile-content">
             {error && (
-              <div className="alert alert-error" style={{ marginBottom: 'var(--spacing-4)' }}>
+              <div
+                className="alert alert-error"
+                style={{ marginBottom: "var(--spacing-4)" }}
+              >
                 {error}
               </div>
             )}
@@ -209,7 +244,7 @@ const Profile = () => {
               </div>
             )}
 
-            {activeTab === 'profile' && (
+            {activeTab === "profile" && (
               <>
                 <h2 className="profile-section-title">Profile Information</h2>
                 <form className="profile-form" onSubmit={handleProfileSubmit}>
@@ -251,15 +286,14 @@ const Profile = () => {
                       className="btn btn-primary btn-rounded"
                       disabled={loading}
                     >
-                      {loading ? 'Saving...' : 'Save Changes'}
+                      {loading ? "Saving..." : "Save Changes"}
                     </button>
                   </div>
-
                 </form>
               </>
             )}
 
-            {activeTab === 'security' && (
+            {activeTab === "security" && (
               <>
                 <h2 className="profile-section-title">Change Password</h2>
                 <form className="profile-form" onSubmit={handlePasswordSubmit}>
@@ -302,8 +336,7 @@ const Profile = () => {
                       className="btn btn-primary btn-rounded"
                       disabled={loading}
                     >
-
-                      {loading ? 'Updating...' : 'Update Password'}
+                      {loading ? "Updating..." : "Update Password"}
                     </button>
                   </div>
                 </form>
