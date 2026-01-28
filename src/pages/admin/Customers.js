@@ -22,8 +22,8 @@ const Customers = () => {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const data = await adminAPI.getCustomers();
-       setCustomers(data.customers || []);;
+      const res = await adminAPI.getCustomers();
+      setCustomers(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Error:", err);
     } finally {
