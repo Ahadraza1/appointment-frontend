@@ -25,6 +25,7 @@ const Availability = () => {
     endTime: "18:00",
     breaks: [],
     holidays: [],
+    bookingOpen: true,
   });
 
   const [newHoliday, setNewHoliday] = useState("");
@@ -37,17 +38,27 @@ const Availability = () => {
     try {
       setLoading(true);
       const data = await availabilityAPI.adminGet();
-      const availability = data.availability || {};
+
+      const availability = data?.availability || {};
+
       setFormData({
-        workingDays: availability.workingDays || [],
-        startTime: availability.startTime || "",
-        endTime: availability.endTime || "",
-        breaks: availability.breaks || [],
-        holidays: availability.holidays || [],
+        workingDays: Array.isArray(availability.workingDays)
+          ? availability.workingDays
+          : [],
+
+        startTime: availability.startTime || "09:00",
+        endTime: availability.endTime || "18:00",
+
+        breaks: Array.isArray(availability.breaks) ? availability.breaks : [],
+
+        holidays: Array.isArray(availability.holidays)
+          ? availability.holidays
+          : [],
+
         bookingOpen: availability.bookingOpen ?? true,
       });
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Availability fetch error:", err);
     } finally {
       setLoading(false);
     }
