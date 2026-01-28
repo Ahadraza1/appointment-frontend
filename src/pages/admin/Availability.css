@@ -66,6 +66,12 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+.day-btn.active {
+  background-color: #004e70 !important; /* primary blue */
+  color: #ffffff !important;
+  border-color: #004e70 !important;
+}
+
 /* Time Inputs */
 .time-row {
   display: grid;
