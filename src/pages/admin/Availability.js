@@ -1,25 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { availabilityAPI } from '../../services/api';
-import './AdminPages.css';
-import './Availability.css';
+import React, { useState, useEffect } from "react";
+import { availabilityAPI } from "../../services/api";
+import "./AdminPages.css";
+import "./Availability.css";
 
-const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const DAYS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
 const Availability = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
-  
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
   const [formData, setFormData] = useState({
     workingDays: [],
-    startTime: '09:00',
-    endTime: '18:00',
+    startTime: "09:00",
+    endTime: "18:00",
     breaks: [],
     holidays: [],
   });
-  
-  const [newHoliday, setNewHoliday] = useState('');
+
+  const [newHoliday, setNewHoliday] = useState("");
 
   useEffect(() => {
     fetchAvailability();
@@ -29,73 +37,76 @@ const Availability = () => {
     try {
       setLoading(true);
       const data = await availabilityAPI.adminGet();
+      const availability = data.availability || {};
       setFormData({
-        workingDays: data.workingDays || [],
-        startTime: data.startTime || '09:00',
-        endTime: data.endTime || '18:00',
-        breaks: data.breaks || [],
-        holidays: data.holidays || [],
+        workingDays: availability.workingDays || [],
+        startTime: availability.startTime || "09:00",
+        endTime: availability.endTime || "18:00",
+        breaks: availability.breaks || [],
+        holidays: availability.holidays || [],
       });
     } catch (err) {
-      console.error('Error:', err);
+      console.error("Error:", err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDayToggle = (day) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       workingDays: prev.workingDays.includes(day)
-        ? prev.workingDays.filter(d => d !== day)
-        : [...prev.workingDays, day]
+        ? prev.workingDays.filter((d) => d !== day)
+        : [...prev.workingDays, day],
     }));
   };
 
   const handleAddBreak = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      breaks: [...prev.breaks, { start: '12:00', end: '13:00' }]
+      breaks: [...prev.breaks, { start: "12:00", end: "13:00" }],
     }));
   };
 
   const handleRemoveBreak = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      breaks: prev.breaks.filter((_, i) => i !== index)
+      breaks: prev.breaks.filter((_, i) => i !== index),
     }));
   };
 
   const handleBreakChange = (index, field, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      breaks: prev.breaks.map((b, i) => i === index ? { ...b, [field]: value } : b)
+      breaks: prev.breaks.map((b, i) =>
+        i === index ? { ...b, [field]: value } : b,
+      ),
     }));
   };
 
   const handleAddHoliday = () => {
     if (!newHoliday) return;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      holidays: [...prev.holidays, newHoliday]
+      holidays: [...prev.holidays, newHoliday],
     }));
-    setNewHoliday('');
+    setNewHoliday("");
   };
 
   const handleRemoveHoliday = (holiday) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      holidays: prev.holidays.filter(h => h !== holiday)
+      holidays: prev.holidays.filter((h) => h !== holiday),
     }));
   };
 
   const handleSubmit = async () => {
     try {
       setSaving(true);
-      setError('');
+      setError("");
       await availabilityAPI.update(formData);
-      setSuccess('Availability updated successfully!');
-      setTimeout(() => setSuccess(''), 3000);
+      setSuccess("Availability updated successfully!");
+      setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -118,17 +129,9 @@ const Availability = () => {
         <h1>Availability Settings</h1>
       </div>
 
-      {success && (
-        <div className="alert alert-success">
-          {success}
-        </div>
-      )}
+      {success && <div className="alert alert-success">{success}</div>}
 
-      {error && (
-        <div className="alert alert-error">
-          {error}
-        </div>
-      )}
+      {error && <div className="alert alert-error">{error}</div>}
 
       {/* Working Days */}
       <div className="availability-card">
@@ -137,10 +140,10 @@ const Availability = () => {
         </div>
         <div className="availability-card-body">
           <div className="days-grid">
-            {DAYS.map(day => (
+            {DAYS.map((day) => (
               <button
                 key={day}
-                className={`day-btn ${formData.workingDays.includes(day) ? 'selected' : ''}`}
+                className={`day-btn ${formData.workingDays.includes(day) ? "selected" : ""}`}
                 onClick={() => handleDayToggle(day)}
               >
                 {day.substring(0, 3)}
@@ -163,7 +166,9 @@ const Availability = () => {
                 type="time"
                 className="form-input"
                 value={formData.startTime}
-                onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, startTime: e.target.value })
+                }
               />
             </div>
             <div className="form-group">
@@ -172,7 +177,9 @@ const Availability = () => {
                 type="time"
                 className="form-input"
                 value={formData.endTime}
-                onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, endTime: e.target.value })
+                }
               />
             </div>
           </div>
@@ -192,28 +199,49 @@ const Availability = () => {
                   type="time"
                   className="form-input"
                   value={breakItem.start}
-                  onChange={(e) => handleBreakChange(index, 'start', e.target.value)}
+                  onChange={(e) =>
+                    handleBreakChange(index, "start", e.target.value)
+                  }
                 />
                 <span>to</span>
                 <input
                   type="time"
                   className="form-input"
                   value={breakItem.end}
-                  onChange={(e) => handleBreakChange(index, 'end', e.target.value)}
+                  onChange={(e) =>
+                    handleBreakChange(index, "end", e.target.value)
+                  }
                 />
-                <button className="break-remove-btn" onClick={() => handleRemoveBreak(index)}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
+                <button
+                  className="break-remove-btn"
+                  onClick={() => handleRemoveBreak(index)}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
                 </button>
               </div>
             ))}
           </div>
           <button className="add-break-btn" onClick={handleAddBreak}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
             Add Break
           </button>
@@ -230,10 +258,20 @@ const Availability = () => {
             {formData.holidays.map((holiday, index) => (
               <div key={index} className="holiday-tag">
                 {holiday}
-                <button className="holiday-remove" onClick={() => handleRemoveHoliday(holiday)}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
+                <button
+                  className="holiday-remove"
+                  onClick={() => handleRemoveHoliday(holiday)}
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
                 </button>
               </div>
@@ -255,11 +293,14 @@ const Availability = () => {
 
       {/* Save Button */}
       <div className="availability-actions">
-        <button className="btn btn-primary btn-rounded" onClick={handleSubmit} disabled={saving}>
-          {saving ? 'Saving...' : 'Save Changes'}
+        <button
+          className="btn btn-primary btn-rounded"
+          onClick={handleSubmit}
+          disabled={saving}
+        >
+          {saving ? "Saving..." : "Save Changes"}
         </button>
       </div>
-
     </div>
   );
 };
