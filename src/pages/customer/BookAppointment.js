@@ -116,10 +116,11 @@ const BookAppointment = () => {
       }
 
       // ================= EMAILJS (FRONTEND) =================
+      // ================= EMAIL ACTIONS =================
       const appointment = result?.appointment || result?.data || result;
 
       if (appointment?._id) {
-        const emailData = {
+        const baseEmailData = {
           customer_name: user?.name,
           customer_email: user?.email,
           service_name: service?.name,
@@ -128,10 +129,27 @@ const BookAppointment = () => {
           booking_id: appointment._id,
         };
 
-        // fire-and-forget emails
-        sendCustomerEmail(emailData);
-        sendAdminEmail(emailData);
+        // Fire & forget – do NOT block booking success
+        Promise.allSettled([
+          sendCustomerEmail({
+            ...baseEmailData,
+            email_title: "Booking Confirmation",
+            email_message:
+              "Your booking request has been received successfully. We will notify you once it is reviewed.",
+          }),
+
+          sendAdminEmail({
+            ...baseEmailData,
+            notification_title: "New Booking Created",
+            notification_message:
+              "A new booking has been created by a customer.",
+          }),
+        ]).catch(() => {
+          // silent fail – booking already successful
+        });
       }
+      // ==================================================
+
       // =====================================================
 
       // Handle wrapped response
