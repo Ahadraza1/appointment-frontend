@@ -162,47 +162,49 @@ const Dashboard = () => {
               </Link>
             </div>
             
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th style={{ width: '50px' }}>S.No</th>
-                  <th>Customer</th>
-                  <th>Service</th>
-                  <th>Time</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {todayAppointments.length === 0 ? (
+            <div className="table-wrapper">
+              <table className="data-table">
+                <thead>
                   <tr>
-                    <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: '#64748b' }}>
-                      No appointments scheduled for today
-                    </td>
+                    <th style={{ width: '50px' }}>S.No</th>
+                    <th>Customer</th>
+                    <th>Service</th>
+                    <th>Time</th>
+                    <th>Status</th>
                   </tr>
-                ) : (
-                  paginatedAppointments.map((apt, index) => (
-                    <tr key={apt._id}>
-                      <td data-label="S.No">{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                      <td data-label="Customer">
-                        <div className="user-cell">
-                          <div className="user-avatar">
-                            {getInitials(apt.userId?.name)}
-                          </div>
-                          <span className="user-name">{apt.userId?.name || "Customer"}</span>
-                        </div>
-                      </td>
-                      <td data-label="Service">{apt.serviceId?.name || "Service"}</td>
-                      <td data-label="Time">{apt.timeSlot}</td>
-                      <td data-label="Status">
-                        <span className={`status-pill ${apt.status}`}>
-                          {apt.status}
-                        </span>
+                </thead>
+                <tbody>
+                  {todayAppointments.length === 0 ? (
+                    <tr>
+                      <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: '#64748b' }}>
+                        No appointments scheduled for today
                       </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+                  ) : (
+                    paginatedAppointments.map((apt, index) => (
+                      <tr key={apt._id}>
+                        <td data-label="S.No">{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                        <td data-label="Customer">
+                          <div className="user-cell">
+                            <div className="user-avatar">
+                              {getInitials(apt.userId?.name)}
+                            </div>
+                            <span className="user-name">{apt.userId?.name || "Customer"}</span>
+                          </div>
+                        </td>
+                        <td data-label="Service">{apt.serviceId?.name || "Service"}</td>
+                        <td data-label="Time">{apt.timeSlot}</td>
+                        <td data-label="Status">
+                          <span className={`status-pill ${apt.status}`}>
+                            {apt.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
             
             {/* Pagination Controls */}
             {totalPages > 1 && (
