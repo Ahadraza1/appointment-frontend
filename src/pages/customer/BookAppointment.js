@@ -96,6 +96,8 @@ const BookAppointment = () => {
     return `${year}-${month}-${day}`;
   };
 
+  // ... imports stay same
+
   const handleSubmit = async () => {
     if (!selectedDate || !selectedTime) {
       setError("Please select a date and time");
@@ -104,68 +106,57 @@ const BookAppointment = () => {
 
     try {
       setSubmitting(true);
-      const result = await appointmentsAPI.book({
+
+      const response = await appointmentsAPI.book({
         serviceId,
         date: formatDateForAPI(selectedDate),
         timeSlot: selectedTime,
         notes,
       });
 
-      if (result?.user) {
-        updateUser(result.user);
+      // ✅ NORMALIZE AXIOS RESPONSE
+      const res = response?.data || response;
+
+      if (res?.user) {
+        updateUser(res.user);
       }
 
-      // ================= EMAILJS (FRONTEND) =================
-      // ================= EMAIL ACTIONS =================
-      const appointment = result?.appointment || result?.data || result;
+      const appointment = res?.appointment;
 
-      if (appointment?._id) {
-        const baseEmailData = {
-          customer_name: user?.name,
-          customer_email: user?.email,
-          service_name: service?.name,
-          booking_date: formatDateForAPI(selectedDate),
-          booking_time: selectedTime,
-          booking_id: appointment._id,
-        };
-
-        // Fire & forget – do NOT block booking success
-        Promise.allSettled([
-          sendCustomerEmail({
-            ...baseEmailData,
-            email_title: "Booking Confirmation",
-            email_message:
-              "Your booking request has been received successfully. We will notify you once it is reviewed.",
-          }),
-
-          sendAdminEmail({
-            ...baseEmailData,
-            notification_title: "New Booking Created",
-            notification_message:
-              "A new booking has been created by a customer.",
-          }),
-        ]).catch(() => {
-          // silent fail – booking already successful
-        });
-      }
-      // ==================================================
-
-      // =====================================================
-
-      // Handle wrapped response
-      const appointmentId =
-        result?._id || result?.data?._id || result?.appointment?._id;
-
-      if (!appointmentId) {
+      if (!appointment?._id) {
         throw new Error("Invalid booking response");
       }
 
-      navigate(`/confirmation/${appointmentId}`);
+      /* ================= EMAILS (FRONTEND – NON BLOCKING) ================= */
+      const baseEmailData = {
+        customer_name: user?.name,
+        customer_email: user?.email,
+        service_name: service?.name,
+        booking_date: formatDateForAPI(selectedDate),
+        booking_time: selectedTime,
+        booking_id: appointment._id,
+      };
+
+      Promise.allSettled([
+        sendCustomerEmail({
+          ...baseEmailData,
+          email_title: "Booking Confirmation",
+          email_message:
+            "Your booking request has been received successfully. We will notify you once it is reviewed.",
+        }),
+        sendAdminEmail({
+          ...baseEmailData,
+          notification_title: "New Booking Created",
+          notification_message: "A new booking has been created by a customer.",
+        }),
+      ]);
+
+      // ✅ SUCCESS REDIRECT
+      navigate(`/confirmation/${appointment._id}`);
     } catch (err) {
-      const errorCode = err?.response?.data?.code || err?.data?.code;
+      const errorCode = err?.response?.data?.code;
 
       if (errorCode === "BOOKING_LIMIT_REACHED") {
-        setError(""); // Clear any previous errors
         SaaSToast.limitReached({
           onAction: () => navigate("/pricing"),
         });
@@ -176,33 +167,18 @@ const BookAppointment = () => {
         errorCode === "PLAN_EXPIRED" ||
         errorCode === "SUBSCRIPTION_EXPIRED"
       ) {
-        setError("");
         SaaSToast.planExpired({
           onAction: () => navigate("/pricing"),
         });
         return;
       }
 
-      // Handle specific availability error with new Toast
-      const erroMsg =
+      const errorMsg =
         err?.response?.data?.message || err?.message || "Booking failed";
 
-      if (
-        erroMsg.includes("time slot is already booked") ||
-        erroMsg.includes("not available")
-      ) {
-        SaaSToast.error({
-          title: "Slot Unavailable",
-          description:
-            "This time slot is no longer available. Please select a different time to continue.",
-        });
-        return;
-      }
-
-      // Generic error fallback
       SaaSToast.error({
         title: "Booking Failed",
-        description: erroMsg,
+        description: errorMsg,
       });
     } finally {
       setSubmitting(false);
