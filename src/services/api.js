@@ -123,10 +123,11 @@ export const servicesAPI = {
     }),
 
   bulkCreate: (services) =>
-    apiRequest("/services/bulk", {
-      method: "POST",
-      body: JSON.stringify({ services }),
-    }),
+  apiRequest("/services/bulk", {
+    method: "POST",
+    body: JSON.stringify(services), 
+  }),
+
 };
 
 /* ============================================
