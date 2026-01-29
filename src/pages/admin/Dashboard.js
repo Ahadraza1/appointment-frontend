@@ -182,8 +182,8 @@ const Dashboard = () => {
                 ) : (
                   paginatedAppointments.map((apt, index) => (
                     <tr key={apt._id}>
-                      <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                      <td>
+                      <td data-label="S.No">{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                      <td data-label="Customer">
                         <div className="user-cell">
                           <div className="user-avatar">
                             {getInitials(apt.userId?.name)}
@@ -191,9 +191,9 @@ const Dashboard = () => {
                           <span className="user-name">{apt.userId?.name || "Customer"}</span>
                         </div>
                       </td>
-                      <td>{apt.serviceId?.name || "Service"}</td>
-                      <td>{apt.timeSlot}</td>
-                      <td>
+                      <td data-label="Service">{apt.serviceId?.name || "Service"}</td>
+                      <td data-label="Time">{apt.timeSlot}</td>
+                      <td data-label="Status">
                         <span className={`status-pill ${apt.status}`}>
                           {apt.status}
                         </span>
