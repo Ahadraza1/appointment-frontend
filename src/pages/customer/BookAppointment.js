@@ -117,7 +117,7 @@ const BookAppointment = () => {
       // ✅ NORMALIZE AXIOS RESPONSE
       const res = response?.data || response;
 
-      if (res?.user) {
+      if (res?.user && typeof updateUser === "function") {
         updateUser(res.user);
       }
 
@@ -153,7 +153,7 @@ const BookAppointment = () => {
 
       // ✅ SUCCESS REDIRECT
       navigate(`/confirmation/${appointment._id}`);
-      return
+      return;
     } catch (err) {
       const errorCode = err?.response?.data?.code;
 
