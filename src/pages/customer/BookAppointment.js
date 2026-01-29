@@ -153,6 +153,7 @@ const BookAppointment = () => {
 
       // ✅ SUCCESS REDIRECT
       navigate(`/confirmation/${appointment._id}`);
+      return
     } catch (err) {
       const errorCode = err?.response?.data?.code;
 
