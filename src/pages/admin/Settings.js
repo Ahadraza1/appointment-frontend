@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { adminAPI } from '../../services/api';
-import './AdminPages.css';
-import './Settings.css';
+import React, { useState, useEffect } from "react";
+import { adminAPI } from "../../services/api";
+import "./AdminPages.css";
+import "./Settings.css";
 
 const Settings = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
-  
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
   const [settings, setSettings] = useState({
-    businessName: '',
-    businessAddress: '',
-    contactEmail: '',
-    contactPhone: '',
+    businessName: "",
+    businessAddress: "",
+    contactEmail: "",
+    contactPhone: "",
     notifications: {
       emailOnBooking: true,
       emailOnApproval: true,
@@ -29,13 +29,13 @@ const Settings = () => {
     try {
       setLoading(true);
       const data = await adminAPI.getSettings();
-      const s = data.settings || {};
+      const s = data || {};
 
       setSettings({
-        businessName: s.businessName || '',
-        businessAddress: s.businessAddress || '',
-        contactEmail: s.contactEmail || '',
-        contactPhone: s.contactPhone || '',
+        businessName: s.businessName || "",
+        businessAddress: s.businessAddress || "",
+        contactEmail: s.contactEmail || "",
+        contactPhone: s.contactPhone || "",
         notifications: s.notifications || {
           emailOnBooking: true,
           emailOnApproval: true,
@@ -43,7 +43,7 @@ const Settings = () => {
         },
       });
     } catch (err) {
-      console.error('Error:', err);
+      console.error("Error:", err);
     } finally {
       setLoading(false);
     }
@@ -52,10 +52,10 @@ const Settings = () => {
   const handleSubmit = async () => {
     try {
       setSaving(true);
-      setError('');
+      setError("");
       await adminAPI.updateSettings(settings);
-      setSuccess('Settings saved successfully!');
-      setTimeout(() => setSuccess(''), 3000);
+      setSuccess("Settings saved successfully!");
+      setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -64,7 +64,7 @@ const Settings = () => {
   };
 
   const handleNotificationToggle = (key) => {
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
       notifications: {
         ...prev.notifications,
@@ -89,13 +89,19 @@ const Settings = () => {
       </div>
 
       {success && (
-        <div className="alert alert-success" style={{ marginBottom: 'var(--spacing-4)' }}>
+        <div
+          className="alert alert-success"
+          style={{ marginBottom: "var(--spacing-4)" }}
+        >
           {success}
         </div>
       )}
 
       {error && (
-        <div className="alert alert-error" style={{ marginBottom: 'var(--spacing-4)' }}>
+        <div
+          className="alert alert-error"
+          style={{ marginBottom: "var(--spacing-4)" }}
+        >
           {error}
         </div>
       )}
@@ -104,7 +110,9 @@ const Settings = () => {
       <div className="settings-card">
         <div className="settings-card-header">
           <h2 className="settings-card-title">Business Information</h2>
-          <p className="settings-card-description">Basic information about your business</p>
+          <p className="settings-card-description">
+            Basic information about your business
+          </p>
         </div>
         <div className="settings-card-body">
           <div className="settings-grid">
@@ -114,7 +122,9 @@ const Settings = () => {
                 type="text"
                 className="form-input"
                 value={settings.businessName}
-                onChange={(e) => setSettings({ ...settings, businessName: e.target.value })}
+                onChange={(e) =>
+                  setSettings({ ...settings, businessName: e.target.value })
+                }
                 placeholder="Your Business Name"
               />
             </div>
@@ -124,7 +134,9 @@ const Settings = () => {
                 type="tel"
                 className="form-input"
                 value={settings.contactPhone}
-                onChange={(e) => setSettings({ ...settings, contactPhone: e.target.value })}
+                onChange={(e) =>
+                  setSettings({ ...settings, contactPhone: e.target.value })
+                }
                 placeholder="+1 (555) 123-4567"
               />
             </div>
@@ -135,7 +147,9 @@ const Settings = () => {
               type="email"
               className="form-input"
               value={settings.contactEmail}
-              onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
+              onChange={(e) =>
+                setSettings({ ...settings, contactEmail: e.target.value })
+              }
               placeholder="contact@yourbusiness.com"
             />
           </div>
@@ -145,7 +159,9 @@ const Settings = () => {
               className="form-input"
               rows="2"
               value={settings.businessAddress}
-              onChange={(e) => setSettings({ ...settings, businessAddress: e.target.value })}
+              onChange={(e) =>
+                setSettings({ ...settings, businessAddress: e.target.value })
+              }
               placeholder="123 Business St, City, State 12345"
             />
           </div>
@@ -156,39 +172,47 @@ const Settings = () => {
       <div className="settings-card">
         <div className="settings-card-header">
           <h2 className="settings-card-title">Email Notifications</h2>
-          <p className="settings-card-description">Configure when to send email notifications</p>
+          <p className="settings-card-description">
+            Configure when to send email notifications
+          </p>
         </div>
         <div className="settings-card-body">
           <div className="toggle-row">
             <div className="toggle-info">
               <p className="toggle-label">New Booking Notification</p>
-              <p className="toggle-description">Receive an email when a new appointment is booked</p>
+              <p className="toggle-description">
+                Receive an email when a new appointment is booked
+              </p>
             </div>
             <button
-              className={`toggle-switch ${settings.notifications.emailOnBooking ? 'active' : ''}`}
-              onClick={() => handleNotificationToggle('emailOnBooking')}
+              className={`toggle-switch ${settings.notifications.emailOnBooking ? "active" : ""}`}
+              onClick={() => handleNotificationToggle("emailOnBooking")}
             />
           </div>
 
           <div className="toggle-row">
             <div className="toggle-info">
               <p className="toggle-label">Approval Notification</p>
-              <p className="toggle-description">Send email to customer when appointment is approved</p>
+              <p className="toggle-description">
+                Send email to customer when appointment is approved
+              </p>
             </div>
             <button
-              className={`toggle-switch ${settings.notifications.emailOnApproval ? 'active' : ''}`}
-              onClick={() => handleNotificationToggle('emailOnApproval')}
+              className={`toggle-switch ${settings.notifications.emailOnApproval ? "active" : ""}`}
+              onClick={() => handleNotificationToggle("emailOnApproval")}
             />
           </div>
 
           <div className="toggle-row">
             <div className="toggle-info">
               <p className="toggle-label">Cancellation Notification</p>
-              <p className="toggle-description">Send email when an appointment is cancelled</p>
+              <p className="toggle-description">
+                Send email when an appointment is cancelled
+              </p>
             </div>
             <button
-              className={`toggle-switch ${settings.notifications.emailOnCancellation ? 'active' : ''}`}
-              onClick={() => handleNotificationToggle('emailOnCancellation')}
+              className={`toggle-switch ${settings.notifications.emailOnCancellation ? "active" : ""}`}
+              onClick={() => handleNotificationToggle("emailOnCancellation")}
             />
           </div>
         </div>
@@ -196,11 +220,14 @@ const Settings = () => {
 
       {/* Save Button */}
       <div className="settings-actions">
-        <button className="btn btn-primary btn-rounded" onClick={handleSubmit} disabled={saving}>
-          {saving ? 'Saving...' : 'Save Settings'}
+        <button
+          className="btn btn-primary btn-rounded"
+          onClick={handleSubmit}
+          disabled={saving}
+        >
+          {saving ? "Saving..." : "Save Settings"}
         </button>
       </div>
-
     </div>
   );
 };
