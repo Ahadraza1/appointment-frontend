@@ -121,7 +121,7 @@ const BookAppointment = () => {
         updateUser(res.user);
       }
 
-      const appointment = res?.appointment;
+      const appointment = res?.appointment || res;
 
       if (!appointment?._id) {
         throw new Error("Invalid booking response");
