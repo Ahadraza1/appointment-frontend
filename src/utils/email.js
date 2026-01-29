@@ -1,49 +1,49 @@
 import emailjs from "emailjs-com";
 
-const SERVICE_ID = " service_675u71p";
-const ADMIN_TEMPLATE_ID = "template_phe0fxc";
-const CUSTOMER_TEMPLATE_ID = "template_6jmneel";
-const PUBLIC_KEY = "Sh4xKvOjWnDlLZeNX";
+const SERVICE_ID = process.env.REACT_APP_EMAIL_SERVICE_ID;
+const ADMIN_TEMPLATE_ID = process.env.REACT_APP_ADMIN_TEMPLATE_ID;
+const CUSTOMER_TEMPLATE_ID = process.env.REACT_APP_CUSTOMER_TEMPLATE_ID;
+const PUBLIC_KEY = process.env.REACT_APP_EMAIL_PUBLIC_KEY;
 
-/**
- * Send email to Admin (Customer → Admin)
- */
-export const sendAdminEmail = async (data) => {
+/* ===============================
+   CUSTOMER → ADMIN (Template 1)
+================================ */
+export const sendAdminEmail = (payload) => {
   return emailjs.send(
     SERVICE_ID,
     ADMIN_TEMPLATE_ID,
     {
-      notification_title: data.notification_title,
-      notification_message: data.notification_message,
-      customer_name: data.customer_name,
-      customer_email: data.customer_email,
-      service_name: data.service_name || "N/A",
-      booking_date: data.booking_date || "N/A",
-      booking_time: data.booking_time || "N/A",
-      booking_id: data.booking_id || "N/A",
-      customer_message: data.customer_message || "-",
+      notification_title: payload.notification_title,
+      notification_message: payload.notification_message,
+      customer_name: payload.customer_name,
+      customer_email: payload.customer_email,
+      service_name: payload.service_name || "N/A",
+      booking_date: payload.booking_date || "N/A",
+      booking_time: payload.booking_time || "N/A",
+      booking_id: payload.booking_id || "N/A",
+      customer_message: payload.customer_message || "-",
       company_name: "Your Company Name",
     },
     PUBLIC_KEY
   );
 };
 
-/**
- * Send email to Customer (Admin → Customer)
- */
-export const sendCustomerEmail = async (data) => {
+/* ===============================
+   ADMIN → CUSTOMER (Template 2)
+================================ */
+export const sendCustomerEmail = (payload) => {
   return emailjs.send(
     SERVICE_ID,
     CUSTOMER_TEMPLATE_ID,
     {
-      email_title: data.email_title,
-      email_message: data.email_message,
-      customer_name: data.customer_name,
-      service_name: data.service_name,
-      booking_date: data.booking_date,
-      booking_time: data.booking_time,
-      booking_id: data.booking_id,
-      rejection_reason: data.rejection_reason || "",
+      email_title: payload.email_title,
+      email_message: payload.email_message,
+      customer_name: payload.customer_name,
+      service_name: payload.service_name,
+      booking_date: payload.booking_date,
+      booking_time: payload.booking_time,
+      booking_id: payload.booking_id,
+      rejection_reason: payload.rejection_reason || "",
       company_name: "Your Company Name",
       current_year: new Date().getFullYear(),
     },
