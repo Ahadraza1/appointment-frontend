@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { sendCustomerEmail, sendAdminEmail } from "../../utils/email";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   servicesAPI,
@@ -35,11 +36,11 @@ const BookAppointment = () => {
   }, [serviceId]);
 
   useEffect(() => {
-    if (user && user.planType === 'free' && !warningShown) {
+    if (user && user.planType === "free" && !warningShown) {
       const remaining = (user.bookingLimit || 0) - (user.bookingUsed || 0);
       if (remaining === 1) {
         SaaSToast.warning({
-          onAction: () => navigate("/pricing")
+          onAction: () => navigate("/pricing"),
         });
         setWarningShown(true);
       }
@@ -114,6 +115,25 @@ const BookAppointment = () => {
         updateUser(result.user);
       }
 
+      // ================= EMAILJS (FRONTEND) =================
+      const appointment = result?.appointment || result?.data || result;
+
+      if (appointment?._id) {
+        const emailData = {
+          customer_name: user?.name,
+          customer_email: user?.email,
+          service_name: service?.name,
+          booking_date: formatDateForAPI(selectedDate),
+          booking_time: selectedTime,
+          booking_id: appointment._id,
+        };
+
+        // fire-and-forget emails
+        sendCustomerEmail(emailData);
+        sendAdminEmail(emailData);
+      }
+      // =====================================================
+
       // Handle wrapped response
       const appointmentId =
         result?._id || result?.data?._id || result?.appointment?._id;
@@ -130,7 +150,10 @@ const BookAppointment = () => {
         return;
       }
 
-      if (errorCode === "PLAN_EXPIRED" || errorCode === "SUBSCRIPTION_EXPIRED") {
+      if (
+        errorCode === "PLAN_EXPIRED" ||
+        errorCode === "SUBSCRIPTION_EXPIRED"
+      ) {
         setError("");
         SaaSToast.planExpired({
           onAction: () => navigate("/pricing"),
@@ -139,22 +162,26 @@ const BookAppointment = () => {
       }
 
       // Handle specific availability error with new Toast
-      const erroMsg = err?.response?.data?.message || err?.message || "Booking failed";
-      
-      if (erroMsg.includes("time slot is already booked") || erroMsg.includes("not available")) {
-         SaaSToast.error({
-           title: "Slot Unavailable",
-           description: "This time slot is no longer available. Please select a different time to continue."
-         });
-         return;
+      const erroMsg =
+        err?.response?.data?.message || err?.message || "Booking failed";
+
+      if (
+        erroMsg.includes("time slot is already booked") ||
+        erroMsg.includes("not available")
+      ) {
+        SaaSToast.error({
+          title: "Slot Unavailable",
+          description:
+            "This time slot is no longer available. Please select a different time to continue.",
+        });
+        return;
       }
 
       // Generic error fallback
       SaaSToast.error({
         title: "Booking Failed",
-        description: erroMsg
+        description: erroMsg,
       });
-      
     } finally {
       setSubmitting(false);
     }
@@ -209,8 +236,6 @@ const BookAppointment = () => {
           <div className="booking-grid">
             {/* Main Booking Panel */}
             <div className="booking-main-panel">
-
-
               {/* Progress Tracker */}
               <div className="booking-tracker">
                 <div
