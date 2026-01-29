@@ -128,28 +128,28 @@ const BookAppointment = () => {
       }
 
       /* ================= EMAILS (FRONTEND – NON BLOCKING) ================= */
-      // const baseEmailData = {
-      //   customer_name: user?.name,
-      //   customer_email: user?.email,
-      //   service_name: service?.name,
-      //   booking_date: formatDateForAPI(selectedDate),
-      //   booking_time: selectedTime,
-      //   booking_id: appointment._id,
-      // };
+      const baseEmailData = {
+        customer_name: user?.name,
+        customer_email: user?.email,
+        service_name: service?.name,
+        booking_date: formatDateForAPI(selectedDate),
+        booking_time: selectedTime,
+        booking_id: appointment._id,
+      };
 
-      // Promise.allSettled([
-      //   sendCustomerEmail({
-      //     ...baseEmailData,
-      //     email_title: "Booking Confirmation",
-      //     email_message:
-      //       "Your booking request has been received successfully. We will notify you once it is reviewed.",
-      //   }),
-      //   sendAdminEmail({
-      //     ...baseEmailData,
-      //     notification_title: "New Booking Created",
-      //     notification_message: "A new booking has been created by a customer.",
-      //   }),
-      // ]);
+      Promise.allSettled([
+        sendCustomerEmail({
+          ...baseEmailData,
+          email_title: "Booking Confirmation",
+          email_message:
+            "Your booking request has been received successfully. We will notify you once it is reviewed.",
+        }),
+        sendAdminEmail({
+          ...baseEmailData,
+          notification_title: "New Booking Created",
+          notification_message: "A new booking has been created by a customer.",
+        }),
+      ]);
 
       // ✅ SUCCESS REDIRECT
       navigate(`/confirmation/${appointment._id}`);
