@@ -156,6 +156,10 @@ const BookAppointment = () => {
       const appointmentId =
         result?._id || result?.data?._id || result?.appointment?._id;
 
+      if (!appointmentId) {
+        throw new Error("Invalid booking response");
+      }
+
       navigate(`/confirmation/${appointmentId}`);
     } catch (err) {
       const errorCode = err?.response?.data?.code || err?.data?.code;
