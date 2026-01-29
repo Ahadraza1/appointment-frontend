@@ -77,7 +77,7 @@ const Terms = () => {
             <h3 className="card-title">Legal Inquiries</h3>
             <p className="card-text">
               For any legal concerns regarding these terms, please reach out to 
-              <strong>legal@bookpro.com</strong>.
+              <strong>legal@bookme.com</strong>.
             </p>
           </div>
         </div>
