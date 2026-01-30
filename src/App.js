@@ -1,4 +1,5 @@
-import { React, useEffect } from "react";
+import React, { useEffect } from "react";
+
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -43,10 +44,11 @@ import AdminRoute from "./components/common/AdminRoute";
 import { Toaster } from "react-hot-toast";
 
 function App() {
-  useEffect(() => {
+ useEffect(() => {
     console.log(
       "EMAILJS SERVICE ID:",
-      import.meta.env.REACT_APP_EMAILJS_SERVICE_ID
+      process.env.REACT_APP_EMAILJS_SERVICE_ID
+      // ⬆️ FIXED
     );
   }, []);
   return (
