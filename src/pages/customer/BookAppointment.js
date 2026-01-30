@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import { sendCustomerEmail, sendAdminEmail } from "../../utils/email";
+import { sendCustomerEmail, sendAdminEmail } from "../../utils/email";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   servicesAPI,
@@ -77,7 +77,6 @@ const BookAppointment = () => {
       setSlotsLoading(true);
       const dateStr = formatDateForAPI(selectedDate);
       const slots = await availabilityAPI.getTimeSlots(serviceId, dateStr);
-      // Ensure slots is an array of strings or objects with time property
       setTimeSlots(
         Array.isArray(slots) ? slots : slots?.data || slots?.slots || [],
       );
@@ -96,8 +95,6 @@ const BookAppointment = () => {
     return `${year}-${month}-${day}`;
   };
 
-  // ... imports stay same
-
   const handleSubmit = async () => {
     if (!selectedDate || !selectedTime) {
       setError("Please select a date and time");
@@ -114,7 +111,6 @@ const BookAppointment = () => {
         notes,
       });
 
-      // ✅ NORMALIZE AXIOS RESPONSE
       const res = response?.data || response;
 
       if (res?.user && typeof updateUser === "function") {
@@ -127,32 +123,40 @@ const BookAppointment = () => {
         throw new Error("Invalid booking response");
       }
 
-      /* ================= EMAILS (FRONTEND – NON BLOCKING) ================= */
-      // const baseEmailData = {
-      //   customer_name: user?.name,
-      //   customer_email: user?.email,
-      //   service_name: service?.name,
-      //   booking_date: formatDateForAPI(selectedDate),
-      //   booking_time: selectedTime,
-      //   booking_id: appointment._id,
-      // };
-
-      // Promise.allSettled([
-      //   sendCustomerEmail({
-      //     ...baseEmailData,
-      //     email_title: "Booking Confirmation",
-      //     email_message:
-      //       "Your booking request has been received successfully. We will notify you once it is reviewed.",
-      //   }),
-      //   sendAdminEmail({
-      //     ...baseEmailData,
-      //     notification_title: "New Booking Created",
-      //     notification_message: "A new booking has been created by a customer.",
-      //   }),
-      // ]);
-
-      // ✅ SUCCESS REDIRECT
+      // ✅ BOOKING SUCCESS (PRIMARY)
       navigate(`/confirmation/${appointment._id}`);
+
+      // 🔕 EMAILS (SAFE / NON-BLOCKING)
+      setTimeout(() => {
+        try {
+          const baseEmailData = {
+            customer_name: user?.name,
+            customer_email: user?.email,
+            service_name: service?.name,
+            booking_date: formatDateForAPI(selectedDate),
+            booking_time: selectedTime,
+            booking_id: appointment._id,
+          };
+
+          Promise.allSettled([
+            sendCustomerEmail({
+              ...baseEmailData,
+              email_title: "Booking Confirmation",
+              email_message:
+                "Your booking request has been received successfully. We will notify you once it is reviewed.",
+            }),
+            sendAdminEmail({
+              ...baseEmailData,
+              notification_title: "New Booking Created",
+              notification_message:
+                "A new booking has been created by a customer.",
+            }),
+          ]);
+        } catch (emailErr) {
+          console.warn("Email failed (ignored):", emailErr);
+        }
+      }, 0);
+
       return;
     } catch (err) {
       const errorCode = err?.response?.data?.code;
