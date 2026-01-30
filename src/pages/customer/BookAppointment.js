@@ -131,7 +131,7 @@ const BookAppointment = () => {
         try {
           const baseEmailData = {
             customer_name: user?.name,
-            customer_email: user?.email,
+            customer_email: user?.email || res?.user?.email,
             service_name: service?.name,
             booking_date: formatDateForAPI(selectedDate),
             booking_time: selectedTime,
