@@ -20,7 +20,7 @@ export const bookingCreated = async (booking) => {
     email_message:
       "Your booking request has been received successfully. We will notify you once it is reviewed.",
     customer_name: booking.name,
-    customer_email: booking.email, // ✅ FIX
+    customer_email: booking.email,
     service_name: booking.service,
     booking_date: booking.date,
     booking_time: booking.time,
@@ -37,7 +37,7 @@ export const bookingApproved = async (booking) => {
     email_message:
       "Great news! Your booking has been approved. We look forward to serving you.",
     customer_name: booking.name,
-    customer_email: booking.email, // ✅ FIX
+    customer_email: booking.email,
     service_name: booking.service,
     booking_date: booking.date,
     booking_time: booking.time,
@@ -55,7 +55,7 @@ export const bookingRejected = async (booking, reason) => {
       "Unfortunately, your booking request could not be approved.",
     rejection_reason: `Reason: ${reason}`,
     customer_name: booking.name,
-    customer_email: booking.email, // ✅ FIX
+    customer_email: booking.email,
     service_name: booking.service,
     booking_date: booking.date,
     booking_time: booking.time,
@@ -85,7 +85,7 @@ export const bookingCancelled = async (booking) => {
     email_message:
       "Your booking has been cancelled successfully. If this was a mistake, please contact us.",
     customer_name: booking.name,
-    customer_email: booking.email, // ✅ FIX
+    customer_email: booking.email,
     service_name: booking.service,
     booking_date: booking.date,
     booking_time: booking.time,
@@ -102,33 +102,10 @@ export const bookingRescheduled = async (booking) => {
     email_message:
       "Your booking has been rescheduled. Please check the updated date and time.",
     customer_name: booking.name,
-    customer_email: booking.email, // ✅ FIX
+    customer_email: booking.email,
     service_name: booking.service,
     booking_date: booking.newDate,
     booking_time: booking.newTime,
     booking_id: booking.id,
-  });
-};
-
-/* ===============================
-   6️⃣ CONTACT US
-================================ */
-export const contactAdmin = async (form) => {
-  // Admin
-  await sendAdminEmail({
-    notification_title: "New Contact Request",
-    notification_message: "A new inquiry has been received from contact form.",
-    customer_name: form.name,
-    customer_email: form.email,
-    customer_message: form.message,
-  });
-
-  // Customer auto-reply
-  await sendCustomerEmail({
-    email_title: "We received your message",
-    email_message:
-      "Thank you for contacting us. Our team will get back to you shortly.",
-    customer_name: form.name,
-    customer_email: form.email, // ✅ FIX
   });
 };
