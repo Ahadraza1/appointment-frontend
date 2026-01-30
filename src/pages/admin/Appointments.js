@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { appointmentsAPI } from "../../services/api";
 import DatePicker from "../../components/common/DatePicker";
+import emailjs from "@emailjs/browser";
 import "./AdminPages.css";
 
 const Appointments = () => {
@@ -33,13 +34,53 @@ const Appointments = () => {
     }
   };
 
+  /* ===============================
+     🔥 STATUS UPDATE + EMAIL
+  ================================ */
   const handleStatusUpdate = async (id, status, rejectionReason = "") => {
     try {
       setProcessingId(id);
+
+      // 1️⃣ Update status in backend
       await appointmentsAPI.updateStatus(id, { status, rejectionReason });
+
+      // 2️⃣ Find appointment data
+      const apt = appointments.find((a) => a._id === id);
+      if (!apt || !apt.userId?.email) return;
+
+      const emailData = {
+        customer_name: apt.userId.name,
+        customer_email: apt.userId.email,
+        service_name: apt.serviceId?.name,
+        booking_date: apt.date,
+        booking_time: apt.timeSlot,
+        booking_id: apt._id,
+        rejection_reason: rejectionReason,
+      };
+
+      // 3️⃣ Send EmailJS based on status
+      if (status === "approved") {
+        await emailjs.send(
+          process.env.REACT_APP_EMAILJS_SERVICE_ID,
+          process.env.REACT_APP_EMAILJS_TEMPLATE_CUSTOMER_APPROVED,
+          emailData,
+          process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+        );
+      }
+
+      if (status === "rejected") {
+        await emailjs.send(
+          process.env.REACT_APP_EMAILJS_SERVICE_ID,
+          process.env.REACT_APP_EMAILJS_TEMPLATE_CUSTOMER_REJECTED,
+          emailData,
+          process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+        );
+      }
+
+      // 4️⃣ Refresh list
       fetchAppointments();
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Status update / email error:", err);
     } finally {
       setProcessingId(null);
     }
@@ -87,7 +128,7 @@ const Appointments = () => {
   const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
   const paginatedAppointments = filteredAppointments.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   if (loading) {
