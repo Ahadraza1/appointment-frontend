@@ -26,7 +26,8 @@ const Contact = () => {
       // ✅ CUSTOMER → ADMIN EMAIL
       await sendAdminEmail({
         notification_title: "New Contact Request",
-        notification_message: "A new message has been submitted via Contact Form.",
+        notification_message:
+          "A new message has been submitted via Contact Form.",
         customer_name: formState.name,
         customer_email: formState.email,
         customer_message: formState.message,
@@ -54,7 +55,9 @@ const Contact = () => {
       {/* Breadcrumbs - Optional, keeping for navigation context but consistent with minimal style */}
       <nav className="breadcrumb-nav">
         <div className="breadcrumb-container">
-          <Link to="/" className="breadcrumb-link">Home</Link>
+          <Link to="/" className="breadcrumb-link">
+            Home
+          </Link>
           <span className="breadcrumb-sep">/</span>
           <span className="breadcrumb-active">Contact</span>
         </div>
@@ -65,20 +68,47 @@ const Contact = () => {
           <div className="contact-header">
             <h1 className="contact-page-title">Get in touch</h1>
             <p className="contact-page-subtitle">
-              Have a question or need assistance? Fill out the form below and we'll get back to you shortly.
+              Have a question or need assistance? Fill out the form below and
+              we'll get back to you shortly.
             </p>
           </div>
 
           {status.message && (
-            <div className={`contact-alert ${status.type === "success" ? "alert-success" : "alert-error"}`}>
+            <div
+              className={`contact-alert ${status.type === "success" ? "alert-success" : "alert-error"}`}
+            >
               <div className="alert-icon">
                 {status.type === "success" ? (
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.6666 5L7.49992 14.1667L3.33325 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M16.6666 5L7.49992 14.1667L3.33325 10"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 ) : (
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 6.66667V10M10 13.3333H10.0083M18.3333 10C18.3333 14.6024 14.6023 18.3333 10 18.3333C5.39762 18.3333 1.66666 14.6024 1.66666 10C1.66666 5.39763 5.39762 1.66667 10 1.66667C14.6023 1.66667 18.3333 5.39763 18.3333 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 6.66667V10M10 13.3333H10.0083M18.3333 10C18.3333 14.6024 14.6023 18.3333 10 18.3333C5.39762 18.3333 1.66666 14.6024 1.66666 10C1.66666 5.39763 5.39762 1.66667 10 1.66667C14.6023 1.66667 18.3333 5.39763 18.3333 10Z"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 )}
               </div>
@@ -136,9 +166,29 @@ const Contact = () => {
             >
               {loading ? (
                 <>
-                  <svg className="btn-spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeOpacity="0.2"/>
-                    <path d="M12 2C6.47715 2 2 6.47715 2 12" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                  <svg
+                    className="btn-spinner"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeOpacity="0.2"
+                    />
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
                   </svg>
                   <span>Sending...</span>
                 </>
