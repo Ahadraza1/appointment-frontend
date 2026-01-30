@@ -127,11 +127,20 @@ const BookAppointment = () => {
       navigate(`/confirmation/${appointment._id}`);
 
       // 🔕 EMAILS (SAFE / NON-BLOCKING)
+      // 🔕 EMAILS (SAFE / NON-BLOCKING)
       setTimeout(() => {
         try {
+          const customerEmail =
+            user?.email || res?.user?.email || appointment?.userId?.email;
+
+          if (!customerEmail) {
+            console.warn("Email skipped: customer email missing");
+            return;
+          }
+
           const baseEmailData = {
-            customer_name: user?.name,
-            customer_email: user?.email || res?.user?.email,
+            customer_name: user?.name || res?.user?.name || "Customer",
+            customer_email: customerEmail,
             service_name: service?.name,
             booking_date: formatDateForAPI(selectedDate),
             booking_time: selectedTime,
