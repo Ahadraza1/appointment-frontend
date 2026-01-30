@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import './AdminLayout.css';
 
 
-const API_URL = process.env.REACT_APP_API_URL?.replace("/api", "");
+const API_URL = process.env.VITE_API_URL?.replace("/api", "");
 
 const AdminLayout = () => {
   const { user, logout } = useAuth();

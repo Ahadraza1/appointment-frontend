@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Payment.css";
 
-const API_BASE = process.env.REACT_APP_API_URL;
+const API_BASE = process.env.VITE_API_URL;
 
 const OrderSummary = ({ plan, onChangePlan }) => (
   
