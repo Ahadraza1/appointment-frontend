@@ -39,6 +39,7 @@ export const sendCustomerEmail = (payload) => {
       email_title: payload.email_title,
       email_message: payload.email_message,
       customer_name: payload.customer_name,
+      customer_email: payload.customer_email,
       service_name: payload.service_name,
       booking_date: payload.booking_date,
       booking_time: payload.booking_time,
