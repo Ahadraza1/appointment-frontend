@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { sendCustomerEmail, sendAdminEmail } from "../../utils/email";
+// import { sendCustomerEmail, sendAdminEmail } from "../../utils/email";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   servicesAPI,
