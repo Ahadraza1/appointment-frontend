@@ -1,11 +1,6 @@
-import axios from "axios";
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
-const BASE_URL = import.meta.env.VITE_API_URL;
-
-const api = axios.create({
-  baseURL: BASE_URL,
-  withCredentials: true,
-});
 /**
  * Get stored auth token
  */
@@ -31,7 +26,7 @@ const apiRequest = async (endpoint, options = {}) => {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers,
   });
@@ -215,6 +210,4 @@ export const adminAPI = {
     }),
 };
 
-export default api;
-
-
+export default apiRequest;

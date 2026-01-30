@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { userAPI } from "../../services/api";
 import "./Profile.css";
 
-const API_URL = process.env.VITE_API_URL?.replace("/api", "");
+const API_URL = process.env.REACT_APP_API_URL?.replace("/api", "");
 
 const Profile = () => {
   const { user, updateUser } = useAuth();

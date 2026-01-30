@@ -3,7 +3,7 @@ import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./CustomerLayout.css";
 
-const API_URL = process.env.VITE_API_URL?.replace("/api", "");
+const API_URL = process.env.REACT_APP_API_URL?.replace("/api", "");
 
 const CustomerLayout = () => {
   const { user, isAuthenticated, logout } = useAuth();

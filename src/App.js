@@ -46,7 +46,7 @@ function App() {
   useEffect(() => {
     console.log(
       "EMAILJS SERVICE ID:",
-      import.meta.env.VITE_EMAILJS_SERVICE_ID
+      import.meta.env.REACT_APP_EMAILJS_SERVICE_ID
     );
   }, []);
   return (
