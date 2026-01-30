@@ -1,6 +1,7 @@
-import React from "react";
+import { React, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+
 
 // Customer Pages
 import CustomerLayout from "./layouts/CustomerLayout";
@@ -42,6 +43,12 @@ import AdminRoute from "./components/common/AdminRoute";
 import { Toaster } from "react-hot-toast";
 
 function App() {
+  useEffect(() => {
+    console.log(
+      "EMAILJS SERVICE ID:",
+      import.meta.env.VITE_EMAILJS_SERVICE_ID
+    );
+  }, []);
   return (
     <AuthProvider>
       <Toaster 
