@@ -14,7 +14,7 @@ const Contact = () => {
   });
 
   //Company contact email
-  const COMPANY_EMAIL = "megrejiahadraza@gmail.com";
+  const COMPANY_EMAIL = "hello@bookme.com";
 
   const [status, setStatus] = useState({ type: "", message: "" });
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const Contact = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/contact", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
