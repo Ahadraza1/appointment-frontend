@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Payment.css";
 
