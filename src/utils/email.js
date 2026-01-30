@@ -1,9 +1,9 @@
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 
-const SERVICE_ID = import.meta.env.REACT_APP_EMAILJS_SERVICE_ID;
-const ADMIN_TEMPLATE_ID = import.meta.env.REACT_APP_EMAILJS_TEMPLATE_ADMIN;
-const CUSTOMER_TEMPLATE_ID = import.meta.env.REACT_APP_EMAILJS_TEMPLATE_CUSTOMER;
-const PUBLIC_KEY = import.meta.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+const SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+const ADMIN_TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ADMIN;
+const CUSTOMER_TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_CUSTOMER;
+const PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
 
 /* ===============================
    CUSTOMER → ADMIN (Template 1)
