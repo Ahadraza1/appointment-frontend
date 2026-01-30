@@ -37,6 +37,9 @@ const Appointments = () => {
   /* ===============================
      🔥 STATUS UPDATE + EMAIL
   ================================ */
+  /* ===============================
+   🔥 STATUS UPDATE + EMAIL
+================================ */
   const handleStatusUpdate = async (id, status, rejectionReason = "") => {
     try {
       setProcessingId(id);
@@ -48,6 +51,13 @@ const Appointments = () => {
       const apt = appointments.find((a) => a._id === id);
       if (!apt || !apt.userId?.email) return;
 
+      // ✅ USE SINGLE CUSTOMER TEMPLATE
+      const TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_CUSTOMER;
+      if (!TEMPLATE_ID) {
+        console.error("EMAILJS CUSTOMER TEMPLATE ID is missing");
+        return;
+      }
+
       const emailData = {
         customer_name: apt.userId.name,
         customer_email: apt.userId.email,
@@ -55,27 +65,22 @@ const Appointments = () => {
         booking_date: apt.date,
         booking_time: apt.timeSlot,
         booking_id: apt._id,
-        rejection_reason: rejectionReason,
+        rejection_reason: status === "rejected" ? rejectionReason : "",
+        email_title:
+          status === "approved" ? "Booking Approved" : "Booking Rejected",
+        email_message:
+          status === "approved"
+            ? "Great news! Your booking has been approved."
+            : "Unfortunately, your booking request is rejected.",
       };
 
-      // 3️⃣ Send EmailJS based on status
-      if (status === "approved") {
-        await emailjs.send(
-          process.env.REACT_APP_EMAILJS_SERVICE_ID,
-         process.env.REACT_APP_EMAILJS_TEMPLATE_CUSTOMER,
-          emailData,
-          process.env.REACT_APP_EMAILJS_PUBLIC_KEY
-        );
-      }
-
-      if (status === "rejected") {
-        await emailjs.send(
-          process.env.REACT_APP_EMAILJS_SERVICE_ID,
-         process.env.REACT_APP_EMAILJS_TEMPLATE_CUSTOMER,
-          emailData,
-          process.env.REACT_APP_EMAILJS_PUBLIC_KEY
-        );
-      }
+      // 3️⃣ Send EmailJS (same template for approve & reject)
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        TEMPLATE_ID,
+        emailData,
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY,
+      );
 
       // 4️⃣ Refresh list
       fetchAppointments();
@@ -128,7 +133,7 @@ const Appointments = () => {
   const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
   const paginatedAppointments = filteredAppointments.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   if (loading) {
