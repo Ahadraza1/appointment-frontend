@@ -5,11 +5,6 @@ const ADMIN_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ADMIN;
 const CUSTOMER_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_CUSTOMER;
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-console.log("EMAILJS ENV:", {
-  service: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
-});
-
 /* ===============================
    CUSTOMER → ADMIN (Template 1)
 ================================ */
