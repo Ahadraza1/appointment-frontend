@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 import "./Home.css";
 
 const Home = () => {
@@ -9,22 +11,27 @@ const Home = () => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
+    if (!storedUser) return;
 
-      // ✅ Get appointments from localStorage
-      const storedAppointments =
-        JSON.parse(localStorage.getItem("appointments")) || [];
+    const parsedUser = JSON.parse(storedUser);
+    setUser(parsedUser);
 
-      // ✅ Exclude cancelled appointments
-      const activeBookings = storedAppointments.filter(
-        (a) => a.status !== "cancelled",
-      ).length;
+    // 👇 BACKEND se appointments lao
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/appointments/user/${parsedUser._id}`,
+      )
+      .then((res) => {
+        const activeBookings = res.data.filter(
+          (a) => a.status !== "cancelled",
+        ).length;
 
-      setBookingUsed(activeBookings);
-      setBookingLimit(parsedUser.bookingLimit ?? 10);
-    }
+        setBookingUsed(activeBookings);
+        setBookingLimit(parsedUser.planType === "free" ? 10 : Infinity);
+      })
+      .catch((err) => {
+        console.error("Booking count error", err);
+      });
   }, []);
 
   return (
