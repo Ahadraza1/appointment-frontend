@@ -113,19 +113,16 @@ export const bookingRescheduled = async (booking) => {
 
 
 /* ===============================
-   6️⃣ SEND INVOICE EMAIL
+   6️⃣ SEND INVOICE EMAIL (BUTTON TRIGGER)
 ================================ */
 export const sendInvoiceToCustomer = async (invoice) => {
   return sendInvoiceEmail({
-    // 👤 customer
     customer_name: invoice.name,
     customer_email: invoice.email,
 
-    // 🔑 FLAGS (VERY IMPORTANT)
     is_booking_email: false,
     is_invoice_email: true,
 
-    // 🧾 INVOICE DATA (MATCH TEMPLATE NAMES)
     invoice_number: invoice.invoiceNumber,
     plan: invoice.plan,
     billing_cycle: invoice.billingCycle,
