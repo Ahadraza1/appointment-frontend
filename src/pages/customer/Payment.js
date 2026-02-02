@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./Payment.css";
 
 const API_BASE = process.env.REACT_APP_API_URL;
+const user = JSON.parse(localStorage.getItem("user"));
 
 const OrderSummary = ({ plan, onChangePlan }) => (
   <div className="order-summary-card">
@@ -119,7 +120,13 @@ const Payment = () => {
                   amount: selectedPlan.total,
                   cycle: selectedPlan.cycle,
                   invoiceNumber:
-                    result.data?.invoiceNumber || result.invoiceNumber || null, // 🔒 SAFE
+                    result.data?.invoiceNumber || result.invoiceNumber || null,
+
+                  // ✅ NOW SAFE
+                  userName: user?.name || "",
+                  userEmail: user?.email || "",
+                  transactionId:
+                    result.data?.transactionId || result.data?.paymentId || "",
                 },
               });
             } else {
