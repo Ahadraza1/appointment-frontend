@@ -4,11 +4,26 @@ import "./Home.css";
 
 const Home = () => {
   const [user, setUser] = useState(null);
+  const [bookingUsed, setBookingUsed] = useState(0);
+  const [bookingLimit, setBookingLimit] = useState(10);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+
+      // ✅ Get appointments from localStorage
+      const storedAppointments =
+        JSON.parse(localStorage.getItem("appointments")) || [];
+
+      // ✅ Exclude cancelled appointments
+      const activeBookings = storedAppointments.filter(
+        (a) => a.status !== "cancelled",
+      ).length;
+
+      setBookingUsed(activeBookings);
+      setBookingLimit(parsedUser.bookingLimit ?? 10);
     }
   }, []);
 
@@ -61,7 +76,8 @@ const Home = () => {
                   View Services
                 </Link>
               </div>
-              
+
+              {/* ✅ FREE PLAN */}
               {user && (user.planType === "free" || !user.planType) && (
                 <div
                   style={{
@@ -70,11 +86,11 @@ const Home = () => {
                     color: "#0f4c75",
                   }}
                 >
-                  Bookings used: {user.bookingUsed ?? 0} /{" "}
-                  {user.bookingLimit ?? 10}
+                  Bookings used: {bookingUsed} / {bookingLimit}
                 </div>
               )}
 
+              {/* ✅ PAID PLAN */}
               {user && user.planType && user.planType !== "free" && (
                 <div
                   style={{
