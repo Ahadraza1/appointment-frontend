@@ -119,6 +119,10 @@ const PaymentSuccess = () => {
           <button className="btn-invoice" onClick={handleSendInvoice}>
             Send Invoice
           </button>
+
+          <button className="btn-invoice" onClick={() => window.print()}>
+            Download Invoice (PDF)
+          </button>
         </div>
 
         <footer className="success-footer">

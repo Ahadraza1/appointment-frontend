@@ -262,3 +262,32 @@
     flex: 1;
   }
 }
+
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .success-card,
+  .success-card * {
+    visibility: visible;
+  }
+
+  .success-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+  }
+
+  .success-actions,
+  .success-hero,
+  header,
+  footer,
+  nav {
+    display: none !important;
+  }
+}
