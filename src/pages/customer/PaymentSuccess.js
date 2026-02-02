@@ -95,7 +95,7 @@ const PaymentSuccess = () => {
         </div>
 
         <div className="success-actions">
-          <Link to="/admin/dashboard" className="btn-dashboard">
+          <Link to="/dashboard" className="btn-dashboard">
             Go to Dashboard
           </Link>
 
