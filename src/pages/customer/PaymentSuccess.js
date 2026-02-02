@@ -3,6 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import SaaSToast from '../../components/common/SaaSToast';
 import './PaymentSuccess.css';
 
+// ✅ ADDED (ONLY NEW IMPORT)
+import { sendInvoiceToCustomer } from '../../actions/bookingEmailAction';
+
 const PaymentSuccess = () => {
   const location = useLocation();
 
@@ -10,7 +13,10 @@ const PaymentSuccess = () => {
     planName = 'Professional',
     amount = '399',
     cycle = planName?.toLowerCase().includes('monthly') ? 'Monthly' : 'Yearly',
-    invoiceNumber = null // ✅ NEW (backend se aayega)
+    invoiceNumber = null,
+    userName = '',
+    userEmail = '',
+    transactionId = ''
   } = location.state || {};
 
   useEffect(() => {
@@ -21,17 +27,29 @@ const PaymentSuccess = () => {
     });
   }, []);
 
-  // ✅ NEW: View Invoice handler (LIVE SAFE)
-  const handleViewInvoice = () => {
+  // ✅ UPDATED: Send Invoice handler
+  const handleSendInvoice = async () => {
     if (!invoiceNumber) {
       alert("Invoice not available yet");
       return;
     }
 
-    window.open(
-      `${process.env.REACT_APP_API_BASE_URL}/api/invoice/${invoiceNumber}`,
-      "_blank"
-    );
+    try {
+      await sendInvoiceToCustomer({
+        name: userName,
+        email: userEmail,
+        invoiceNumber,
+        plan: planName,
+        billingCycle: cycle,
+        amount,
+        transactionId,
+      });
+
+      alert("Invoice sent to your email successfully");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to send invoice");
+    }
   };
 
   return (
@@ -81,12 +99,12 @@ const PaymentSuccess = () => {
             Go to Dashboard
           </Link>
 
-          {/* ✅ UPDATED: View Invoice button */}
+          {/* ✅ CHANGED: Send Invoice button */}
           <button
             className="btn-invoice"
-            onClick={handleViewInvoice}
+            onClick={handleSendInvoice}
           >
-            View Invoice
+            Send Invoice
           </button>
         </div>
 
