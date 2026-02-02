@@ -9,17 +9,30 @@ const PaymentSuccess = () => {
   const {
     planName = 'Professional',
     amount = '399',
-    cycle = planName?.toLowerCase().includes('monthly') ? 'Monthly' : 'Yearly'
+    cycle = planName?.toLowerCase().includes('monthly') ? 'Monthly' : 'Yearly',
+    invoiceNumber = null // ✅ NEW (backend se aayega)
   } = location.state || {};
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Trigger celebration toast
     SaaSToast.success({
       title: "Upgrade Successful 🎉",
       description: "Your plan has been upgraded. You now have access to unlimited bookings and premium features."
     });
   }, []);
+
+  // ✅ NEW: View Invoice handler (LIVE SAFE)
+  const handleViewInvoice = () => {
+    if (!invoiceNumber) {
+      alert("Invoice not available yet");
+      return;
+    }
+
+    window.open(
+      `${process.env.REACT_APP_API_BASE_URL}/api/invoice/${invoiceNumber}`,
+      "_blank"
+    );
+  };
 
   return (
     <div className="success-page">
@@ -67,7 +80,14 @@ const PaymentSuccess = () => {
           <Link to="/admin/dashboard" className="btn-dashboard">
             Go to Dashboard
           </Link>
-          <button className="btn-invoice">View Invoice</button>
+
+          {/* ✅ UPDATED: View Invoice button */}
+          <button
+            className="btn-invoice"
+            onClick={handleViewInvoice}
+          >
+            View Invoice
+          </button>
         </div>
 
         <footer className="success-footer">
