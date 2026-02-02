@@ -5,7 +5,6 @@ import "./Payment.css";
 const API_BASE = process.env.REACT_APP_API_URL;
 
 const OrderSummary = ({ plan, onChangePlan }) => (
-  
   <div className="order-summary-card">
     <h2 className="summary-title">Order Summary</h2>
 
@@ -84,34 +83,32 @@ const Payment = () => {
         .Buttons({
           createOrder: async () => {
             const res = await fetch(`${API_BASE}/payment/paypal/create-order`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                  amount: selectedPlan.total,
-                }),
-              }
-            );
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                amount: selectedPlan.total,
+              }),
+            });
             const data = await res.json();
             return data.orderId;
           },
 
           onApprove: async (data) => {
             const res = await fetch(`${API_BASE}/payment/paypal/capture`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                  orderId: data.orderID,
-                  planType: planType || "yearly",
-                  amount: selectedPlan.total,
-                }),
-              }
-            );
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                orderId: data.orderID,
+                planType: planType || "yearly",
+                amount: selectedPlan.total,
+              }),
+            });
 
             const result = await res.json();
 
@@ -121,6 +118,8 @@ const Payment = () => {
                   planName: selectedPlan.name,
                   amount: selectedPlan.total,
                   cycle: selectedPlan.cycle,
+                  invoiceNumber:
+                    result.data?.invoiceNumber || result.invoiceNumber || null, // 🔒 SAFE
                 },
               });
             } else {
