@@ -16,14 +16,16 @@ const Home = () => {
     const parsedUser = JSON.parse(storedUser);
     setUser(parsedUser);
 
-    // FREE vs PAID
+    // Free vs Paid
     setBookingLimit(parsedUser.planType === "free" ? 10 : Infinity);
 
-    // 🔥 BACKEND SE REAL COUNT
+    // ✅ CORRECT BACKEND ROUTE
     axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/appointments/user/${parsedUser._id}`,
-      )
+      .get(`${process.env.REACT_APP_API_URL}/appointments/my`, {
+        headers: {
+          Authorization: `Bearer ${parsedUser.token}`,
+        },
+      })
       .then((res) => {
         const activeBookings = res.data.filter(
           (a) => a.status !== "cancelled",
