@@ -120,7 +120,9 @@ const Payment = () => {
                   amount: selectedPlan.total,
                   cycle: selectedPlan.cycle,
                   invoiceNumber:
-                    result.data?.invoiceNumber || result.invoiceNumber || null,
+                    result.data?.invoiceNumber ||
+                    result.invoiceNumber ||
+                    `INV-${Date.now()}`, // ✅ FORCE GENERATE (SAFE)
 
                   // ✅ NOW SAFE
                   userName: user?.name || "",
