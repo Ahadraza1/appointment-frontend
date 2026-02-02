@@ -21,7 +21,7 @@ const Home = () => {
     console.log("👤 parsedUser:", parsedUser);
 
     setUser(parsedUser);
-
+       console.log("✅ CUSTOMER HOME LOADED");
     // TEMP TEST VALUE
     setBookingUsed(5);
     setBookingLimit(10);
