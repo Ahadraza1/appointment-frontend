@@ -23,7 +23,7 @@ const Home = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/appointments/my`, {
         headers: {
-          Authorization: `Bearer ${parsedUser.token}`,
+          Authorization: `Bearer ${parsedUser?.token}`,
         },
       })
       .then((res) => {

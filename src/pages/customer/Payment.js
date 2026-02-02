@@ -112,7 +112,7 @@ const Payment = () => {
             });
 
             const result = await res.json();
-
+            const user = JSON.parse(localStorage.getItem("user")) || {};
             if (result.success) {
               navigate("/payment-success", {
                 state: {
@@ -122,11 +122,11 @@ const Payment = () => {
                   invoiceNumber:
                     result.data?.invoiceNumber ||
                     result.invoiceNumber ||
-                    `INV-${Date.now()}`, // ✅ FORCE GENERATE (SAFE)
+                    `INV-${Date.now()}`,
 
-                  // ✅ NOW SAFE
-                  userName: user?.name || "",
-                  userEmail: user?.email || "",
+                  // 🔥 THIS FIXES EMAILJS 422
+                  userName: user.name,
+                  userEmail: user.email,
                   transactionId:
                     result.data?.transactionId || result.data?.paymentId || "",
                 },
