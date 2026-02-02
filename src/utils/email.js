@@ -51,3 +51,36 @@ export const sendCustomerEmail = (payload) => {
     PUBLIC_KEY
   );
 };
+
+
+/* ===============================
+   CUSTOMER → INVOICE EMAIL
+================================ */
+export const sendInvoiceEmail = (payload) => {
+  return emailjs.send(
+    SERVICE_ID,
+    CUSTOMER_TEMPLATE_ID, // SAME template
+    {
+      email_title: "Your Invoice",
+      email_message: "Thank you for your payment. Below are your invoice details.",
+
+      customer_name: payload.customer_name,
+      customer_email: payload.customer_email,
+
+      // 🔑 FLAGS (VERY IMPORTANT)
+      is_booking_email: false,
+      is_invoice_email: true,
+
+      // 🧾 INVOICE DATA
+      invoice_number: payload.invoice_number,
+      plan: payload.plan,
+      billing_cycle: payload.billing_cycle,
+      amount: payload.amount,
+      transaction_id: payload.transaction_id,
+
+      company_name: "Your Company Name",
+      current_year: new Date().getFullYear(),
+    },
+    PUBLIC_KEY
+  );
+};

@@ -1,4 +1,5 @@
-import { sendAdminEmail, sendCustomerEmail } from "../utils/email.js";
+import { sendAdminEmail, sendCustomerEmail, sendInvoiceEmail } from "../utils/email.js";
+
 
 /* ===============================
    1️⃣ BOOKING CREATED
@@ -107,5 +108,22 @@ export const bookingRescheduled = async (booking) => {
     booking_date: booking.newDate,
     booking_time: booking.newTime,
     booking_id: booking.id,
+  });
+};
+
+
+/* ===============================
+   6️⃣ SEND INVOICE EMAIL
+================================ */
+export const sendInvoiceToCustomer = async (invoice) => {
+  await sendInvoiceEmail({
+    customer_name: invoice.name,
+    customer_email: invoice.email,
+
+    invoice_number: invoice.invoiceNumber,
+    plan: invoice.plan,
+    billing_cycle: invoice.billingCycle,
+    amount: invoice.amount,
+    transaction_id: invoice.transactionId,
   });
 };
