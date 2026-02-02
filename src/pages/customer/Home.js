@@ -10,28 +10,21 @@ const Home = () => {
   const [bookingLimit, setBookingLimit] = useState(10);
 
   useEffect(() => {
+    console.log("🔥 Home loaded");
+
     const storedUser = localStorage.getItem("user");
+    console.log("👤 storedUser:", storedUser);
+
     if (!storedUser) return;
 
     const parsedUser = JSON.parse(storedUser);
+    console.log("👤 parsedUser:", parsedUser);
+
     setUser(parsedUser);
 
-    // 👇 BACKEND se appointments lao
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/appointments/user/${parsedUser._id}`,
-      )
-      .then((res) => {
-        const activeBookings = res.data.filter(
-          (a) => a.status !== "cancelled",
-        ).length;
-
-        setBookingUsed(activeBookings);
-        setBookingLimit(parsedUser.planType === "free" ? 10 : Infinity);
-      })
-      .catch((err) => {
-        console.error("Booking count error", err);
-      });
+    // TEMP TEST VALUE
+    setBookingUsed(5);
+    setBookingLimit(10);
   }, []);
 
   return (
