@@ -4,7 +4,7 @@ import SaaSToast from '../../components/common/SaaSToast';
 import './PaymentSuccess.css';
 
 // ✅ ADDED (ONLY NEW IMPORT)
-import { sendInvoiceToCustomer } from '../../actions/bookingEmailAction';
+import { sendInvoiceToCustomer } from '../../services/bookingEmailAction';
 
 const PaymentSuccess = () => {
   const location = useLocation();
