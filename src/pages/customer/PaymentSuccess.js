@@ -3,8 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import SaaSToast from "../../components/common/SaaSToast";
 import "./PaymentSuccess.css";
 
-// ✅ ADDED (ONLY NEW IMPORT)
+// ✅ EXISTING IMPORT (UNCHANGED)
 import { sendInvoiceToCustomer } from "../../services/bookingEmailAction";
+
+// ✅ NEW IMPORT (ONLY FOR PDF DOWNLOAD)
+import html2pdf from "html2pdf.js";
 
 const PaymentSuccess = () => {
   const location = useLocation();
@@ -28,7 +31,7 @@ const PaymentSuccess = () => {
     });
   }, []);
 
-  // ✅ UPDATED: Send Invoice handler
+  // ✅ SEND INVOICE (UNCHANGED)
   const handleSendInvoice = async () => {
     try {
       if (!userEmail) {
@@ -58,6 +61,21 @@ const PaymentSuccess = () => {
     }
   };
 
+  // ✅ NEW: DIRECT PDF DOWNLOAD (NO PRINT DIALOG)
+  const handleDownloadInvoicePDF = () => {
+    const element = document.getElementById("invoice-pdf");
+
+    const options = {
+      margin: 10,
+      filename: `Invoice-${invoiceNumber || "BOOKME"}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    };
+
+    html2pdf().set(options).from(element).save();
+  };
+
   return (
     <div className="success-page">
       <div className="success-container">
@@ -79,7 +97,8 @@ const PaymentSuccess = () => {
           </p>
         </header>
 
-        <div className="success-card">
+        {/* ✅ ONLY CHANGE: added id for PDF */}
+        <div className="success-card" id="invoice-pdf">
           <div className="success-card-header">
             <h3>Subscription Summary</h3>
           </div>
@@ -104,7 +123,7 @@ const PaymentSuccess = () => {
             <div className="summary-row transaction">
               <span className="label">Transaction ID</span>
               <span className="value">
-                TXN_BOOK_{Math.floor(Math.random() * 1000000)}
+                {transactionId || `TXN_BOOK_${Math.floor(Math.random() * 1000000)}`}
               </span>
             </div>
           </div>
@@ -115,12 +134,13 @@ const PaymentSuccess = () => {
             Go to Dashboard
           </Link>
 
-          {/* ✅ CHANGED: Send Invoice button */}
+          {/* ✅ EXISTING BUTTON (UNCHANGED) */}
           <button className="btn-invoice" onClick={handleSendInvoice}>
             Send Invoice
           </button>
 
-          <button className="btn-invoice" onClick={() => window.print()}>
+          {/* ✅ UPDATED: DIRECT PDF DOWNLOAD */}
+          <button className="btn-invoice" onClick={handleDownloadInvoicePDF}>
             Download Invoice (PDF)
           </button>
         </div>
