@@ -116,14 +116,24 @@ export const bookingRescheduled = async (booking) => {
    6️⃣ SEND INVOICE EMAIL
 ================================ */
 export const sendInvoiceToCustomer = async (invoice) => {
-  await sendInvoiceEmail({
+  return sendInvoiceEmail({
+    // 👤 customer
     customer_name: invoice.name,
     customer_email: invoice.email,
 
+    // 🔑 FLAGS (VERY IMPORTANT)
+    is_booking_email: false,
+    is_invoice_email: true,
+
+    // 🧾 INVOICE DATA (MATCH TEMPLATE NAMES)
     invoice_number: invoice.invoiceNumber,
     plan: invoice.plan,
     billing_cycle: invoice.billingCycle,
     amount: invoice.amount,
     transaction_id: invoice.transactionId,
+
+    company_name: "BOOKME",
+    current_year: new Date().getFullYear(),
   });
 };
+
