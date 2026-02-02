@@ -3,10 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import SaaSToast from "../../components/common/SaaSToast";
 import "./PaymentSuccess.css";
 
-// ✅ EXISTING IMPORT (UNCHANGED)
 import { sendInvoiceToCustomer } from "../../services/bookingEmailAction";
-
-// ✅ NEW IMPORT (ONLY FOR PDF DOWNLOAD)
 import html2pdf from "html2pdf.js";
 
 const PaymentSuccess = () => {
@@ -31,7 +28,6 @@ const PaymentSuccess = () => {
     });
   }, []);
 
-  // ✅ SEND INVOICE (UNCHANGED)
   const handleSendInvoice = async () => {
     try {
       if (!userEmail) {
@@ -61,7 +57,6 @@ const PaymentSuccess = () => {
     }
   };
 
-  // ✅ NEW: DIRECT PDF DOWNLOAD (NO PRINT DIALOG)
   const handleDownloadInvoicePDF = () => {
     const element = document.getElementById("invoice-pdf");
 
@@ -97,11 +92,43 @@ const PaymentSuccess = () => {
           </p>
         </header>
 
-        {/* ✅ ONLY CHANGE: added id for PDF */}
+        {/* ================= INVOICE PDF CONTENT ================= */}
         <div className="success-card" id="invoice-pdf">
+
+          {/* ===== PDF HEADER ===== */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "20px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <img
+                src="/logo.png"
+                alt="BOOKME"
+                style={{ height: "40px" }}
+              />
+              <h2 style={{ margin: 0 }}>BOOKME</h2>
+            </div>
+
+            <div style={{ textAlign: "right", fontSize: "14px" }}>
+              <div>
+                <strong>Invoice #:</strong> {invoiceNumber}
+              </div>
+              <div>
+                <strong>Date:</strong>{" "}
+                {new Date().toLocaleDateString()}
+              </div>
+            </div>
+          </div>
+
+          {/* ===== EXISTING SUMMARY (UNCHANGED) ===== */}
           <div className="success-card-header">
             <h3>Subscription Summary</h3>
           </div>
+
           <div className="success-card-body">
             <div className="summary-row">
               <span className="label">Plan</span>
@@ -123,23 +150,45 @@ const PaymentSuccess = () => {
             <div className="summary-row transaction">
               <span className="label">Transaction ID</span>
               <span className="value">
-                {transactionId || `TXN_BOOK_${Math.floor(Math.random() * 1000000)}`}
+                {transactionId ||
+                  `TXN_BOOK_${Math.floor(Math.random() * 1000000)}`}
               </span>
             </div>
           </div>
+
+          {/* ===== PDF FOOTER ===== */}
+          <div
+            style={{
+              marginTop: "30px",
+              paddingTop: "15px",
+              borderTop: "1px solid #e5e7eb",
+              fontSize: "13px",
+              textAlign: "center",
+              color: "#555",
+            }}
+          >
+            <p style={{ margin: "4px 0" }}>
+              BOOKME · Online Appointment Booking Platform
+            </p>
+            <p style={{ margin: "4px 0" }}>
+              support@bookme.com · www.bookme.com
+            </p>
+            <p style={{ margin: "4px 0" }}>
+              © {new Date().getFullYear()} BOOKME. All rights reserved.
+            </p>
+          </div>
         </div>
 
+        {/* ================= ACTIONS ================= */}
         <div className="success-actions">
           <Link to="/dashboard" className="btn-dashboard">
             Go to Dashboard
           </Link>
 
-          {/* ✅ EXISTING BUTTON (UNCHANGED) */}
           <button className="btn-invoice" onClick={handleSendInvoice}>
             Send Invoice
           </button>
 
-          {/* ✅ UPDATED: DIRECT PDF DOWNLOAD */}
           <button className="btn-invoice" onClick={handleDownloadInvoicePDF}>
             Download Invoice (PDF)
           </button>
