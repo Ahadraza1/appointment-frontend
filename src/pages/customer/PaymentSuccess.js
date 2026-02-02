@@ -93,89 +93,81 @@ const PaymentSuccess = () => {
         </header>
 
         {/* ================= INVOICE PDF CONTENT ================= */}
-        <div className="success-card" id="invoice-pdf">
-
-          {/* ===== PDF HEADER ===== */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "20px",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <img
-                src="/logo.png"
-                alt="BOOKME"
-                style={{ height: "40px" }}
-              />
-              <h2 style={{ margin: 0 }}>BOOKME</h2>
+        <div className="invoice-container" id="invoice-pdf">
+          {/* ===== INVOICE HEADER ===== */}
+          <div className="invoice-header">
+            <div className="invoice-brand">
+              <div className="brand-logo-wrapper">
+                {/* Placeholder logo if image fails, or use text if preferred, sticking to image as per existing code */}
+                <img src="/logo.png" alt="BOOKME" className="brand-logo" />
+              </div>
+              <h1 className="brand-name">BOOKME</h1>
             </div>
 
-            <div style={{ textAlign: "right", fontSize: "14px" }}>
-              <div>
-                <strong>Invoice #:</strong> {invoiceNumber}
+            <div className="invoice-meta">
+              <div className="meta-group">
+                <span className="meta-label">Invoice Number</span>
+                <span className="meta-value">#{invoiceNumber}</span>
               </div>
-              <div>
-                <strong>Date:</strong>{" "}
-                {new Date().toLocaleDateString()}
+              <div className="meta-group">
+                <span className="meta-label">Date</span>
+                <span className="meta-value">
+                  {new Date().toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
               </div>
             </div>
           </div>
 
-          {/* ===== EXISTING SUMMARY (UNCHANGED) ===== */}
-          <div className="success-card-header">
-            <h3>Subscription Summary</h3>
-          </div>
+          {/* ===== INVOICE BODY ===== */}
+          <div className="invoice-body">
+            <h2 className="section-category">Subscription Summary</h2>
 
-          <div className="success-card-body">
-            <div className="summary-row">
-              <span className="label">Plan</span>
-              <span className="value">{planName}</span>
+            <div className="invoice-table">
+              <div className="invoice-row">
+                <span className="invoice-label">Plan</span>
+                <span className="invoice-value">{planName}</span>
+              </div>
+              <div className="invoice-row">
+                <span className="invoice-label">Billing Cycle</span>
+                <span className="invoice-value">{cycle}</span>
+              </div>
+              <div className="invoice-row">
+                <span className="invoice-label">Amount Paid</span>
+                <span className="invoice-value highlight">${amount}</span>
+              </div>
+              <div className="invoice-row">
+                <span className="invoice-label">Status</span>
+                <span className="invoice-status status-pill">Active</span>
+              </div>
             </div>
-            <div className="summary-row">
-              <span className="label">Billing Cycle</span>
-              <span className="value">{cycle}</span>
-            </div>
-            <div className="summary-row">
-              <span className="label">Amount Paid</span>
-              <span className="value">${amount}</span>
-            </div>
-            <div className="summary-row">
-              <span className="label">Status</span>
-              <span className="value status-active">Active</span>
-            </div>
-            <div className="summary-divider"></div>
-            <div className="summary-row transaction">
-              <span className="label">Transaction ID</span>
-              <span className="value">
+
+            <div className="invoice-footer-meta">
+              <span className="meta-label">Transaction ID</span>
+              <span className="meta-id">
                 {transactionId ||
                   `TXN_BOOK_${Math.floor(Math.random() * 1000000)}`}
               </span>
             </div>
           </div>
 
-          {/* ===== PDF FOOTER ===== */}
-          <div
-            style={{
-              marginTop: "30px",
-              paddingTop: "15px",
-              borderTop: "1px solid #e5e7eb",
-              fontSize: "13px",
-              textAlign: "center",
-              color: "#555",
-            }}
-          >
-            <p style={{ margin: "4px 0" }}>
-              BOOKME · Online Appointment Booking Platform
-            </p>
-            <p style={{ margin: "4px 0" }}>
-              support@bookme.com · www.bookme.com
-            </p>
-            <p style={{ margin: "4px 0" }}>
-              © {new Date().getFullYear()} BOOKME. All rights reserved.
-            </p>
+          {/* ===== INVOICE FOOTER ===== */}
+          <div className="invoice-footer">
+            <div className="footer-line"></div>
+            <div className="footer-content">
+              <p className="company-name">
+                BOOKME · Online Appointment Booking Platform
+              </p>
+              <p className="support-info">
+                support@bookme.com · www.bookme.com
+              </p>
+              <p className="copyright">
+                © {new Date().getFullYear()} BOOKME. All rights reserved.
+              </p>
+            </div>
           </div>
         </div>
 
