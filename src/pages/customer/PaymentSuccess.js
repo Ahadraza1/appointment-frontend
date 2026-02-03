@@ -58,17 +58,43 @@ const PaymentSuccess = () => {
   };
 
   const handleDownloadInvoicePDF = () => {
-    const element = document.getElementById("invoice-pdf");
+    const originalElement = document.getElementById("invoice-pdf");
+    
+    // Clone the element to manipulate it for PDF generation without affecting the UI
+    const element = originalElement.cloneNode(true);
+    
+    // Create a hidden container to hold the clone
+    const container = document.createElement('div');
+    container.style.position = 'absolute';
+    container.style.top = '-9999px';
+    container.style.left = '-9999px';
+    // Set a fixed width that looks good on A4 (approx 794px at 96dpi, or just a comfortable desktop width)
+    container.style.width = '800px'; 
+    container.appendChild(element);
+    document.body.appendChild(container);
+
+    // Apply specific styles for the PDF version if needed
+    element.style.maxWidth = 'none';
+    element.style.width = '100%';
+    element.style.margin = '0';
+    element.style.boxShadow = 'none';
+    element.style.border = 'none';
 
     const options = {
       margin: 10,
       filename: `Invoice-${invoiceNumber || "BOOKME"}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
+      html2canvas: { scale: 2, useCORS: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     };
 
-    html2pdf().set(options).from(element).save();
+    html2pdf()
+      .set(options)
+      .from(element)
+      .save()
+      .then(() => {
+        document.body.removeChild(container);
+      });
   };
 
   return (
@@ -98,8 +124,23 @@ const PaymentSuccess = () => {
           <div className="invoice-header">
             <div className="invoice-brand">
               <div className="brand-logo-wrapper">
-                {/* Placeholder logo if image fails, or use text if preferred, sticking to image as per existing code */}
-                <img src="/logo.png" alt="BOOKME" className="brand-logo" />
+                <div className="invoice-logo-icon">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <path d="M7.5 4.21l4.5 2.6 4.5-2.6"></path>
+                    <path d="M7.5 19.79l4.5-2.6 4.5 2.6"></path>
+                    <line x1="12" y1="9" x2="12" y2="15"></line>
+                  </svg>
+                </div>
               </div>
               <h1 className="brand-name">BOOKME</h1>
             </div>
