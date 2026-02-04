@@ -7,7 +7,7 @@ import './AdminLayout.css';
 const API_URL = process.env.REACT_APP_API_URL?.replace("/api", "");
 
 const AdminLayout = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, isSuperAdmin } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
@@ -40,7 +40,6 @@ const AdminLayout = () => {
     return titles[path] || 'Dashboard';
   };
 
-  const isSuperAdmin = true; // Toggle for Super Admin View
 
   const navItems = isSuperAdmin ? [
     {

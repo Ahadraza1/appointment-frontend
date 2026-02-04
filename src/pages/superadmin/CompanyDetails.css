@@ -1,0 +1,87 @@
+.sa-company-details {
+  width: 100%;
+}
+
+/* HEADER */
+.sa-company-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.sa-company-email {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* STATUS */
+.sa-status {
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.sa-status.active {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.sa-status.inactive {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* STATS GRID */
+.sa-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* CARD */
+.sa-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.sa-card h3 {
+  font-size: 15px;
+  color: #475569;
+  margin-bottom: 10px;
+}
+
+.sa-card-number {
+  font-size: 26px;
+  font-weight: bold;
+  color: #0f172a;
+}
+
+/* ACTIONS */
+.sa-company-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.sa-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+}
+
+.sa-btn.view {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+.sa-btn.disable {
+  background-color: #ef4444;
+  color: #ffffff;
+}

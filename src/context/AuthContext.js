@@ -16,14 +16,20 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🔥 FIX 1: Properly restore auth state on refresh
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
 
     if (token && userData) {
       try {
-        setUser(JSON.parse(userData));
+        const parsedUser = JSON.parse(userData);
+
+        // ✅ role normalize (SAFE FIX)
+        if (parsedUser?.role) {
+          parsedUser.role = parsedUser.role.toLowerCase();
+        }
+
+        setUser(parsedUser);
       } catch {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -36,16 +42,14 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // 🔥 FIX 2: Normalized login response handling
   const login = async (email, password) => {
     const data = await authAPI.login({ email, password });
 
-    // ✅ DIRECTLY TRUST RESPONSE
     const userData = {
       _id: data._id,
       name: data.name,
       email: data.email,
-      role: data.role,
+      role: data.role?.toLowerCase(), // ✅ normalize
       profilePhoto: data.profilePhoto,
     };
 
@@ -56,28 +60,25 @@ export const AuthProvider = ({ children }) => {
     return userData;
   };
 
-  // 🔥 FIX 3: Register flow aligned with login
   const register = async (data) => {
     try {
       setError(null);
 
       const response = await authAPI.register(data);
 
-      const token = response.token;
-
       const userData = {
         _id: response._id,
         name: response.name,
         email: response.email,
-        role: response.role,
+        role: response.role?.toLowerCase(), // ✅ normalize
         profilePhoto: response.profilePhoto,
       };
 
-      if (!token) {
+      if (!response.token) {
         throw new Error("Invalid register response");
       }
 
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(userData));
 
       setUser(userData);
@@ -88,15 +89,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🔥 FIX 4: Clean logout (prevents ghost auth)
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
   };
 
-  // 🔥 FIX 5: Central user update (profile / photo / role)
   const updateUser = (updatedUser) => {
+    if (updatedUser?.role) {
+      updatedUser.role = updatedUser.role.toLowerCase();
+    }
     localStorage.setItem("user", JSON.stringify(updatedUser));
     setUser(updatedUser);
   };
@@ -106,8 +108,12 @@ export const AuthProvider = ({ children }) => {
     loading,
     error,
     isAuthenticated: !!user,
+
+    // ✅ CLEAR ROLE FLAGS
+    isSuperAdmin: user?.role === "super_admin",
     isAdmin: user?.role === "admin",
     isCustomer: user?.role === "customer",
+
     login,
     register,
     logout,

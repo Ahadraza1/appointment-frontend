@@ -1,0 +1,31 @@
+.sa-company-admins {
+  width: 100%;
+}
+
+/* TABLE WRAPPER */
+.sa-table-wrapper {
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow-x: auto;
+}
+
+/* TABLE */
+.sa-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.sa-table th,
+.sa-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sa-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #334155;
+}

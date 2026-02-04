@@ -36,10 +36,11 @@ import AdminSettings from "./pages/admin/Settings";
 import AdminLogin from "./pages/admin/Login";
 
 // Super Admin Pages
-import SuperAdminDashboard from "./pages/admin/SuperAdminDashboard";
-import CompaniesList from "./pages/admin/CompaniesList";
-import CompanyAdmins from "./pages/admin/CompanyAdmins";
-import CompanyStats from "./pages/admin/CompanyStats";
+import SuperAdminLogin from "./pages/superadmin/Login";
+import SuperAdminDashboard from "./pages/superadmin/superAdminDashboard";
+import Companies from "./pages/superadmin/Companies";
+import CompanyDetails from "./pages/superadmin/CompanyDetails";
+import CompanyAdmins from "./pages/superadmin/CompanyAdmins";
 
 // Protected Routes
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -52,7 +53,7 @@ function App() {
   useEffect(() => {
     console.log(
       "EMAILJS SERVICE ID:",
-      process.env.REACT_APP_EMAILJS_SERVICE_ID
+      process.env.REACT_APP_EMAILJS_SERVICE_ID,
     );
   }, []);
 
@@ -60,7 +61,6 @@ function App() {
     <AuthProvider>
       <Toaster position="top-right" />
       <Routes>
-
         {/* ================= CUSTOMER ROUTES ================= */}
         <Route path="/" element={<CustomerLayout />}>
           <Route index element={<Home />} />
@@ -109,17 +109,28 @@ function App() {
           <Route path="settings" element={<AdminSettings />} />
         </Route>
 
-        {/* ================= SUPER ADMIN ROUTES ================= */}
-        <Route
-          path="/superadmin"
-          element={<SuperAdminRoute />}
-        >
-          <Route path="dashboard" element={<SuperAdminDashboard />} />
-          <Route path="companies" element={<CompaniesList />} />
-          <Route path="company-admins" element={<CompanyAdmins />} />
-          <Route path="company-stats" element={<CompanyStats />} />
-        </Route>
+        {/* ================= SUPER ADMIN LOGIN ================= */}
+        <Route path="/superadmin/login" element={<SuperAdminLogin />} />
 
+        {/* ================= SUPER ADMIN ROUTES ================= */}
+        <Route element={<SuperAdminRoute />}>
+          <Route
+            path="/superadmin/dashboard"
+            element={<SuperAdminDashboard />}
+          />
+
+          <Route path="/superadmin/companies" element={<Companies />} />
+
+          <Route
+            path="/superadmin/companies/:id"
+            element={<CompanyDetails />}
+          />
+
+          <Route
+            path="/superadmin/companies/:id/admins"
+            element={<CompanyAdmins />}
+          />
+        </Route>
         {/* ================= 404 ================= */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
