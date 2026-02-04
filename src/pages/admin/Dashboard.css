@@ -785,17 +785,47 @@
     font-size: 0.75rem;
   }
 
-  /* Table Mobile */
-  .admin-dashboard .data-table th,
+  .admin-dashboard .data-table thead {
+    display: none;
+  }
+
+  .admin-dashboard .data-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+
   .admin-dashboard .data-table td {
-    padding: 0.625rem 0.75rem;
-    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: right;
   }
 
-  .admin-dashboard .data-table th {
-    font-size: 0.6rem;
+  .admin-dashboard .data-table td:last-child {
+    border-bottom: none;
   }
 
+  .admin-dashboard .data-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    margin-right: 1rem;
+    text-align: left;
+  }
+
+  /* Specific adjustments for complex cells */
+  .admin-dashboard .user-cell {
+    justify-content: flex-end;
+  }
   /* User Cell Mobile */
   .admin-dashboard .user-avatar {
     width: 32px;

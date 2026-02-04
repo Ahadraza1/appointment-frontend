@@ -37,6 +37,12 @@ import AdminAvailability from "./pages/admin/Availability";
 import AdminSettings from "./pages/admin/Settings";
 import AdminLogin from "./pages/admin/Login";
 
+// Super Admin Pages
+import SuperAdminDashboard from "./pages/admin/SuperAdminDashboard";
+import CompaniesList from "./pages/admin/CompaniesList";
+import CompanyAdmins from "./pages/admin/CompanyAdmins";
+import CompanyStats from "./pages/admin/CompanyStats";
+
 // Protected Route Components
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import AdminRoute from "./components/common/AdminRoute";
@@ -118,6 +124,12 @@ function App() {
           <Route path="services" element={<AdminServices />} />
           <Route path="availability" element={<AdminAvailability />} />
           <Route path="settings" element={<AdminSettings />} />
+          
+          {/* Super Admin Routes */}
+          <Route path="super-dashboard" element={<SuperAdminDashboard />} />
+          <Route path="companies" element={<CompaniesList />} />
+          <Route path="company-admins" element={<CompanyAdmins />} />
+          <Route path="company-stats" element={<CompanyStats />} />
         </Route>
 
         {/* 404 Redirect */}
