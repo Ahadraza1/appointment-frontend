@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-
 
 // Customer Pages
 import CustomerLayout from "./layouts/CustomerLayout";
@@ -43,48 +41,34 @@ import CompaniesList from "./pages/admin/CompaniesList";
 import CompanyAdmins from "./pages/admin/CompanyAdmins";
 import CompanyStats from "./pages/admin/CompanyStats";
 
-// Protected Route Components
+// Protected Routes
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import AdminRoute from "./components/common/AdminRoute";
+import SuperAdminRoute from "./components/common/SuperAdminRoute"; // ✅ NEW
 
 import { Toaster } from "react-hot-toast";
 
 function App() {
- useEffect(() => {
+  useEffect(() => {
     console.log(
       "EMAILJS SERVICE ID:",
       process.env.REACT_APP_EMAILJS_SERVICE_ID
-      // ⬆️ FIXED
     );
   }, []);
+
   return (
     <AuthProvider>
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: "#0f172a",
-            color: "#fff",
-            borderRadius: "12px",
-            padding: "16px",
-            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-          },
-        }}
-      />
+      <Toaster position="top-right" />
       <Routes>
-        {/* Customer Routes */}
+
+        {/* ================= CUSTOMER ROUTES ================= */}
         <Route path="/" element={<CustomerLayout />}>
           <Route index element={<Home />} />
           <Route path="services" element={<Services />} />
           <Route path="login" element={<CustomerLogin />} />
           <Route path="register" element={<CustomerRegister />} />
           <Route path="pricing" element={<Pricing />} />
-          <Route path="checkout" element={<Payment />} />
-          <Route path="payment-success" element={<PaymentSuccess />} />
-          <Route path="payment-failed" element={<PaymentFailed />} />
 
-          {/* Protected Customer Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="book/:serviceId" element={<BookAppointment />} />
             <Route
@@ -95,7 +79,6 @@ function App() {
             <Route path="profile" element={<CustomerProfile />} />
           </Route>
 
-          {/* Static Pages */}
           <Route path="about" element={<About />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="terms" element={<Terms />} />
@@ -103,7 +86,7 @@ function App() {
           <Route path="help-center" element={<HelpCenter />} />
         </Route>
 
-        {/* Admin Routes */}
+        {/* ================= ADMIN ROUTES ================= */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route
           path="/admin"
@@ -124,15 +107,20 @@ function App() {
           <Route path="services" element={<AdminServices />} />
           <Route path="availability" element={<AdminAvailability />} />
           <Route path="settings" element={<AdminSettings />} />
-          
-          {/* Super Admin Routes */}
-          <Route path="super-dashboard" element={<SuperAdminDashboard />} />
+        </Route>
+
+        {/* ================= SUPER ADMIN ROUTES ================= */}
+        <Route
+          path="/superadmin"
+          element={<SuperAdminRoute />}
+        >
+          <Route path="dashboard" element={<SuperAdminDashboard />} />
           <Route path="companies" element={<CompaniesList />} />
           <Route path="company-admins" element={<CompanyAdmins />} />
           <Route path="company-stats" element={<CompanyStats />} />
         </Route>
 
-        {/* 404 Redirect */}
+        {/* ================= 404 ================= */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AuthProvider>
