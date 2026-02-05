@@ -56,4 +56,12 @@ export const getCompanyAdmins = (companyId) => {
   return api.get(`/superadmin/company/${companyId}/admins`);
 };
 
+/* ================= COMPANY ADMINS (ALL COMPANIES) ================= */
+
+// Get all company admins (company-wise)
+export const getAllCompanyAdmins = () => {
+  return api.get("/superadmin/company-admins");
+};
+
+
 export default api;
