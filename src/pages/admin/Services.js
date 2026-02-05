@@ -36,9 +36,13 @@ const Services = () => {
       const response = await fetch(
         "https://appointment-backend-e5z9.onrender.com/api/admin/services",
         {
+          method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
           },
+          cache: "no-store",
         },
       );
 
