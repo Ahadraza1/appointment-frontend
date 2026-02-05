@@ -30,9 +30,24 @@ const Services = () => {
   const fetchServices = async () => {
     try {
       setLoading(true);
-      const response = await servicesAPI.getAdmin();
-      const servicesList = Array.isArray(response) ? response : response.services || [];
-      setServices(servicesList);
+
+      // 🔒 FORCE admin endpoint (no abstraction confusion)
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/admin/services`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch services");
+      }
+
+      setServices(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Error fetching services:", err);
       setServices([]);
@@ -67,19 +82,19 @@ const Services = () => {
     e.preventDefault();
     try {
       setSubmitting(true);
-      
+
       const payload = {
-      ...formData,
-      duration: Number(formData.duration),
-      price: Number(formData.price),
-    };
+        ...formData,
+        duration: Number(formData.duration),
+        price: Number(formData.price),
+      };
 
       if (editingService) {
-      await servicesAPI.update(editingService._id, payload);
-    } else {
-      // ✅ FIX: use existing bulkCreate API
-      await servicesAPI.bulkCreate([payload]);
-    }
+        await servicesAPI.update(editingService._id, payload);
+      } else {
+        // ✅ FIX: use existing bulkCreate API
+        await servicesAPI.bulkCreate([payload]);
+      }
       handleCloseModal();
       fetchServices();
     } catch (err) {
@@ -99,7 +114,8 @@ const Services = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this service?")) return;
+    if (!window.confirm("Are you sure you want to delete this service?"))
+      return;
     try {
       await servicesAPI.delete(id);
       fetchServices();
@@ -116,16 +132,18 @@ const Services = () => {
   };
 
   const filteredServices = services.filter((service) => {
-    const statusMatch = filterStatus === "all" || service.status === filterStatus;
-    const searchMatch = service.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                       service.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    const statusMatch =
+      filterStatus === "all" || service.status === filterStatus;
+    const searchMatch =
+      service.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      service.description?.toLowerCase().includes(searchTerm.toLowerCase());
     return statusMatch && searchMatch;
   });
 
   const totalPages = Math.ceil(filteredServices.length / itemsPerPage);
   const paginatedServices = filteredServices.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   if (loading) {
@@ -143,8 +161,15 @@ const Services = () => {
         <div className="header-title-section">
           <h1>Services</h1>
           <div className="search-bar-container search-bar-rounded">
-
-            <svg className="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              className="search-icon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -167,8 +192,18 @@ const Services = () => {
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
-          <button className="btn btn-primary btn-rounded" onClick={() => handleOpenModal()}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <button
+            className="btn btn-primary btn-rounded"
+            onClick={() => handleOpenModal()}
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
@@ -204,7 +239,15 @@ const Services = () => {
                     <div className="user-info">
                       <span className="user-name">{service.name}</span>
                       {service.description && (
-                        <span className="user-email" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '300px' }}>
+                        <span
+                          className="user-email"
+                          style={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: "300px",
+                          }}
+                        >
                           {service.description}
                         </span>
                       )}
@@ -216,19 +259,39 @@ const Services = () => {
                     <button
                       className={`toggle-switch ${service.status === "active" ? "active" : ""}`}
                       onClick={() => handleToggleStatus(service._id)}
-                      title={service.status === "active" ? "Deactivate" : "Activate"}
+                      title={
+                        service.status === "active" ? "Deactivate" : "Activate"
+                      }
                     />
                   </td>
                   <td>
                     <div className="actions-cell">
-                      <button className="action-btn edit" onClick={() => handleOpenModal(service)} title="Edit">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <button
+                        className="action-btn edit"
+                        onClick={() => handleOpenModal(service)}
+                        title="Edit"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                         </svg>
                       </button>
-                      <button className="action-btn delete" onClick={() => handleDelete(service._id)} title="Delete">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <button
+                        className="action-btn delete"
+                        onClick={() => handleDelete(service._id)}
+                        title="Delete"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
                           <polyline points="3 6 5 6 21 6" />
                           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                         </svg>
@@ -245,47 +308,79 @@ const Services = () => {
         {filteredServices.length > 0 && (
           <div className="pagination-wrapper">
             <div className="pagination-info">
-              Showing <span>{(currentPage - 1) * itemsPerPage + 1}</span> to <span>{Math.min(currentPage * itemsPerPage, filteredServices.length)}</span> of <span>{filteredServices.length}</span> entries
+              Showing <span>{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
+              <span>
+                {Math.min(currentPage * itemsPerPage, filteredServices.length)}
+              </span>{" "}
+              of <span>{filteredServices.length}</span> entries
             </div>
             <div className="pagination-controls-refined">
-              <button 
+              <button
                 className="pag-btn prev"
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
                 Previous
               </button>
-              
+
               <div className="page-numbers">
                 {[...Array(totalPages)].map((_, i) => {
                   const pageNum = i + 1;
-                  if (totalPages <= 5 || pageNum === 1 || pageNum === totalPages || (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)) {
+                  if (
+                    totalPages <= 5 ||
+                    pageNum === 1 ||
+                    pageNum === totalPages ||
+                    (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                  ) {
                     return (
-                      <button 
+                      <button
                         key={pageNum}
-                        className={`page-num ${currentPage === pageNum ? 'active' : ''}`}
+                        className={`page-num ${currentPage === pageNum ? "active" : ""}`}
                         onClick={() => setCurrentPage(pageNum)}
                       >
                         {pageNum}
                       </button>
                     );
-                  } else if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
-                    return <span key={pageNum} className="page-dots">...</span>;
+                  } else if (
+                    pageNum === currentPage - 2 ||
+                    pageNum === currentPage + 2
+                  ) {
+                    return (
+                      <span key={pageNum} className="page-dots">
+                        ...
+                      </span>
+                    );
                   }
                   return null;
                 })}
               </div>
 
-              <button 
+              <button
                 className="pag-btn next"
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
                 disabled={currentPage === totalPages}
               >
                 Next
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
               </button>
@@ -299,9 +394,18 @@ const Services = () => {
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2 className="modal-title">{editingService ? "Edit Service" : "Add New Service"}</h2>
+              <h2 className="modal-title">
+                {editingService ? "Edit Service" : "Add New Service"}
+              </h2>
               <button className="modal-close" onClick={handleCloseModal}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
@@ -315,7 +419,9 @@ const Services = () => {
                     type="text"
                     className="form-input"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -325,17 +431,27 @@ const Services = () => {
                     className="form-input"
                     rows="3"
                     value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
                   />
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "1rem",
+                  }}
+                >
                   <div className="form-group">
                     <label className="form-label">Duration (minutes)</label>
                     <input
                       type="number"
                       className="form-input"
                       value={formData.duration}
-                      onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, duration: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -346,21 +462,34 @@ const Services = () => {
                       step="0.01"
                       className="form-input"
                       value={formData.price}
-                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, price: e.target.value })
+                      }
                       required
                     />
                   </div>
                 </div>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary btn-rounded" onClick={handleCloseModal}>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-rounded"
+                  onClick={handleCloseModal}
+                >
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary btn-rounded" disabled={submitting}>
-                  {submitting ? "Saving..." : editingService ? "Update Service" : "Add Service"}
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-rounded"
+                  disabled={submitting}
+                >
+                  {submitting
+                    ? "Saving..."
+                    : editingService
+                      ? "Update Service"
+                      : "Add Service"}
                 </button>
               </div>
-
             </form>
           </div>
         </div>
