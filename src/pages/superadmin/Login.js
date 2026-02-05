@@ -19,10 +19,9 @@ const SuperAdminLogin = () => {
 
     try {
       const data = await login(email, password);
-      // 👆 data me token + user aata hai
 
-      // 🔒 role check
-      if (data.user.role !== "superadmin") {
+      // 🔒 role check (FIXED)
+      if (data.role !== "superadmin") {
         setError("Access denied. Super Admin only.");
         setLoading(false);
         return;
@@ -33,8 +32,8 @@ const SuperAdminLogin = () => {
         "userInfo",
         JSON.stringify({
           token: data.token,
-          role: data.user.role,
-          email: data.user.email,
+          role: data.role,
+          email: data.email,
         }),
       );
 
