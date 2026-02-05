@@ -50,20 +50,27 @@ const CreateCompany = () => {
   };
 
   return (
-    <div className="sa-company-details">
+    <div className="sa-create-company">
+      {/* HEADER */}
       <div className="sa-page-header">
         <div>
-          <h2>Create Company</h2>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1e293b', margin: 0 }}>Create Company</h2>
           <p className="sa-page-subtitle">
-            Company and its Admin will be created by SuperAdmin
+            Register a new company and assign an administrator
           </p>
         </div>
       </div>
 
+      {/* FORM CARD */}
       <form className="sa-form-card" onSubmit={handleSubmit}>
-        {error && <p className="error-text">{error}</p>}
+        {error && (
+          <div className="alert alert-error" style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fee2e2', color: '#b91c1c', borderRadius: '6px', fontSize: '0.9rem' }}>
+            {error}
+          </div>
+        )}
 
-        {/* ================= COMPANY DETAILS ================= */}
+        {/* SECTION 1: COMPANY INFO */}
+        <div className="sa-form-divider" style={{ marginTop: 0 }}>Company Information</div>
 
         <div className="sa-form-group">
           <label>Company Name</label>
@@ -72,6 +79,7 @@ const CreateCompany = () => {
             name="companyName"
             value={formData.companyName}
             onChange={handleChange}
+            placeholder="e.g. Acme Corp"
             required
           />
         </div>
@@ -83,13 +91,13 @@ const CreateCompany = () => {
             name="companyEmail"
             value={formData.companyEmail}
             onChange={handleChange}
+            placeholder="contact@acmecorp.com"
             required
           />
         </div>
 
-        {/* ================= ADMIN DETAILS ================= */}
-
-        <div className="sa-form-divider">Company Admin Details</div>
+        {/* SECTION 2: ADMIN DETAILS */}
+        <div className="sa-form-divider">Admin Details</div>
 
         <div className="sa-form-group">
           <label>Admin Name</label>
@@ -98,6 +106,7 @@ const CreateCompany = () => {
             name="adminName"
             value={formData.adminName}
             onChange={handleChange}
+            placeholder="Full Name"
             required
           />
         </div>
@@ -109,6 +118,7 @@ const CreateCompany = () => {
             name="adminEmail"
             value={formData.adminEmail}
             onChange={handleChange}
+            placeholder="admin@acmecorp.com"
             required
           />
         </div>
@@ -120,10 +130,12 @@ const CreateCompany = () => {
             name="adminPassword"
             value={formData.adminPassword}
             onChange={handleChange}
+            placeholder="••••••••"
             required
           />
         </div>
 
+        {/* ACTIONS */}
         <div className="sa-btn-group">
           <button
             type="button"
@@ -133,7 +145,7 @@ const CreateCompany = () => {
           >
             Cancel
           </button>
-          <button type="submit" className="sa-btn-primary" disabled={loading}>
+          <button type="submit" className="sa-btn-primary" disabled={loading} style={{ minWidth: '140px' }}>
             {loading ? "Creating..." : "Create Company"}
           </button>
         </div>
