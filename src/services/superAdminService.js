@@ -27,8 +27,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-
-
 /* ================= COMPANIES ================= */
 
 // Get all companies
@@ -39,6 +37,11 @@ export const getAllCompanies = () => {
 // Enable / Disable company
 export const toggleCompanyStatus = (companyId) => {
   return api.patch(`/superadmin/company/${companyId}/status`);
+};
+
+// ✅ CREATE COMPANY (NEW – SAFE ADDITION)
+export const createCompany = (data) => {
+  return api.post("/superadmin/company", data);
 };
 
 /* ================= COMPANY DETAILS ================= */

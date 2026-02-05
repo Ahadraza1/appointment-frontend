@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createCompany } from "../../services/superAdminService";
 import "./SuperAdminPages.css";
 
 const CreateCompany = () => {
@@ -11,6 +12,9 @@ const CreateCompany = () => {
     mobile: "",
     services: [],
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const availableServices = [
     "Hair Cut",
@@ -37,10 +41,20 @@ const CreateCompany = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Create Company Data:", formData);
-    // API integration NEXT STEP me aayega
+    setLoading(true);
+    setError("");
+
+    try {
+      await createCompany(formData);
+      navigate("/superadmin/companies");
+    } catch (err) {
+      console.error("Create company error:", err);
+      setError("Failed to create company");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,6 +69,8 @@ const CreateCompany = () => {
       </div>
 
       <form className="sa-form-card" onSubmit={handleSubmit}>
+        {error && <p className="error-text">{error}</p>}
+
         <div className="sa-form-group">
           <label>Company Name</label>
           <input
@@ -109,11 +125,12 @@ const CreateCompany = () => {
             type="button"
             className="sa-btn-secondary"
             onClick={() => navigate(-1)}
+            disabled={loading}
           >
             Cancel
           </button>
-          <button type="submit" className="sa-btn-primary">
-            Create Company
+          <button type="submit" className="sa-btn-primary" disabled={loading}>
+            {loading ? "Creating..." : "Create Company"}
           </button>
         </div>
       </form>
