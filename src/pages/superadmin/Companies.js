@@ -51,7 +51,10 @@ const Companies = () => {
   return (
     <div className="sa-companies-page">
       {/* 🔹 ADDED HEADER WITH CREATE BUTTON */}
-      <div className="sa-page-header" style={{ justifyContent: "space-between" }}>
+      <div
+        className="sa-page-header"
+        style={{ justifyContent: "space-between" }}
+      >
         <h2>Companies</h2>
         <Link to="/superadmin/companies/create" className="sa-btn-primary">
           + Create Company
@@ -94,16 +97,16 @@ const Companies = () => {
                     </td>
                     <td>{company.email}</td>
                     <td>
-                      <span
-                        className={`sa-status-pill ${
-                          company.status === "active"
-                            ? "active"
-                            : "inactive"
-                        }`}
-                      >
-                        {company.status}
-                      </span>
+                      <label className="sa-switch">
+                        <input
+                          type="checkbox"
+                          checked={company.status === "active"}
+                          onChange={() => handleToggleStatus(company._id)}
+                        />
+                        <span className="sa-slider"></span>
+                      </label>
                     </td>
+
                     <td>
                       <div className="sa-actions-cell">
                         <button
@@ -116,12 +119,22 @@ const Companies = () => {
                           }
                         >
                           {company.status === "active" ? (
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                            >
                               <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
                               <line x1="12" y1="2" x2="12" y2="12"></line>
                             </svg>
                           ) : (
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                            >
                               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                               <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
@@ -133,7 +146,12 @@ const Companies = () => {
                           className="sa-action-btn"
                           title="View Details"
                         >
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                           </svg>
