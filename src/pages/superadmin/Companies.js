@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
 import {
   getAllCompanies,
   toggleCompanyStatus,
@@ -26,13 +28,20 @@ const Companies = () => {
     }
   };
 
-  const handleToggleStatus = async (id) => {
+  const handleToggleStatus = async (company) => {
     try {
-      await toggleCompanyStatus(id);
+      await toggleCompanyStatus(company._id);
+
+      toast.success(
+        company.status === "active"
+          ? "Company deactivated successfully"
+          : "Company activated successfully",
+      );
+
       fetchCompanies();
     } catch (err) {
       console.error("Toggle status error:", err);
-      alert("Failed to update company status");
+      toast.error("Failed to update company status");
     }
   };
 
@@ -101,7 +110,7 @@ const Companies = () => {
                         <input
                           type="checkbox"
                           checked={company.status === "active"}
-                          onChange={() => handleToggleStatus(company._id)}
+                          onChange={() => handleToggleStatus(company)}
                         />
                         <span className="sa-slider"></span>
                       </label>
@@ -111,7 +120,7 @@ const Companies = () => {
                       <div className="sa-actions-cell">
                         <button
                           className="sa-action-btn"
-                          onClick={() => handleToggleStatus(company._id)}
+                          onClick={() => handleToggleStatus(company)}
                           title={
                             company.status === "active"
                               ? "Deactivate"
