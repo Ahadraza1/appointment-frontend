@@ -40,8 +40,8 @@ import AdminLogin from "./pages/admin/Login";
 import SuperAdminLogin from "./pages/superadmin/Login";
 import SuperAdminDashboard from "./pages/superadmin/superAdminDashboard";
 import Companies from "./pages/superadmin/Companies";
-import CompanyDetails from "./pages/superadmin/CompanyDetails";
 import CompanyAdmins from "./pages/superadmin/CompanyAdmins";
+import CompanyDetails from "./pages/superadmin/CompanyDetails";
 import CreateCompany from "./pages/superadmin/CreateCompany";
 
 // Protected Routes
@@ -127,6 +127,11 @@ function App() {
             <Route
               path="/superadmin/companies/create"
               element={<CreateCompany />}
+            />
+
+            <Route
+              path="/superadmin/company-admins"
+              element={<CompanyAdmins />}
             />
 
             <Route
