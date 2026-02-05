@@ -30,11 +30,11 @@ const Services = () => {
   const fetchServices = async () => {
     try {
       setLoading(true);
-      const response = await servicesAPI.getAdmin(filterStatus);
+      const response = await servicesAPI.getAdmin();
       const servicesList = Array.isArray(response) ? response : response.services || [];
       setServices(servicesList);
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error fetching services:", err);
       setServices([]);
     } finally {
       setLoading(false);

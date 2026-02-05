@@ -102,7 +102,7 @@ export const servicesAPI = {
   // 🔓 CUSTOMER / PUBLIC – only ACTIVE services
   getPublic: () => apiRequest("/services"),
 
-  // 🔐 ADMIN – active / inactive / all
+  // 🔐 ADMIN – company based services ONLY
   getAdmin: () => apiRequest("/admin/services"),
 
   update: (id, data) =>
