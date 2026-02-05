@@ -7,22 +7,15 @@ const CreateCompany = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    services: [],
+    companyName: "",
+    companyEmail: "",
+    adminName: "",
+    adminEmail: "",
+    adminPassword: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const availableServices = [
-    "Hair Cut",
-    "Spa",
-    "Consultation",
-    "Therapy",
-    "Repair",
-  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,26 +25,25 @@ const CreateCompany = () => {
     }));
   };
 
-  const handleServiceChange = (service) => {
-    setFormData((prev) => ({
-      ...prev,
-      services: prev.services.includes(service)
-        ? prev.services.filter((s) => s !== service)
-        : [...prev.services, service],
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      await createCompany(formData);
+      const payload = {
+        companyName: formData.companyName,
+        companyEmail: formData.companyEmail,
+        adminName: formData.adminName,
+        adminEmail: formData.adminEmail,
+        adminPassword: formData.adminPassword,
+      };
+
+      await createCompany(payload);
       navigate("/superadmin/companies");
     } catch (err) {
       console.error("Create company error:", err);
-      setError("Failed to create company");
+      setError(err?.response?.data?.message || "Failed to create company");
     } finally {
       setLoading(false);
     }
@@ -63,7 +55,7 @@ const CreateCompany = () => {
         <div>
           <h2>Create Company</h2>
           <p className="sa-page-subtitle">
-            Fill company details to register a new company
+            Company and its Admin will be created by SuperAdmin
           </p>
         </div>
       </div>
@@ -71,53 +63,65 @@ const CreateCompany = () => {
       <form className="sa-form-card" onSubmit={handleSubmit}>
         {error && <p className="error-text">{error}</p>}
 
+        {/* ================= COMPANY DETAILS ================= */}
+
         <div className="sa-form-group">
           <label>Company Name</label>
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="companyName"
+            value={formData.companyName}
             onChange={handleChange}
             required
           />
         </div>
 
         <div className="sa-form-group">
-          <label>Email</label>
+          <label>Company Email</label>
           <input
             type="email"
-            name="email"
-            value={formData.email}
+            name="companyEmail"
+            value={formData.companyEmail}
             onChange={handleChange}
             required
           />
         </div>
 
+        {/* ================= ADMIN DETAILS ================= */}
+
+        <div className="sa-form-divider">Company Admin Details</div>
+
         <div className="sa-form-group">
-          <label>Mobile Number</label>
+          <label>Admin Name</label>
           <input
-            type="tel"
-            name="mobile"
-            value={formData.mobile}
+            type="text"
+            name="adminName"
+            value={formData.adminName}
             onChange={handleChange}
             required
           />
         </div>
 
         <div className="sa-form-group">
-          <label>Services</label>
-          <div className="sa-checkbox-group">
-            {availableServices.map((service) => (
-              <label key={service} className="sa-checkbox">
-                <input
-                  type="checkbox"
-                  checked={formData.services.includes(service)}
-                  onChange={() => handleServiceChange(service)}
-                />
-                {service}
-              </label>
-            ))}
-          </div>
+          <label>Admin Email</label>
+          <input
+            type="email"
+            name="adminEmail"
+            value={formData.adminEmail}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="sa-form-group">
+          <label>Admin Password</label>
+          <input
+            type="password"
+            name="adminPassword"
+            value={formData.adminPassword}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="sa-btn-group">
