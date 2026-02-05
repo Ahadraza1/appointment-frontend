@@ -18,22 +18,29 @@ const SuperAdminLogin = () => {
     setLoading(true);
 
     try {
-      const user = await login(email, password);
+      const data = await login(email, password);
+      // 👆 data me token + user aata hai
 
-      // ❌ role check (IMPORTANT)
-      if (user.role !== "superadmin") {
+      // 🔒 role check
+      if (data.user.role !== "superadmin") {
         setError("Access denied. Super Admin only.");
         setLoading(false);
         return;
       }
 
-      // ✅ superadmin success
+      // ✅ IMPORTANT: token + user save karo
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          token: data.token,
+          role: data.user.role,
+          email: data.user.email,
+        }),
+      );
+
       navigate("/superadmin/dashboard");
     } catch (err) {
-      setError(
-        err?.response?.data?.message ||
-          "Invalid email or password"
-      );
+      setError(err?.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -111,7 +118,9 @@ const SuperAdminLogin = () => {
           </form>
 
           <div className="auth-footer">
-            <p style={{ color: "var(--neutral-500)" }}>Super Admin access only</p>
+            <p style={{ color: "var(--neutral-500)" }}>
+              Super Admin access only
+            </p>
           </div>
         </div>
       </div>
