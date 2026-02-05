@@ -3,6 +3,7 @@ import {
   getAllCompanies,
   toggleCompanyStatus,
 } from "../../services/superAdminService";
+import { Link } from "react-router-dom";
 import "./SuperAdminPages.css";
 
 const Companies = () => {
@@ -28,7 +29,7 @@ const Companies = () => {
   const handleToggleStatus = async (id) => {
     try {
       await toggleCompanyStatus(id);
-      fetchCompanies(); // refresh list
+      fetchCompanies();
     } catch (err) {
       console.error("Toggle status error:", err);
       alert("Failed to update company status");
@@ -49,6 +50,14 @@ const Companies = () => {
 
   return (
     <div className="sa-companies-page">
+      {/* 🔹 ADDED HEADER WITH CREATE BUTTON */}
+      <div className="sa-page-header" style={{ justifyContent: "space-between" }}>
+        <h2>Companies</h2>
+        <Link to="/superadmin/companies/create" className="sa-btn-primary">
+          + Create Company
+        </Link>
+      </div>
+
       <div className="sa-data-card">
         <div className="sa-table-wrapper">
           <table className="sa-data-table">
@@ -74,12 +83,14 @@ const Companies = () => {
                   <tr key={company._id}>
                     <td>{index + 1}</td>
                     <td>
-                        <div className="sa-user-cell">
-                          <div className="sa-user-avatar">{company.name.charAt(0).toUpperCase()}</div>
-                          <div className="sa-user-info">
-                             <div className="sa-user-name">{company.name}</div>
-                          </div>
+                      <div className="sa-user-cell">
+                        <div className="sa-user-avatar">
+                          {company.name.charAt(0).toUpperCase()}
                         </div>
+                        <div className="sa-user-info">
+                          <div className="sa-user-name">{company.name}</div>
+                        </div>
+                      </div>
                     </td>
                     <td>{company.email}</td>
                     <td>
@@ -96,18 +107,36 @@ const Companies = () => {
                     <td>
                       <div className="sa-actions-cell">
                         <button
-                            className="sa-action-btn"
-                            onClick={() => handleToggleStatus(company._id)}
-                            title={company.status === "active" ? "Deactivate" : "Activate"}
+                          className="sa-action-btn"
+                          onClick={() => handleToggleStatus(company._id)}
+                          title={
+                            company.status === "active"
+                              ? "Deactivate"
+                              : "Activate"
+                          }
                         >
-                            {company.status === "active" ? (
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
-                            ) : (
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                            )}
+                          {company.status === "active" ? (
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                              <line x1="12" y1="2" x2="12" y2="12"></line>
+                            </svg>
+                          ) : (
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                          )}
                         </button>
-                        <a href={`/superadmin/companies/${company._id}`} className="sa-action-btn" title="View Details">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+
+                        <a
+                          href={`/superadmin/companies/${company._id}`}
+                          className="sa-action-btn"
+                          title="View Details"
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
                         </a>
                       </div>
                     </td>
