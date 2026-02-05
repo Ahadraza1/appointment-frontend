@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getCompanyAdmins } from "../../services/superAdminService";
+import { getAllCompanyAdmins } from "../../services/superAdminService";
 import "./SuperAdminPages.css";
 
 const CompanyAdmins = () => {
-  const { id } = useParams();
-
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchAdmins = async () => {
+  const fetchAllAdmins = async () => {
     try {
       setLoading(true);
       setError("");
 
-      const res = await getCompanyAdmins(id);
+      const res = await getAllCompanyAdmins();
       setAdmins(res.data.admins || []);
     } catch (err) {
       console.error("Company admins error:", err);
@@ -26,8 +23,8 @@ const CompanyAdmins = () => {
   };
 
   useEffect(() => {
-    fetchAdmins();
-  }, [id]);
+    fetchAllAdmins();
+  }, []);
 
   if (loading) return <p className="loading-text">Loading admins...</p>;
   if (error) return <p className="error-text">{error}</p>;
@@ -39,9 +36,10 @@ const CompanyAdmins = () => {
           <table className="sa-data-table">
             <thead>
               <tr>
+                <th>Company Name</th>
+                <th>Company Email</th>
                 <th>Admin Name</th>
                 <th>Admin Email</th>
-                <th>Created At</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -49,35 +47,37 @@ const CompanyAdmins = () => {
             <tbody>
               {admins.length === 0 ? (
                 <tr>
-                  <td colSpan="4" className="empty-text">
-                    No admins found
+                  <td colSpan="5" className="empty-text">
+                    No company admins found
                   </td>
                 </tr>
               ) : (
-                admins.map((admin) => (
-                  <tr key={admin._id}>
+                admins.map((item) => (
+                  <tr key={item.adminId}>
+                    <td>{item.company?.companyName || "-"}</td>
+                    <td>{item.company?.companyEmail || "-"}</td>
+
                     <td>
                       <div className="sa-user-cell">
                         <div className="sa-user-avatar">
-                          {admin.name?.charAt(0).toUpperCase()}
+                          {item.adminName?.charAt(0).toUpperCase()}
                         </div>
                         <div className="sa-user-info">
-                          <div className="sa-user-name">{admin.name}</div>
+                          <div className="sa-user-name">
+                            {item.adminName}
+                          </div>
                         </div>
                       </div>
                     </td>
 
-                    <td>{admin.email}</td>
+                    <td>{item.adminEmail}</td>
 
-                    <td>{new Date(admin.createdAt).toLocaleDateString()}</td>
-
-                    {/* 🔐 CHANGE PASSWORD ACTION */}
                     <td>
                       <button
                         className="sa-btn-secondary"
                         onClick={() =>
                           alert(
-                            "Change password functionality will be added next",
+                            "Change password functionality will be added next"
                           )
                         }
                       >
