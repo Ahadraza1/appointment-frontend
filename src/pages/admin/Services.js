@@ -31,12 +31,13 @@ const Services = () => {
     try {
       setLoading(true);
 
-      // 🔒 FORCE admin endpoint (no abstraction confusion)
+      const token = localStorage.getItem("token");
+
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/admin/services`,
+        "https://appointment-backend-e5z9.onrender.com/api/admin/services",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         },
       );
