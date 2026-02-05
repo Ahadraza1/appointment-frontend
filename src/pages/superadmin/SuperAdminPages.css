@@ -445,6 +445,77 @@
 }
 
 /* ============================================
+   FORM STYLES FOR CREATE COMPANY
+   ============================================ */
+.sa-page-subtitle {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.sa-form-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto; /* Centered */
+}
+
+.sa-form-divider {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 0.5rem;
+  margin: 2rem 0 1.5rem 0;
+}
+
+.sa-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.sa-form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
+}
+
+.sa-form-group input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: #1e293b;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+}
+
+.sa-form-group input:focus {
+  outline: none;
+  border-color: var(--sa-accent-color);
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+.sa-btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+
+/* ============================================
    RESPONSIVE STYLES
    ============================================ */
 @media (max-width: 1024px) {
@@ -511,5 +582,14 @@
     flex-direction: column;
     gap: 1rem;
     align-items: center;
+  }
+
+  /* Form Card Mobile */
+  .sa-form-card {
+    padding: 1.5rem;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    border-top: 1px solid #e2e8f0;
   }
 }
