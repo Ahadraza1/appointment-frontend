@@ -103,8 +103,7 @@ export const servicesAPI = {
   getPublic: () => apiRequest("/services"),
 
   // 🔐 ADMIN – active / inactive / all
-  getAdmin: (status) =>
-    apiRequest(status ? `/admin/services?status=${status}` : `/admin/services`),
+  getAdmin: () => apiRequest("/admin/services"),
 
   update: (id, data) =>
     apiRequest(`/services/${id}`, {
@@ -123,11 +122,10 @@ export const servicesAPI = {
     }),
 
   bulkCreate: (services) =>
-  apiRequest("/services/bulk", {
-    method: "POST",
-    body: JSON.stringify(services), 
-  }),
-
+    apiRequest("/services/bulk", {
+      method: "POST",
+      body: JSON.stringify(services),
+    }),
 };
 
 /* ============================================
