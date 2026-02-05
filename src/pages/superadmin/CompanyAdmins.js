@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getCompanyAdmins } from "../../services/superAdminService";
-import "./CompanyAdmins.css";
+import "./SuperAdminPages.css";
 
 const CompanyAdmins = () => {
   const { id } = useParams();
@@ -39,38 +39,45 @@ const CompanyAdmins = () => {
 
   return (
     <div className="sa-company-admins">
-      <h1 className="sa-page-title">Company Admins</h1>
-
-      <div className="sa-table-wrapper">
-        <table className="sa-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {admins.length === 0 ? (
+      <div className="sa-data-card">
+         <div className="sa-table-wrapper">
+          <table className="sa-data-table">
+            <thead>
               <tr>
-                <td colSpan="3" className="empty-text">
-                  No admins found
-                </td>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Created At</th>
               </tr>
-            ) : (
-              admins.map((admin) => (
-                <tr key={admin._id}>
-                  <td>{admin.name}</td>
-                  <td>{admin.email}</td>
-                  <td>
-                    {new Date(admin.createdAt).toLocaleDateString()}
+            </thead>
+
+            <tbody>
+              {admins.length === 0 ? (
+                <tr>
+                  <td colSpan="3" className="empty-text">
+                    No admins found
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                admins.map((admin) => (
+                  <tr key={admin._id}>
+                    <td>
+                        <div className="sa-user-cell">
+                          <div className="sa-user-avatar">{admin.name.charAt(0).toUpperCase()}</div>
+                          <div className="sa-user-info">
+                             <div className="sa-user-name">{admin.name}</div>
+                          </div>
+                        </div>
+                    </td>
+                    <td>{admin.email}</td>
+                    <td>
+                      {new Date(admin.createdAt).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

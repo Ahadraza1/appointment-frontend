@@ -26,6 +26,7 @@ import HelpCenter from "./pages/static/HelpCenter";
 
 // Admin Pages
 import AdminLayout from "./layouts/AdminLayout";
+import SuperAdminLayout from "./layouts/SuperAdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminAppointments from "./pages/admin/Appointments";
 import AdminCustomers from "./pages/admin/Customers";
@@ -114,22 +115,24 @@ function App() {
 
         {/* ================= SUPER ADMIN ROUTES ================= */}
         <Route element={<SuperAdminRoute />}>
-          <Route
-            path="/superadmin/dashboard"
-            element={<SuperAdminDashboard />}
-          />
+          <Route element={<SuperAdminLayout />}>
+            <Route
+              path="/superadmin/dashboard"
+              element={<SuperAdminDashboard />}
+            />
 
-          <Route path="/superadmin/companies" element={<Companies />} />
+            <Route path="/superadmin/companies" element={<Companies />} />
 
-          <Route
-            path="/superadmin/companies/:id"
-            element={<CompanyDetails />}
-          />
+            <Route
+              path="/superadmin/companies/:id"
+              element={<CompanyDetails />}
+            />
 
-          <Route
-            path="/superadmin/companies/:id/admins"
-            element={<CompanyAdmins />}
-          />
+            <Route
+              path="/superadmin/companies/:id/admins"
+              element={<CompanyAdmins />}
+            />
+          </Route>
         </Route>
         {/* ================= 404 ================= */}
         <Route path="*" element={<Navigate to="/" replace />} />

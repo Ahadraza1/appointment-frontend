@@ -50,22 +50,35 @@ const SuperAdminDashboard = () => {
 
   return (
     <div className="sa-dashboard">
-      <h1 className="sa-page-title">Dashboard</h1>
-
-      <div className="sa-card-grid">
-        <div className="sa-card">
-          <h3>Total Companies</h3>
-          <p className="sa-card-number">{total}</p>
+      <div className="sa-stats-grid">
+        <div className="sa-stat-card">
+          <div className="sa-stat-icon primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4 8 4v14"/><path d="M17 21v-8.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0-.5.5V21"/></svg>
+          </div>
+          <div className="sa-stat-content">
+            <span className="sa-stat-label">Total Companies</span>
+            <span className="sa-stat-value">{total}</span>
+          </div>
         </div>
 
-        <div className="sa-card">
-          <h3>Active Companies</h3>
-          <p className="sa-card-number">{active}</p>
+        <div className="sa-stat-card">
+          <div className="sa-stat-icon success">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+           <div className="sa-stat-content">
+            <span className="sa-stat-label">Active Companies</span>
+            <span className="sa-stat-value">{active}</span>
+          </div>
         </div>
 
-        <div className="sa-card">
-          <h3>Inactive Companies</h3>
-          <p className="sa-card-number">{inactive}</p>
+        <div className="sa-stat-card">
+          <div className="sa-stat-icon warning">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          </div>
+           <div className="sa-stat-content">
+            <span className="sa-stat-label">Inactive Companies</span>
+            <span className="sa-stat-value">{inactive}</span>
+          </div>
         </div>
       </div>
     </div>

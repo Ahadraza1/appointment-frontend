@@ -1,0 +1,200 @@
+/* ============================================
+   INDUSTRIAL SUPER ADMIN PAGES STYLES
+   (Mirrored from AdminPages.css)
+   ============================================ */
+
+/* Page Header */
+.sa-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
+}
+
+.sa-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* Industrial Buttons */
+.sa-btn-primary {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+  background: var(--sa-accent-color); /* Cyan/Teal */
+  border: 1px solid var(--sa-accent-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+.sa-btn-primary:hover {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Data Table Card */
+.sa-data-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.sa-data-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, #4f46e5, #6366f1);
+  border-radius: 8px 0 0 8px;
+}
+
+.sa-table-wrapper {
+  overflow-x: auto;
+}
+
+.sa-data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sa-data-table th {
+  padding: 0.875rem 1.25rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.sa-data-table td {
+  padding: 0.875rem 1.25rem;
+  font-size: 0.875rem;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.sa-data-table tbody tr:hover td {
+  background: #fafbfc;
+}
+
+/* User Cell */
+.sa-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sa-user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.sa-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sa-user-name {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+
+.sa-user-sub {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* Status Badges */
+.sa-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.sa-status-pill::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.sa-status-pill.active {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+.sa-status-pill.active::before { background: #22c55e; }
+
+.sa-status-pill.inactive {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+.sa-status-pill.inactive::before { background: #ef4444; }
+
+/* Actions */
+.sa-actions-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sa-action-btn {
+  padding: 0.4rem;
+  border-radius: 4px;
+  color: #64748b;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sa-action-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
