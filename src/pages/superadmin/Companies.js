@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import {
+  getAllCompanies,
+  toggleCompanyStatus,
+} from "../../services/superAdminService";
 import "./Companies.css";
 
 const Companies = () => {
@@ -10,20 +13,24 @@ const Companies = () => {
   const fetchCompanies = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/api/superadmin/companies");
+      setError("");
+
+      const res = await getAllCompanies();
       setCompanies(res.data.companies || []);
     } catch (err) {
+      console.error("Fetch companies error:", err);
       setError("Failed to load companies");
     } finally {
       setLoading(false);
     }
   };
 
-  const toggleStatus = async (id) => {
+  const handleToggleStatus = async (id) => {
     try {
-      await axios.patch(`/api/superadmin/company/${id}/status`);
+      await toggleCompanyStatus(id);
       fetchCompanies(); // refresh list
     } catch (err) {
+      console.error("Toggle status error:", err);
       alert("Failed to update company status");
     }
   };
@@ -32,8 +39,13 @@ const Companies = () => {
     fetchCompanies();
   }, []);
 
-  if (loading) return <p className="loading-text">Loading companies...</p>;
-  if (error) return <p className="error-text">{error}</p>;
+  if (loading) {
+    return <p className="loading-text">Loading companies...</p>;
+  }
+
+  if (error) {
+    return <p className="error-text">{error}</p>;
+  }
 
   return (
     <div className="companies-page">
@@ -82,7 +94,9 @@ const Companies = () => {
                           ? "disable"
                           : "enable"
                       }`}
-                      onClick={() => toggleStatus(company._id)}
+                      onClick={() =>
+                        handleToggleStatus(company._id)
+                      }
                     >
                       {company.status === "active"
                         ? "Disable"

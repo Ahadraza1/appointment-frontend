@@ -1,22 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getCompanyAdmins } from "../../services/superAdminService";
 import "./CompanyAdmins.css";
 
 const CompanyAdmins = () => {
-  // Dummy data (API baad me connect hogi)
-  const admins = [
-    {
-      id: "1",
-      name: "Rahul Sharma",
-      email: "rahul@abcsalon.com",
-      createdAt: "2024-01-12",
-    },
-    {
-      id: "2",
-      name: "Neha Verma",
-      email: "neha@abcsalon.com",
-      createdAt: "2024-02-03",
-    },
-  ];
+  const { id } = useParams();
+
+  const [admins, setAdmins] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchAdmins = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const res = await getCompanyAdmins(id);
+      setAdmins(res.data.admins || []);
+    } catch (err) {
+      console.error("Company admins error:", err);
+      setError("Failed to load company admins");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAdmins();
+  }, [id]);
+
+  if (loading) {
+    return <p className="loading-text">Loading admins...</p>;
+  }
+
+  if (error) {
+    return <p className="error-text">{error}</p>;
+  }
 
   return (
     <div className="sa-company-admins">
@@ -33,13 +52,23 @@ const CompanyAdmins = () => {
           </thead>
 
           <tbody>
-            {admins.map((admin) => (
-              <tr key={admin.id}>
-                <td>{admin.name}</td>
-                <td>{admin.email}</td>
-                <td>{admin.createdAt}</td>
+            {admins.length === 0 ? (
+              <tr>
+                <td colSpan="3" className="empty-text">
+                  No admins found
+                </td>
               </tr>
-            ))}
+            ) : (
+              admins.map((admin) => (
+                <tr key={admin._id}>
+                  <td>{admin.name}</td>
+                  <td>{admin.email}</td>
+                  <td>
+                    {new Date(admin.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
