@@ -420,11 +420,23 @@
 }
 
 @media (max-width: 640px) {
+  .sa-header {
+    padding: 0 1rem;
+  }
+
+  .sa-page-title {
+    font-size: 1.1rem;
+  }
+
   .sa-profile-info {
     display: none; /* Hide name/role on mobile */
   }
   
   .sa-content {
-    padding: 1rem;
+    padding: 1.25rem 1rem;
+  }
+
+  .sa-profile-dropdown {
+    padding: 0;
   }
 }

@@ -13,6 +13,37 @@
   flex-wrap: nowrap;
 }
 
+/* Common Utilities */
+.sa-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.sa-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--sa-accent-color);
+  border-radius: 50%;
+  animation: sa-spin 1s linear infinite;
+}
+
+.sa-loading-text {
+  color: #64748b;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+@keyframes sa-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
 .sa-header-title-section {
   display: flex;
   align-items: center;
@@ -520,27 +551,28 @@
    ============================================ */
 @media (max-width: 1024px) {
   .sa-page-header {
-    flex-wrap: wrap; /* Allow wrapping */
-    gap: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
   }
   
   .sa-header-title-section {
     width: 100%;
-    order: 1;
     justify-content: space-between;
+    gap: 1.5rem;
   }
 
   .sa-header-actions {
     width: 100%;
-    order: 2;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 1rem;
   }
   
   .sa-search-bar-container {
-    max-width: 100%;
+    max-width: 400px;
+    flex: 1;
   }
 
-  /* Reset flex for actions on tablet to fill row */
   .sa-filter-wrapper, .sa-btn-primary {
     flex: 1;
   }
@@ -550,7 +582,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .sa-header-title-section {
     flex-direction: column;
     align-items: flex-start;
@@ -558,30 +590,32 @@
   }
 
   .sa-search-bar-container {
+    max-width: 100%;
     width: 100%;
   }
 
   .sa-header-actions {
     flex-direction: column;
-    gap: 0.75rem;
+    align-items: stretch;
   }
 
-  .sa-filter-wrapper {
+  .sa-filter-wrapper, .sa-btn-primary {
     width: 100%;
   }
-  
-  .sa-filter-select {
-    width: 100%;
-  }
+}
 
-  .sa-btn-primary {
-    width: 100%;
-  }
-
+@media (max-width: 640px) {
   .sa-pagination-wrapper {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
     align-items: center;
+    text-align: center;
+  }
+
+  .sa-pagination-controls-refined {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   /* Form Card Mobile */
@@ -591,6 +625,10 @@
     box-shadow: none;
     border: none;
     border-top: 1px solid #e2e8f0;
+  }
+
+  .sa-data-table th, .sa-data-table td {
+    padding: 0.75rem 1rem;
   }
 }
 
