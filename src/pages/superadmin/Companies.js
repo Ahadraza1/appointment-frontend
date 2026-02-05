@@ -12,6 +12,12 @@ const Companies = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  
+  // UI States (Search, Filter, Pagination)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const fetchCompanies = async () => {
     try {
@@ -49,8 +55,33 @@ const Companies = () => {
     fetchCompanies();
   }, []);
 
+  // Filtering Logic
+  const filteredCompanies = companies.filter((company) => {
+    const statusMatch = filterStatus === "all" || company.status === filterStatus;
+    const searchMatch = 
+      company.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      company.email?.toLowerCase().includes(searchTerm.toLowerCase());
+    return statusMatch && searchMatch;
+  });
+
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredCompanies.length / itemsPerPage);
+  const paginatedCompanies = filteredCompanies.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  useEffect(() => {
+    setCurrentPage(1); // Reset to first page on filter change
+  }, [searchTerm, filterStatus]);
+
   if (loading) {
-    return <p className="loading-text">Loading companies...</p>;
+    return (
+      <div className="sa-loading-container">
+        <div className="sa-spinner"></div>
+        <p className="sa-loading-text">Loading companies...</p>
+      </div>
+    );
   }
 
   if (error) {
@@ -59,41 +90,73 @@ const Companies = () => {
 
   return (
     <div className="sa-companies-page">
-      {/* 🔹 ADDED HEADER WITH CREATE BUTTON */}
-      <div
-        className="sa-page-header"
-        style={{ justifyContent: "space-between" }}
-      >
-        <h2>Companies</h2>
-        <Link to="/superadmin/companies/create" className="sa-btn-primary">
-          + Create Company
-        </Link>
+      {/* PAGE HEADER: Title + Search + Actions */}
+      <div className="sa-page-header">
+        <div className="sa-header-title-section">
+          <h2>Companies</h2>
+          <div className="sa-search-bar-container sa-search-bar-rounded">
+            <svg className="sa-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              className="sa-header-search-input"
+              placeholder="Search by company name or email"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+        
+        <div className="sa-header-actions">
+          <div className="sa-filter-wrapper">
+             <select
+              className="sa-filter-select sa-filter-select-rounded"
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+            >
+              <option value="all">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+         
+          <Link to="/superadmin/companies/create" className="sa-btn-primary sa-btn-rounded">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Add Company
+          </Link>
+        </div>
       </div>
 
+      {/* DATA TABLE CARD */}
       <div className="sa-data-card">
         <div className="sa-table-wrapper">
           <table className="sa-data-table">
             <thead>
               <tr>
-                <th>#</th>
+                <th style={{ width: "60px" }}>#</th>
                 <th>Company Name</th>
                 <th>Email</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th>Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              {companies.length === 0 ? (
+              {paginatedCompanies.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="empty-text">
-                    No companies found
+                  <td colSpan="5" className="sa-empty-state-row">
+                    <p className="sa-empty-state-text">No companies found</p>
                   </td>
                 </tr>
               ) : (
-                companies.map((company, index) => (
+                paginatedCompanies.map((company, index) => (
                   <tr key={company._id}>
-                    <td>{index + 1}</td>
+                    <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
                     <td>
                       <div className="sa-user-cell">
                         <div className="sa-user-avatar">
@@ -118,38 +181,6 @@ const Companies = () => {
 
                     <td>
                       <div className="sa-actions-cell">
-                        <button
-                          className="sa-action-btn"
-                          onClick={() => handleToggleStatus(company)}
-                          title={
-                            company.status === "active"
-                              ? "Deactivate"
-                              : "Activate"
-                          }
-                        >
-                          {company.status === "active" ? (
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-                              <line x1="12" y1="2" x2="12" y2="12"></line>
-                            </svg>
-                          ) : (
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                          )}
-                        </button>
-
                         <a
                           href={`/superadmin/companies/${company._id}`}
                           className="sa-action-btn"
@@ -161,8 +192,8 @@ const Companies = () => {
                             stroke="currentColor"
                             strokeWidth="2"
                           >
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
+                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                           </svg>
                         </a>
                       </div>
@@ -173,6 +204,58 @@ const Companies = () => {
             </tbody>
           </table>
         </div>
+
+        {/* PAGINATION CONTROLS */}
+        {filteredCompanies.length > 0 && (
+          <div className="sa-pagination-wrapper">
+            <div className="sa-pagination-info">
+              Showing <span>{(currentPage - 1) * itemsPerPage + 1}</span> to <span>{Math.min(currentPage * itemsPerPage, filteredCompanies.length)}</span> of <span>{filteredCompanies.length}</span> entries
+            </div>
+            <div className="sa-pagination-controls-refined">
+              <button 
+                className="sa-pag-btn prev"
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Previous
+              </button>
+              
+              <div className="sa-page-numbers">
+                {[...Array(totalPages)].map((_, i) => {
+                  const pageNum = i + 1;
+                  if (totalPages <= 5 || pageNum === 1 || pageNum === totalPages || (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)) {
+                    return (
+                      <button 
+                        key={pageNum}
+                        className={`sa-page-num ${currentPage === pageNum ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(pageNum)}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  } else if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
+                    return <span key={pageNum} className="sa-page-dots">...</span>;
+                  }
+                  return null;
+                })}
+              </div>
+
+              <button 
+                className="sa-pag-btn next"
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
