@@ -33,24 +33,24 @@ api.interceptors.request.use((config) => {
 
 // Get all companies
 export const getAllCompanies = () => {
-  return api.get("/api/superadmin/companies");
+  return api.get("/superadmin/companies");
 };
 
 // Enable / Disable company
 export const toggleCompanyStatus = (companyId) => {
-  return api.patch(`/api/superadmin/company/${companyId}/status`);
+  return api.patch(`/superadmin/company/${companyId}/status`);
 };
 
 /* ================= COMPANY DETAILS ================= */
 
 // Get company stats
 export const getCompanyStats = (companyId) => {
-  return api.get(`/api/superadmin/company/${companyId}/stats`);
+  return api.get(`/superadmin/company/${companyId}/stats`);
 };
 
 // Get company admins
 export const getCompanyAdmins = (companyId) => {
-  return api.get(`/api/superadmin/company/${companyId}/admins`);
+  return api.get(`/superadmin/company/${companyId}/admins`);
 };
 
 export default api;
