@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import {
   getAllCompanies,
   toggleCompanyStatus,
+  deleteCompany,
 } from "../../services/superAdminService";
 import { Link } from "react-router-dom";
 import "./SuperAdminPages.css";
@@ -13,10 +14,12 @@ const Companies = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   
-  // UI States (Search, Filter, Pagination)
+  // UI States (Search, Filter, Pagination, Delete Modal)
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [companyToDelete, setCompanyToDelete] = useState(null);
   const itemsPerPage = 10;
 
   const fetchCompanies = async () => {
@@ -48,6 +51,25 @@ const Companies = () => {
     } catch (err) {
       console.error("Toggle status error:", err);
       toast.error("Failed to update company status");
+    }
+  };
+
+  const handleDeleteClick = (company) => {
+    setCompanyToDelete(company);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!companyToDelete) return;
+    try {
+      await deleteCompany(companyToDelete._id);
+      toast.success("Company deleted successfully");
+      fetchCompanies();
+      setShowDeleteModal(false);
+      setCompanyToDelete(null);
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error(err?.response?.data?.message || "Failed to delete company");
     }
   };
 
@@ -196,6 +218,25 @@ const Companies = () => {
                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                           </svg>
                         </a>
+                        <button
+                          className="sa-action-btn delete"
+                          title="Delete Company"
+                          onClick={() => handleDeleteClick(company)}
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            width="18"
+                            height="18"
+                          >
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                          </svg>
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -257,6 +298,35 @@ const Companies = () => {
           </div>
         )}
       </div>
+
+      {/* DELETE CONFIRMATION MODAL */}
+      {showDeleteModal && (
+        <div className="sa-modal-overlay" onClick={() => setShowDeleteModal(false)}>
+          <div className="sa-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="sa-modal-header">
+              <h3 className="sa-modal-title">Delete Company</h3>
+              <p className="sa-modal-desc">
+                Are you sure you want to delete <strong>{companyToDelete?.name}</strong>?
+                This action is permanent and cannot be undone.
+              </p>
+            </div>
+            <div className="sa-modal-footer">
+              <button 
+                className="sa-btn-secondary" 
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                className="sa-btn-danger" 
+                onClick={confirmDelete}
+              >
+                Delete Company
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -44,6 +44,11 @@ export const createCompany = (data) => {
   return api.post("/superadmin/company", data);
 };
 
+// Delete Company
+export const deleteCompany = (companyId) => {
+  return api.delete(`/superadmin/company/${companyId}`);
+};
+
 /* ================= COMPANY DETAILS ================= */
 
 // Get company stats
