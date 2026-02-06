@@ -9,34 +9,20 @@ const Home = () => {
   const [bookingUsed, setBookingUsed] = useState(0);
   const [bookingLimit, setBookingLimit] = useState(10);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (!storedUser) return;
+ useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+  if (!storedUser) return;
 
-    const parsedUser = JSON.parse(storedUser);
-    setUser(parsedUser);
+  const parsedUser = JSON.parse(storedUser);
+  setUser(parsedUser);
 
-    // Free vs Paid
-    setBookingLimit(parsedUser.planType === "free" ? 10 : Infinity);
+  // Free vs Paid
+  const limit = parsedUser.planType === "free" ? 10 : Infinity;
+  setBookingLimit(limit);
 
-    // ✅ CORRECT BACKEND ROUTE
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/appointments/my`, {
-        headers: {
-          Authorization: `Bearer ${parsedUser?.token}`,
-        },
-      })
-      .then((res) => {
-        const activeBookings = res.data.filter(
-          (a) => a.status !== "cancelled",
-        ).length;
-
-        setBookingUsed(activeBookings);
-      })
-      .catch((err) => {
-        console.error("Booking count fetch error:", err);
-      });
-  }, []);
+  // ✅ booking count directly from user object (safe)
+  setBookingUsed(parsedUser.bookingUsed || 0);
+}, []);
 
   return (
     <div className="home-page">
