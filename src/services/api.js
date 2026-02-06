@@ -1,5 +1,9 @@
+// const API_BASE_URL =
+//   process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 const API_BASE_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+  process.env.REACT_APP_API_URL ||
+  "https://appointment-backend-e5z9.onrender.com/api";
 
 /**
  * Get stored auth token
