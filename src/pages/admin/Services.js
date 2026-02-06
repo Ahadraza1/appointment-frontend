@@ -39,8 +39,6 @@ const Services = () => {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
-            "Cache-Control": "no-cache",
-            Pragma: "no-cache",
           },
           cache: "no-store",
         },
@@ -52,7 +50,14 @@ const Services = () => {
         throw new Error(data.message || "Failed to fetch services");
       }
 
-      setServices(Array.isArray(data) ? data : []);
+      // ✅ THIS IS THE FIX
+      if (Array.isArray(data)) {
+        setServices(data);
+      } else if (Array.isArray(data.services)) {
+        setServices(data.services);
+      } else {
+        setServices([]);
+      }
     } catch (err) {
       console.error("Error fetching services:", err);
       setServices([]);
