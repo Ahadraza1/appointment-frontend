@@ -141,14 +141,15 @@ function App() {
             />
 
             <Route
-              path="/superadmin/companies/:id/services"
-              element={<CompanyServices />}
-            />
-
-            <Route
               path="/superadmin/companies/:id/admins"
               element={<CompanyAdmins />}
             />
+
+            <Route
+              path="/superadmin/companies/:id/services"
+              element={<CompanyServices />}
+            />
+            
           </Route>
         </Route>
         {/* ================= 404 ================= */}
