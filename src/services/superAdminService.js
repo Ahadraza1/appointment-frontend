@@ -69,11 +69,10 @@ export const getAllCompanyAdmins = () => {
 };
 
 // ================= GET COMPANY SERVICES (SUPER ADMIN) =================
-export const getCompanyServices = async (companyId) => {
-  return await axios.get(
-    `/api/superadmin/company/${companyId}/services`
-  );
+export const getCompanyServices = (companyId) => {
+  return api.get(`/superadmin/company/${companyId}/services`);
 };
+
 
 
 export default api;
