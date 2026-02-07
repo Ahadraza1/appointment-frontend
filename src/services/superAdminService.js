@@ -78,5 +78,12 @@ export const getCompanyCustomers = (companyId) => {
   return api.get(`/superadmin/company/${companyId}/customers`);
 };
 
+// ================= GET CUSTOMER APPOINTMENTS (SUPER ADMIN) =================
+export const getCompanyCustomerAppointments = (companyId, customerId) => {
+  return api.get(
+    `/superadmin/company/${companyId}/customers/${customerId}/appointments`
+  );
+};
+
 
 export default api;

@@ -45,6 +45,7 @@ import CompanyDetails from "./pages/superadmin/CompanyDetails";
 import CompanyServices from "./pages/superadmin/CompanyServices";
 import CreateCompany from "./pages/superadmin/CreateCompany";
 import CompanyCustomers from "./pages/superadmin/CompanyCustomers";
+import CustomerAppointments from "./pages/superadmin/CustomerAppointments";
 
 // Protected Routes
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -156,6 +157,11 @@ function App() {
               element={<CompanyCustomers />}
             />
           </Route>
+
+          <Route
+            path="/superadmin/companies/:companyId/customers/:customerId/appointments"
+            element={<CustomerAppointments />}
+          />
         </Route>
         {/* ================= 404 ================= */}
         <Route path="*" element={<Navigate to="/" replace />} />
