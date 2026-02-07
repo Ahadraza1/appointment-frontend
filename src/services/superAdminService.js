@@ -73,6 +73,10 @@ export const getCompanyServices = (companyId) => {
   return api.get(`/superadmin/company/${companyId}/services`);
 };
 
+// ================= GET COMPANY CUSTOMERS (SUPER ADMIN) =================
+export const getCompanyCustomers = (companyId) => {
+  return api.get(`/superadmin/company/${companyId}/customers`);
+};
 
 
 export default api;
