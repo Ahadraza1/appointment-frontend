@@ -327,8 +327,25 @@
 
 .sa-action-btn:hover {
   background: #f1f5f9;
-  color: var(--sa-accent-color);
   transform: translateY(-1px);
+}
+
+.sa-action-btn.view {
+  color: #0ea5e9; /* Sky blue for view */
+}
+
+.sa-action-btn.view:hover {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.sa-action-btn.delete {
+  color: #ef4444; /* Red for delete */
+}
+
+.sa-action-btn.delete:hover {
+  background: #fee2e2;
+  color: #dc2626;
 }
 
 
@@ -727,8 +744,4 @@
   box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.2);
 }
 
-.sa-action-btn.delete:hover {
-  background: #fee2e2;
-  color: #ef4444;
-}
 
