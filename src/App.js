@@ -42,6 +42,7 @@ import SuperAdminDashboard from "./pages/superadmin/superAdminDashboard";
 import Companies from "./pages/superadmin/Companies";
 import CompanyAdmins from "./pages/superadmin/CompanyAdmins";
 import CompanyDetails from "./pages/superadmin/CompanyDetails";
+import CompanyServices from "./pages/superadmin/CompanyServices";
 import CreateCompany from "./pages/superadmin/CreateCompany";
 
 // Protected Routes
@@ -137,6 +138,11 @@ function App() {
             <Route
               path="/superadmin/companies/:id"
               element={<CompanyDetails />}
+            />
+
+            <Route
+              path="/superadmin/companies/:id/services"
+              element={<CompanyServices />}
             />
 
             <Route
