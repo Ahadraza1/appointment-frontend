@@ -85,21 +85,23 @@ export const getCompanyCustomerAppointments = (companyId, customerId) => {
   );
 };
 
-// ================= TOGGLE SERVICE STATUS (SUPER ADMIN) =================
-export const toggleServiceStatus = (serviceId, currentStatus) => {
+// TOGGLE SERVICE STATUS (SUPER ADMIN)
+export const toggleServiceStatus = (companyId, serviceId, currentStatus) => {
   const newStatus = currentStatus === "active" ? "inactive" : "active";
 
   return api.patch(
-    `/superadmin/services/${serviceId}/status`,
-    { status: newStatus } // ✅ BODY REQUIRED
+    `/superadmin/company/${companyId}/services/${serviceId}/status`,
+    { status: newStatus }
   );
 };
 
-
-// ================= DELETE SERVICE (SUPER ADMIN) =================
-export const deleteService = (serviceId) => {
-  return api.delete(`/superadmin/services/${serviceId}`);
+// DELETE SERVICE (SUPER ADMIN)
+export const deleteService = (companyId, serviceId) => {
+  return api.delete(
+    `/superadmin/company/${companyId}/services/${serviceId}`
+  );
 };
+
 
 
 export default api;

@@ -42,10 +42,9 @@ const CompanyServices = () => {
     fetchServices();
   }, [id]);
 
-  // 🔁 TOGGLE SERVICE STATUS (SUPER ADMIN)
   const handleToggleService = async (serviceId, currentStatus) => {
     try {
-      await toggleServiceStatus(serviceId, currentStatus);
+      await toggleServiceStatus(id, serviceId, currentStatus);
       fetchServices();
     } catch (error) {
       console.error("Toggle service error:", error);
@@ -53,17 +52,13 @@ const CompanyServices = () => {
     }
   };
 
-  // 🗑 DELETE SERVICE (SUPER ADMIN)
   const handleDeleteService = async (serviceId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this service?",
-    );
-
-    if (!confirmDelete) return;
+    if (!window.confirm("Are you sure you want to delete this service?"))
+      return;
 
     try {
-      await deleteService(serviceId);
-      fetchServices(); // refresh list
+      await deleteService(id, serviceId);
+      fetchServices();
     } catch (error) {
       console.error("Delete service error:", error);
       alert("Failed to delete service");
