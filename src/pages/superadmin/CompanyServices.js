@@ -43,10 +43,10 @@ const CompanyServices = () => {
   }, [id]);
 
   // 🔁 TOGGLE SERVICE STATUS (SUPER ADMIN)
-  const handleToggleService = async (serviceId) => {
+  const handleToggleService = async (serviceId, currentStatus) => {
     try {
-      await toggleServiceStatus(serviceId);
-      fetchServices(); // refresh list
+      await toggleServiceStatus(serviceId, currentStatus);
+      fetchServices();
     } catch (error) {
       console.error("Toggle service error:", error);
       alert("Failed to update service status");
