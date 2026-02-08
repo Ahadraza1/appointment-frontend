@@ -44,7 +44,7 @@ const CompanyServices = () => {
 
   const handleToggleService = async (serviceId, currentStatus) => {
     try {
-      await toggleServiceStatus(id, serviceId, currentStatus);
+      await toggleServiceStatus(serviceId, currentStatus);
       fetchServices();
     } catch (error) {
       console.error("Toggle service error:", error);
@@ -57,7 +57,7 @@ const CompanyServices = () => {
       return;
 
     try {
-      await deleteService(id, serviceId);
+      await deleteService(serviceId);
       fetchServices();
     } catch (error) {
       console.error("Delete service error:", error);
@@ -286,7 +286,12 @@ const CompanyServices = () => {
                       <td>
                         <button
                           className={`sa-toggle-switch ${service.status === "active" ? "active" : ""}`}
-                          onClick={() => handleToggleService(service._id)}
+                          onClick={() =>
+                            handleToggleService(
+                              service._id,
+                              service.status || "active",
+                            )
+                          }
                         />
                       </td>
                       <td>
