@@ -13,6 +13,10 @@ const CustomerAppointments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const fetchAppointments = async () => {
     try {
       setLoading(true);
@@ -37,6 +41,13 @@ const CustomerAppointments = () => {
     // eslint-disable-next-line
   }, [companyId, customerId]);
 
+  // Pagination Logic
+  const totalPages = Math.ceil(appointments.length / itemsPerPage);
+  const paginatedAppointments = appointments.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   if (loading) {
     return (
       <div className="sa-loading-container">
@@ -58,11 +69,11 @@ const CustomerAppointments = () => {
   }
 
   return (
-    <div className="sa-page">
-      {/* HEADER */}
+    <div className="sa-dashboard-container">
+      {/* MASTER UNIFIED HEADER */}
       <div className="sa-page-header">
         <div className="sa-header-title-section">
-          <h2>Customer Appointments</h2>
+          <h2 className="sa-page-title-text">Customer Appointments</h2>
           <p className="sa-page-subtitle">
             Customer ID: <strong>{customerId}</strong>
           </p>
@@ -77,23 +88,29 @@ const CustomerAppointments = () => {
               )
             }
           >
-            ← Back to Customers
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight: '8px'}}>
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Back to Customers
           </button>
         </div>
       </div>
 
-      {/* APPOINTMENTS TABLE */}
+      {/* INTEGRATED DATA CARD */}
       <div className="sa-data-card">
         <div className="sa-table-wrapper">
           {appointments.length === 0 ? (
-            <p className="sa-empty-state-text" style={{ padding: "2rem", textAlign: "center" }}>
-              No appointments found for this customer.
-            </p>
+            <div className="sa-empty-state-row" style={{ padding: '3rem', textAlign: 'center' }}>
+              <p className="sa-empty-state-text">
+                No appointments found for this customer.
+              </p>
+            </div>
           ) : (
             <table className="sa-data-table">
               <thead>
                 <tr>
-                  <th>#</th>
+                  <th style={{ width: "60px" }}>#</th>
                   <th>Service</th>
                   <th>Price</th>
                   <th>Date</th>
@@ -101,11 +118,13 @@ const CustomerAppointments = () => {
                 </tr>
               </thead>
               <tbody>
-                {appointments.map((appt, index) => (
+                {paginatedAppointments.map((appt, index) => (
                   <tr key={appt._id}>
-                    <td>{index + 1}</td>
+                    <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
                     <td>{appt.serviceId?.name || "—"}</td>
-                    <td>{appt.serviceId?.price || "—"}</td>
+                    <td className="sa-price-text">
+                      ${Number(appt.serviceId?.price || 0).toFixed(2)}
+                    </td>
                     <td>
                       {appt.date
                         ? new Date(appt.date).toLocaleDateString()
@@ -126,6 +145,58 @@ const CustomerAppointments = () => {
             </table>
           )}
         </div>
+
+        {/* PAGINATION CONTROLS */}
+        {appointments.length > 0 && (
+          <div className="sa-pagination-wrapper">
+            <div className="sa-pagination-info">
+              Showing <span>{(currentPage - 1) * itemsPerPage + 1}</span> to <span>{Math.min(currentPage * itemsPerPage, appointments.length)}</span> of <span>{appointments.length}</span> entries
+            </div>
+            <div className="sa-pagination-controls-refined">
+              <button 
+                className="sa-pag-btn prev"
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                Previous
+              </button>
+              
+              <div className="sa-page-numbers">
+                {[...Array(totalPages)].map((_, i) => {
+                  const pageNum = i + 1;
+                  if (totalPages <= 5 || pageNum === 1 || pageNum === totalPages || (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)) {
+                    return (
+                      <button 
+                        key={pageNum}
+                        className={`sa-page-num ${currentPage === pageNum ? 'active' : ''}`}
+                        onClick={() => setCurrentPage(pageNum)}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  } else if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
+                    return <span key={pageNum} className="sa-page-dots">...</span>;
+                  }
+                  return null;
+                })}
+              </div>
+
+              <button 
+                className="sa-pag-btn next"
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
