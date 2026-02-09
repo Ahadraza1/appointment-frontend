@@ -3,204 +3,182 @@
    (Mirrored from AdminPages.css)
    ============================================ */
 
-/* Page Header */
-.sa-page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-  gap: 1.5rem;
-  flex-wrap: nowrap;
+/* ============================================
+   MASTER DASHBOARD & LIST LAYOUT
+   ============================================ */
+.sa-dashboard-container {
+    padding: 2rem;
+    max-width: 1440px;
+    margin: 0 auto;
+    min-height: calc(100vh - 80px); /* Assuming header is 80px */
+    background: #f8fafc;
+    overflow-x: hidden;
 }
 
-/* Common Utilities */
-.sa-loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  gap: 1rem;
+.sa-header-main-card {
+    background: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 32px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.03), 
+        0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
 }
 
-.sa-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid var(--sa-accent-color);
-  border-radius: 50%;
-  animation: sa-spin 1s linear infinite;
+.sa-header-main-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: linear-gradient(to bottom, #6366f1, #4f46e5);
+    z-index: 2;
 }
 
-.sa-loading-text {
-  color: #64748b;
-  font-weight: 500;
-  font-size: 0.95rem;
+.sa-header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
-@keyframes sa-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.sa-header-control-grid {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
 }
 
-
-.sa-header-title-section {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  flex: 1;
-}
-
-.sa-header-title-section h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1e293b;
-  white-space: nowrap;
-  margin: 0;
-}
-
-.sa-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  justify-content: flex-end;
-}
-
-/* Search Bar */
+/* Master Inputs & Buttons */
 .sa-search-bar-container {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: white;
-  border: 1px solid #e2e8f0;
-  padding: 0.6rem 1rem;
-  width: 100%;
-  max-width: 400px;
-  transition: all 0.2s ease;
-}
-
-.sa-search-bar-rounded {
-  border-radius: 9999px; /* Fully rounded */
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(248, 250, 252, 0.9);
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    height: 52px;
+    padding: 0 1.25rem;
+    transition: all 0.3s ease;
+    width: 100%;
 }
 
 .sa-search-bar-container:focus-within {
-  border-color: var(--sa-accent-color);
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    border-color: #6366f1;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
 .sa-header-search-input {
-  border: none;
-  outline: none;
-  font-size: 0.9rem;
-  color: #1e293b;
-  width: 100%;
-  background: transparent;
-}
-
-.sa-header-search-input::placeholder {
-  color: #94a3b8;
-}
-
-.sa-search-icon {
-  color: #94a3b8;
-  flex-shrink: 0;
-}
-
-/* Filter Select */
-.sa-filter-select {
-  padding: 0.6rem 2.5rem 0.6rem 1rem;
-  border: 1px solid #e2e8f0;
-  background-color: white;
-  font-size: 0.9rem;
-  color: #475569;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 0.5rem center;
-  background-repeat: no-repeat;
-  background-size: 1.5em 1.5em;
-  min-width: 140px;
-  transition: all 0.2s ease;
+    flex: 1;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 0.75rem !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1e293b;
+    outline: none !important;
 }
 
 .sa-filter-select-rounded {
-  border-radius: 9999px;
+    height: 52px;
+    min-width: 180px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 0 2.5rem 0 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #475569;
+    cursor: pointer;
+    background: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25rem;
+    transition: all 0.2s ease;
 }
 
-.sa-filter-select:hover {
-  border-color: #cbd5e1;
+.sa-filter-select-rounded:hover {
+    border-color: #cbd5e1;
 }
 
-.sa-filter-select:focus {
-  outline: none;
-  border-color: var(--sa-accent-color);
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
-}
-
-/* Industrial Buttons */
 .sa-btn-primary {
-  height: 42px; /* Matched to input height */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0 1.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: white;
-  background: var(--sa-accent-color); /* Cyan/Teal */
-  border: 1px solid var(--sa-accent-color);
-  border-radius: 4px; /* Default radius, override with rounded class */
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.sa-btn-rounded {
-  border-radius: 9999px;
+    height: 52px;
+    padding: 0 1.75rem;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #004e70 0%, #003a54 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 78, 112, 0.15);
+    white-space: nowrap;
 }
 
 .sa-btn-primary:hover {
-  filter: brightness(0.95);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 78, 112, 0.25);
+    filter: brightness(1.1);
 }
 
 .sa-btn-secondary {
-  height: 42px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0 1.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #475569;
-  background: white;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
+    height: 52px;
+    padding: 0 1.75rem;
+    border-radius: 16px;
+    background: white;
+    color: #475569;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border: 1.5px solid #e2e8f0;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .sa-btn-secondary:hover {
-  background: #f1f5f9;
-  border-color: #94a3b8;
-  color: #1e293b;
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
 }
 
-/* Data Table Card */
+/* ============================================
+   DATA TABLE DESIGN (DESKTOP)
+   ============================================ */
 .sa-data-card {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.02),
+    0 10px 15px -3px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(226, 232, 240, 0.8);
   overflow: hidden;
   margin-bottom: 2rem;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.sa-data-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
 }
 
 .sa-data-card::before {
@@ -224,7 +202,7 @@
 }
 
 .sa-data-table th {
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 1.5rem;
   text-align: left;
   font-size: 0.75rem;
   font-weight: 700;
@@ -237,8 +215,8 @@
 }
 
 .sa-data-table td {
-  padding: 1rem 1.5rem;
-  font-size: 0.9rem;
+  padding: 1.25rem 1.5rem;
+  font-size: 0.95rem;
   color: #334155;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
@@ -258,6 +236,13 @@
   font-size: 1rem;
 }
 
+.sa-mobile-cards {
+    display: none; /* Hidden on desktop */
+}
+
+/* ============================================
+   SHARED COMPONENTS (Avatars, Switches, etc.)
+   ============================================ */
 /* User Cell */
 .sa-user-cell {
   display: flex;
@@ -266,9 +251,9 @@
 }
 
 .sa-user-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
   display: flex;
@@ -277,7 +262,7 @@
   font-weight: 700;
   font-size: 1rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.15);
 }
 
 .sa-user-info {
@@ -353,8 +338,8 @@
 .sa-switch {
   position: relative;
   display: inline-block;
-  width: 44px;
-  height: 22px;
+  width: 48px;
+  height: 24px;
 }
 
 .sa-switch input {
@@ -366,24 +351,21 @@
 .sa-slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #cbd5e1;
-  transition: 0.3s;
+  inset: 0;
+  background-color: #e2e8f0;
+  transition: 0.4s;
   border-radius: 34px;
 }
 
 .sa-slider:before {
   position: absolute;
   content: "";
-  height: 16px;
-  width: 16px;
+  height: 18px;
+  width: 18px;
   left: 3px;
   bottom: 3px;
   background-color: white;
-  transition: 0.3s;
+  transition: 0.4s;
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
@@ -393,7 +375,7 @@
 }
 
 .sa-switch input:checked + .sa-slider:before {
-  transform: translateX(22px);
+  transform: translateX(24px);
 }
 
 /* ============================================
@@ -493,29 +475,21 @@
 }
 
 /* ============================================
-   FORM STYLES FOR CREATE COMPANY
-   ============================================ */
-.sa-page-subtitle {
-  font-size: 0.9rem;
-  color: #64748b;
-  margin-top: 0.25rem;
-}
-
-/* ============================================
-   MASTER FORM & PAGE LAYOUT
+   MASTER FORM SYSTEM (CENTRALIZED)
    ============================================ */
 .sa-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - var(--sa-header-height));
-  padding: 2.5rem 1rem;
+  min-height: calc(100vh - 80px);
+  padding: 4rem 1rem;
   background-color: #f8fafc; /* Master slate background */
 }
 
 .sa-form-card {
   background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-radius: 32px; /* Master-level rounding */
   box-shadow: 
@@ -551,17 +525,52 @@
   box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
 }
 
+.sa-form-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 .sa-page-title-text {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     font-weight: 900;
     color: #0f172a;
-    letter-spacing: -0.06em;
-    margin-bottom: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centered for Master look */
-    gap: 1.25rem;
+    letter-spacing: -0.05em;
+    margin: 0;
+    line-height: 1.1;
     text-align: center;
+}
+
+.sa-page-subtitle {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.sa-form-subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+    font-weight: 500;
+    max-width: 500px;
+    margin: 0;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.sa-section-header, .sa-form-divider {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #6366f1;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-bottom: 0.75rem;
+    border-bottom: 1.5px solid #f1f5f9;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
 }
 
 .sa-form-group {
@@ -694,119 +703,44 @@
     gap: 0.75rem;
 }
 
-/* Responsive Overrides */
-@media (max-width: 768px) {
-    .sa-page {
-        padding: 1.5rem 1rem;
-        min-height: auto;
-    }
-
-    .sa-form-card {
-        padding: 2.5rem 1.5rem;
-        margin: 0 auto;
-        border-radius: 24px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .sa-page-title-text {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        letter-spacing: -0.04em;
-    }
-
-    .sa-form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    .sa-form-actions {
-        flex-direction: column-reverse;
-        gap: 1rem;
-        width: 100%;
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        align-items: stretch; /* Ensure full width symmetry */
-    }
-
-    .sa-btn-primary, .sa-btn-secondary {
-        width: 100% !important;
-        min-width: 100% !important;
-        height: 52px !important;
-        justify-content: center;
-        box-sizing: border-box;
-        border-radius: 16px;
-    }
-}
-
-
 /* ============================================
    RESPONSIVE MASTER SYSTEM
    ============================================ */
 @media (max-width: 768px) {
-    .sa-page {
-        padding: 1.5rem 1rem;
-        min-height: auto;
-    }
+    .sa-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
-    .sa-form-card {
-        padding: 2.5rem 1.5rem;
-        margin: 0 auto;
-        border-radius: 24px !important; /* Force master geometry */
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border-top: 6px solid #6366f1; /* Maintain accent */
-    }
+.sa-data-table {
+    min-width: 900px; /* desktop jaisa feel */
+}
 
-    .sa-page-title-text {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        letter-spacing: -0.04em;
-        justify-content: center;
-    }
 
-    .sa-form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    .sa-form-actions {
-        flex-direction: column-reverse; /* Cancel on bottom, Create on top */
+    /* Professional Pagination Stacking - Master Unit */
+    .sa-pagination-wrapper {
+        background: white;
+        border: 1px solid #f1f5f9;
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        flex-direction: column;
         gap: 1.25rem;
-        width: 100%;
-        margin-top: 2.5rem;
-        padding-top: 1.5rem;
-        align-items: stretch;
+        text-align: center;
+        align-items: center;
     }
 
-    /* Fixed Geometry: No Pills */
-    .sa-btn-primary, 
-    .sa-btn-secondary {
-        width: 100% !important;
-        min-width: 100% !important;
-        height: 54px !important; /* Slightly taller for mobile touch */
+    .sa-pagination-info {
+        font-size: 0.9rem;
+        order: 2; /* Info below controls on mobile */
+    }
+
+    .sa-pagination-controls-refined {
+        width: 100%;
         justify-content: center;
-        box-sizing: border-box;
-        border-radius: 16px !important; /* Stop pill-shape overrides */
-        font-size: 1rem;
-    }
-
-    .sa-header-title-section {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .sa-search-bar-container {
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .sa-header-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .sa-filter-wrapper {
-        width: 100%;
+        order: 1;
     }
 }
 

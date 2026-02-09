@@ -320,7 +320,7 @@ const CompanyServices = () => {
             {/* MOBILE CARDS VIEW */}
             <div className="sa-mobile-cards">
               {currentItems.map((service, index) => (
-                <div className="sa-service-mobile-card" key={service._id}>
+                <div className="sa-mobile-card" key={service._id}>
                   <div className="sa-card-header">
                     <div className="sa-card-title-group">
                       <span className="sa-card-sno">#{(currentPage - 1) * itemsPerPage + index + 1}</span>
@@ -348,7 +348,7 @@ const CompanyServices = () => {
 
                   <div className="sa-card-footer">
                     <button
-                      className="sa-mobile-action-btn sa-edit"
+                      className="sa-mobile-action-btn sa-view"
                       onClick={() => navigate(`/superadmin/companies/${id}/services/${service._id}/edit`)}
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

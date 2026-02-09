@@ -111,11 +111,16 @@ const Companies = () => {
   }
 
   return (
-    <div className="sa-companies-page">
-      {/* PAGE HEADER: Title + Search + Actions */}
-      <div className="sa-page-header">
-        <div className="sa-header-title-section">
-          <h2>Companies</h2>
+    <div className="sa-dashboard-container">
+      {/* MASTER RESPONSIVE HEADER SECTION */}
+      <div className="sa-header-main-card">
+        <div className="sa-header-top-row">
+          <div className="sa-header-title-section">
+            <h2 className="sa-page-title-text">Companies</h2>
+          </div>
+        </div>
+        
+        <div className="sa-header-control-grid">
           <div className="sa-search-bar-container sa-search-bar-rounded">
             <svg className="sa-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8"></circle>
@@ -124,28 +129,24 @@ const Companies = () => {
             <input
               type="text"
               className="sa-header-search-input"
-              placeholder="Search by company name or email"
+              placeholder="Search by company name or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-        </div>
-        
-        <div className="sa-header-actions">
-          <div className="sa-filter-wrapper">
-             <select
-              className="sa-filter-select sa-filter-select-rounded"
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-            >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
-         
-          <Link to="/superadmin/companies/create" className="sa-btn-primary sa-btn-rounded">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          
+          <select
+            className="sa-filter-select-rounded"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          
+          <Link to="/superadmin/companies/create" className="sa-btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>

@@ -1,12 +1,18 @@
 /* Company Details Page - Premium SaaS Aesthetic */
 
 .sa-company-details-page {
-  animation: saFadeInUp 0.4s ease-out;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
   padding-bottom: 3rem;
 }
+
+/* NEW: inner scroll wrapper */
+.sa-company-details-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+
 
 /* Breadcrumb Navigation */
 .sa-breadcrumb-nav {
@@ -155,7 +161,10 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 3rem;
+
+  min-width: 900px; /* 🔥 desktop layout preserved */
 }
+
 
 .sa-company-details-page .sa-stat-card {
   height: 100%;
@@ -230,7 +239,10 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
+
+  min-width: 900px; /* 🔥 add this */
 }
+
 
 .sa-action-card {
   background: white;
@@ -310,71 +322,6 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Overrides */
-@media (max-width: 1024px) {
-  .sa-company-details-page {
-    padding: 0 1.5rem;
-  }
-  
-  .sa-company-details-page .sa-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .sa-page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1.5rem;
-    gap: 1.25rem;
-  }
-  
-  .sa-breadcrumb-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .sa-back-link {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .sa-stats-grid {
-    margin-bottom: 2rem;
-  }
-
-  .sa-action-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  .sa-company-details-page .sa-stats-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .sa-page-header {
-    border-radius: 12px;
-  }
-
-  .sa-company-details-page .sa-stat-card {
-    padding: 1.5rem;
-    min-height: auto;
-  }
-  
-  .sa-action-card {
-    padding: 1.5rem;
-    border-radius: 16px;
-    gap: 1.25rem;
-  }
-  
-  .action-icon {
-    width: 50px;
-    height: 50px;
-  }
-}
 
 /* Loading & Error States */
 .sa-loading-container, .sa-error-container {

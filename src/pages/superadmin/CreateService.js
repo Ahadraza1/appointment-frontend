@@ -53,7 +53,9 @@ const CreateService = () => {
   return (
     <div className="sa-page">
       <div className="sa-form-card">
-        <h2 className="sa-page-title-text">Add Service</h2>
+        <div className="sa-form-header">
+          <h2 className="sa-page-title-text">Add Service</h2>
+        </div>
 
         {error && <p className="sa-error-text">{error}</p>}
 
