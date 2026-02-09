@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getCompanyCustomers } from "../../services/superAdminService";
+import { getCompanyCustomers} from "../../services/superAdminService";
 import "./SuperAdminPages.css";
 
 const CompanyCustomers = () => {
@@ -116,9 +116,9 @@ const CompanyCustomers = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedCustomers.map((customer, index) => (
+                {filteredCustomers.map((customer, index) => (
                   <tr key={customer._id}>
-                    <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                    <td>{index + 1}</td>
                     <td>
                       <div className="sa-user-cell">
                         <div className="sa-user-avatar">
@@ -136,18 +136,15 @@ const CompanyCustomers = () => {
                     </td>
                     <td>
                       <button
-                        className="sa-icon-btn sa-view-btn"
-                        title="View Appointments"
+                        className="sa-btn-primary"
+                        style={{ height: '36px', fontSize: '0.8rem', padding: '0 1rem' }}
                         onClick={() =>
                           navigate(
                             `/superadmin/companies/${companyId}/customers/${customer._id}/appointments`
                           )
                         }
                       >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                          <circle cx="12" cy="12" r="3" />
-                        </svg>
+                        View Appointments
                       </button>
                     </td>
                   </tr>
@@ -156,58 +153,6 @@ const CompanyCustomers = () => {
             </table>
           )}
         </div>
-
-        {/* PAGINATION CONTROLS */}
-        {filteredCustomers.length > 0 && (
-          <div className="sa-pagination-wrapper">
-            <div className="sa-pagination-info">
-              Showing <span>{(currentPage - 1) * itemsPerPage + 1}</span> to <span>{Math.min(currentPage * itemsPerPage, filteredCustomers.length)}</span> of <span>{filteredCustomers.length}</span> entries
-            </div>
-            <div className="sa-pagination-controls-refined">
-              <button 
-                className="sa-pag-btn prev"
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-                Previous
-              </button>
-              
-              <div className="sa-page-numbers">
-                {[...Array(totalPages)].map((_, i) => {
-                  const pageNum = i + 1;
-                  if (totalPages <= 5 || pageNum === 1 || pageNum === totalPages || (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)) {
-                    return (
-                      <button 
-                        key={pageNum}
-                        className={`sa-page-num ${currentPage === pageNum ? 'active' : ''}`}
-                        onClick={() => setCurrentPage(pageNum)}
-                      >
-                        {pageNum}
-                      </button>
-                    );
-                  } else if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
-                    return <span key={pageNum} className="sa-page-dots">...</span>;
-                  }
-                  return null;
-                })}
-              </div>
-
-              <button 
-                className="sa-pag-btn next"
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-              >
-                Next
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

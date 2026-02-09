@@ -119,7 +119,20 @@ export const deleteService = (serviceId) => {
   );
 };
 
-
+// ================= UPDATE APPOINTMENT STATUS (SUPER ADMIN) =================
+export const updateAppointmentStatus = (
+  appointmentId,
+  status,
+  rejectionReason = ""
+) => {
+  return api.put(
+    `/superadmin/appointments/${appointmentId}/status`,
+    {
+      status,
+      rejectionReason,
+    }
+  );
+};
 
 
 export default api;
