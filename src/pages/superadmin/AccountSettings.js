@@ -54,9 +54,17 @@ const AccountSettings = () => {
         email: profile.email,
       });
 
+      setProfile(res.data.profile);
+
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
       // 🔥 IMPORTANT: sync updated profile to state
-      if (res?.data?.profile) {
-        setProfile(res.data.profile);
+      if (userInfo?.user) {
+        userInfo.user.email = res.data.profile.email;
+        userInfo.user.name = res.data.profile.name;
+        userInfo.user.phone = res.data.profile.phone;
+
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
       }
 
       setMessage("Profile updated successfully");
