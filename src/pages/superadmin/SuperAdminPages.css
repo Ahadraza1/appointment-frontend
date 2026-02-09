@@ -1440,7 +1440,7 @@
     border: 1.5px solid #e2e8f0;
     border-radius: 12px;
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 500;
     color: #1e293b;
     background: #f8fafc;
     transition: all 0.3s ease;
@@ -1457,6 +1457,121 @@
     border-color: #6366f1;
     background-color: white;
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+}
+
+/* ================= SETTINGS PAGE STYLES ================= */
+
+/* Tabs Header */
+.sa-tabs-header {
+    border-bottom: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    padding: 0 2rem;
+    display: flex;
+    gap: 2rem;
+}
+
+.sa-tab-btn {
+    padding: 1.25rem 0.5rem;
+    background: none;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.sa-tab-btn:hover {
+    color: #1e293b;
+}
+
+.sa-tab-btn.active {
+    color: #4f46e5;
+}
+
+.sa-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #4f46e5;
+    border-radius: 3px 3px 0 0;
+}
+
+/* Form Styles */
+.sa-form-layout {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+.sa-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.sa-form-label {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #475569;
+    letter-spacing: 0.05em;
+    margin-left: 2px;
+}
+
+.sa-form-input {
+    width: 100%;
+    height: 52px;
+    padding: 0 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: #1e293b;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+.sa-form-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
+}
+
+.sa-form-input:disabled {
+    background: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Alert Boxes */
+.sa-alert-box {
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.sa-alert-box.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.sa-alert-box.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
 }
 
 .sa-filter-clear-btn {

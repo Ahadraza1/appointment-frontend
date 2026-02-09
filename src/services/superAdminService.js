@@ -134,5 +134,18 @@ export const updateAppointmentStatus = (
   );
 };
 
+// ================= SUPERADMIN PROFILE =================
+export const getSuperAdminProfile = () => {
+  return api.get("/superadmin/profile");
+};
+
+export const updateSuperAdminProfile = (data) => {
+  return api.put("/superadmin/profile", data);
+};
+
+export const changeSuperAdminPassword = (data) => {
+  return api.put("/superadmin/change-password", data);
+};
+
 
 export default api;
