@@ -8,6 +8,7 @@ import "./SuperAdminPages.css";
 
 const AccountSettings = () => {
   const [activeTab, setActiveTab] = useState("profile");
+  const [email, setEmail] = useState("");
 
   const [profile, setProfile] = useState({
     name: "",
@@ -29,7 +30,15 @@ const AccountSettings = () => {
   const fetchProfile = async () => {
     try {
       const res = await getSuperAdminProfile();
-      setProfile(res.data.profile);
+
+      // ✅ name & phone profile state me
+      setProfile({
+        name: res.data.profile.name,
+        phone: res.data.profile.phone,
+      });
+
+      // 🔥 email ko separate state me sync karo
+      setEmail(res.data.profile.email);
     } catch (err) {
       console.error("Load profile error:", err);
       setError("Failed to load profile");
@@ -51,7 +60,7 @@ const AccountSettings = () => {
       const res = await updateSuperAdminProfile({
         name: profile.name,
         phone: profile.phone,
-        email: profile.email,
+        email: email,
       });
 
       setProfile(res.data.profile);
@@ -198,12 +207,11 @@ const AccountSettings = () => {
                   <input
                     type="email"
                     className="sa-form-input"
-                    value={profile.email}
-                    onChange={(e) =>
-                      setProfile({ ...profile, email: e.target.value })
-                    }
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="email@example.com"
                   />
+
                   <p
                     style={{
                       fontSize: "0.8rem",
