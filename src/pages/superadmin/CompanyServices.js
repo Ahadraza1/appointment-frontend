@@ -133,27 +133,24 @@ const CompanyServices = () => {
   return (
     <div className="sa-services-container">
       {/* IMPROVED RESPONSIVE HEADER SECTION */}
-      <div className="sa-page-header sa-services-header-responsive">
-        <div className="sa-header-title-section">
-          <button
-            className="sa-back-btn-circle"
-            onClick={() => navigate(`/superadmin/companies/${id}`)}
-            title="Back to Company"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
+      <div className="sa-services-header-responsive">
+        <div className="sa-header-top-row">
+          <div className="sa-header-title-section">
+            <button
+              className="sa-back-btn-circle"
+              onClick={() => navigate(`/superadmin/companies/${id}`)}
+              title="Back to Company"
             >
-              <line x1="19" y1="12" x2="5" y2="12" />
-              <polyline points="12 19 5 12 12 5" />
-            </svg>
-          </button>
-          <h2 className="sa-page-title-text">Services</h2>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+              </svg>
+            </button>
+            <h2 className="sa-page-title-text">Services</h2>
+          </div>
+        </div>
 
+        <div className="sa-header-control-grid">
           <div className="sa-search-bar-container sa-search-bar-rounded">
             <svg
               className="sa-search-icon"
@@ -175,9 +172,7 @@ const CompanyServices = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-        </div>
 
-        <div className="sa-header-actions sa-services-actions">
           <select
             className="sa-filter-select sa-filter-select-rounded"
             value={filterStatus}
@@ -194,14 +189,7 @@ const CompanyServices = () => {
               navigate(`/superadmin/companies/${id}/services/create`)
             }
           >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
@@ -292,12 +280,13 @@ const CompanyServices = () => {
                               service.status || "active",
                             )
                           }
+                          title={service.status === "active" ? "Deactivate" : "Activate"}
                         />
                       </td>
                       <td>
                         <div className="sa-actions-wrapper">
                           <button
-                            className="sa-icon-btn"
+                            className="sa-icon-btn sa-edit-btn"
                             title="Edit"
                             onClick={() =>
                               navigate(
@@ -305,31 +294,17 @@ const CompanyServices = () => {
                               )
                             }
                           >
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                             </svg>
                           </button>
                           <button
-                            className="sa-icon-btn"
+                            className="sa-icon-btn sa-delete-btn"
                             title="Delete"
                             onClick={() => handleDeleteService(service._id)}
                           >
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <polyline points="3 6 5 6 21 6" />
                               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                             </svg>
@@ -340,6 +315,61 @@ const CompanyServices = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* MOBILE CARDS VIEW */}
+            <div className="sa-mobile-cards">
+              {currentItems.map((service, index) => (
+                <div className="sa-service-mobile-card" key={service._id}>
+                  <div className="sa-card-header">
+                    <div className="sa-card-title-group">
+                      <span className="sa-card-sno">#{(currentPage - 1) * itemsPerPage + index + 1}</span>
+                      <div className="sa-service-cell">
+                        <span className="sa-service-name-text">{service.name}</span>
+                        <span className="sa-service-subtext">{service.description || service.name.toLowerCase()}</span>
+                      </div>
+                    </div>
+                    <button
+                      className={`sa-toggle-switch ${service.status === "active" ? "active" : ""}`}
+                      onClick={() => handleToggleService(service._id, service.status || "active")}
+                    />
+                  </div>
+                  
+                  <div className="sa-card-grid">
+                    <div className="sa-card-info-item">
+                      <span className="sa-card-label">Duration</span>
+                      <span className="sa-card-value">{service.duration || 30} min</span>
+                    </div>
+                    <div className="sa-card-info-item">
+                      <span className="sa-card-label">Price</span>
+                      <span className="sa-card-value">${Number(service.price).toFixed(2)}</span>
+                    </div>
+                  </div>
+
+                  <div className="sa-card-footer">
+                    <button
+                      className="sa-mobile-action-btn sa-edit"
+                      onClick={() => navigate(`/superadmin/companies/${id}/services/${service._id}/edit`)}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                      </svg>
+                      Edit
+                    </button>
+                    <button
+                      className="sa-mobile-action-btn sa-delete"
+                      onClick={() => handleDeleteService(service._id)}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      </svg>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* NEW PAGINATION FOOTER */}
