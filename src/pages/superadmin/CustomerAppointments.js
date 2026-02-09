@@ -400,6 +400,7 @@ const CustomerAppointments = () => {
                   <th>APPOINTMENT DATE</th>
                   <th>PRICE</th>
                   <th>STATUS</th>
+                  <th>ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
@@ -454,32 +455,34 @@ const CustomerAppointments = () => {
                       >
                         {appt.status || "pending"}
                       </span>
-
+                    </td>
+                    <td>
                       {/* ACTION BUTTONS – ONLY IF PENDING */}
-                      {appt.status === "pending" && (
-                        <div
-                          style={{
-                            marginTop: "6px",
-                            display: "flex",
-                            gap: "6px",
-                          }}
-                        >
+                      {appt.status === "pending" ? (
+                        <div className="sa-actions-cell">
                           <button
-                            className="sa-btn-primary"
-                            style={{ padding: "4px 8px", fontSize: "12px" }}
+                            className="sa-action-btn approve"
+                            title="Approve Appointment"
                             onClick={() => handleApprove(appt._id)}
                           >
-                            Approve
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
                           </button>
 
                           <button
-                            className="sa-btn-secondary"
-                            style={{ padding: "4px 8px", fontSize: "12px" }}
+                            className="sa-action-btn reject"
+                            title="Reject Appointment"
                             onClick={() => handleReject(appt._id)}
                           >
-                            Reject
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <line x1="18" y1="6" x2="6" y2="18"></line>
+                              <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
                           </button>
                         </div>
+                      ) : (
+                        <span style={{ color: '#cbd5e1' }}>—</span>
                       )}
                     </td>
                   </tr>

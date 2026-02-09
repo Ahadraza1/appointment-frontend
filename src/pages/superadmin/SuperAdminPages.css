@@ -630,6 +630,8 @@
 .sa-action-btn.view:hover {
   background: #e0f2fe;
   color: #0284c7;
+  border-color: #0ea5e9;
+  transform: translateY(-2px);
 }
 
 .sa-action-btn.delete {
@@ -639,6 +641,28 @@
 .sa-action-btn.delete:hover {
   background: #fee2e2;
   color: #dc2626;
+}
+
+.sa-action-btn.approve {
+  color: #10b981; /* Emerald-500 */
+}
+
+.sa-action-btn.approve:hover {
+  background: #d1fae5;
+  color: #059669;
+  border-color: #10b981;
+  transform: translateY(-2px);
+}
+
+.sa-action-btn.reject {
+  color: #f59e0b; /* Amber-500 for warning/reject */
+}
+
+.sa-action-btn.reject:hover {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #f59e0b;
+  transform: translateY(-2px);
 }
 
 

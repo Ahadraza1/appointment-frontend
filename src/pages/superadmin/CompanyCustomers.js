@@ -135,17 +135,22 @@ const CompanyCustomers = () => {
                       {new Date(customer.createdAt).toLocaleDateString()}
                     </td>
                     <td>
-                      <button
-                        className="sa-btn-primary"
-                        style={{ height: '36px', fontSize: '0.8rem', padding: '0 1rem' }}
-                        onClick={() =>
-                          navigate(
-                            `/superadmin/companies/${companyId}/customers/${customer._id}/appointments`
-                          )
-                        }
-                      >
-                        View Appointments
-                      </button>
+                      <div className="sa-actions-cell">
+                        <button
+                          className="sa-action-btn view"
+                          title="View Appointments"
+                          onClick={() =>
+                            navigate(
+                              `/superadmin/companies/${companyId}/customers/${customer._id}/appointments`
+                            )
+                          }
+                        >
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
