@@ -707,40 +707,238 @@
    RESPONSIVE MASTER SYSTEM
    ============================================ */
 @media (max-width: 768px) {
+    /* Existing Dashboard Container Padding */
+    .sa-dashboard-container,
+    .sa-company-admins {
+        padding: 0.75rem !important;
+    }
+
+    /* Master Header Stacking for sa-page-header (Admins/Stats pages) */
+    .sa-page-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 1.5rem !important;
+        gap: 1.25rem !important;
+    }
+
+    .sa-page-header h2 {
+        font-size: 1.75rem !important;
+        margin: 0 !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
+
+    /* Search Bar within sa-page-header */
+    .sa-page-header .sa-search-bar-container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Secondary Button Refinement (e.g., Change Password) */
+    .sa-btn-secondary {
+        height: 44px !important;
+        width: 100% !important;
+        justify-content: center !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .sa-page-title-text {
+        font-size: 1.75rem !important;
+        text-align: left !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .sa-header-main-card {
+        padding: 1.5rem !important;
+        border-radius: 24px !important;
+        gap: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .sa-header-top-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+    }
+
+    .sa-header-control-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+        width: 100% !important;
+    }
+
+    .sa-search-bar-container,
+    .sa-filter-select-rounded,
+    .sa-btn-primary,
+    .sa-btn-secondary {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 52px !important;
+    }
+
+    /* Master Visibility Restoration: Table & Wrapper */
     .sa-table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        min-height: 150px !important; /* Anti-collapse floor */
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1.5rem;
+        background: #ffffff !important;
+    }
 
-.sa-data-table {
-    min-width: 900px; /* desktop jaisa feel */
-}
+    .sa-data-table {
+        display: table !important;
+        width: 100% !important;
+        min-width: 900px !important; /* Forces scroll floor */
+        visibility: visible !important;
+        opacity: 1 !important;
+        border-spacing: 0 !important;
+        table-layout: fixed !important; /* Predictable sizing */
+    }
 
+    .sa-data-table thead { display: table-header-group !important; }
+    .sa-data-table tbody { display: table-row-group !important; }
+    .sa-data-table tr { display: table-row !important; }
+    .sa-data-table th, 
+    .sa-data-table td { 
+        display: table-cell !important; 
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: auto !important;
+    }
 
-    /* Professional Pagination Stacking - Master Unit */
+    /* Industrial Card Architecture */
+    .sa-data-card {
+        background: #ffffff !important;
+        border: 1px solid rgba(226, 232, 240, 1) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+        border-radius: 20px !important;
+        overflow: hidden !important;
+        margin-bottom: 2rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: 250px !important; /* Ensure visibility on small screens */
+    }
+
+    /* Synchronized Pagination Stacking */
     .sa-pagination-wrapper {
-        background: white;
-        border: 1px solid #f1f5f9;
-        border-radius: 20px;
-        padding: 1.5rem;
-        margin-top: 2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        flex-direction: column;
-        gap: 1.25rem;
-        text-align: center;
-        align-items: center;
+        background: #f8fafc !important;
+        padding: 1.5rem !important;
+        border-top: 1px solid #f1f5f9 !important;
+        flex-direction: column !important;
+        gap: 1.25rem !important;
+        width: 100% !important;
+        margin-top: auto !important; /* Push to bottom of flex card */
     }
 
     .sa-pagination-info {
-        font-size: 0.9rem;
-        order: 2; /* Info below controls on mobile */
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #64748b;
+        order: 2;
     }
 
     .sa-pagination-controls-refined {
         width: 100%;
         justify-content: center;
         order: 1;
+    }
+
+    /* ============================================
+       FORM PAGES MOBILE OPTIMIZATION
+       (CreateService, EditService, CreateCompany)
+       ============================================ */
+    .sa-page {
+        padding: 1rem 0.75rem !important;
+        min-height: auto !important;
+    }
+
+    .sa-form-card {
+        padding: 1.5rem !important;
+        border-radius: 24px !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .sa-form-card::before {
+        height: 5px !important;
+    }
+
+    .sa-form-header {
+        margin-bottom: 2rem !important;
+        gap: 0.5rem !important;
+    }
+
+    .sa-form-header .sa-page-title-text {
+        font-size: 1.75rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .sa-form-subtitle {
+        font-size: 0.9rem !important;
+    }
+
+    .sa-form-group {
+        margin-bottom: 1.25rem !important;
+    }
+
+    .sa-form-group label {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .sa-form-group input,
+    .sa-form-group textarea,
+    .sa-form-group select {
+        padding: 0.875rem 1rem !important;
+        font-size: 0.95rem !important;
+        border-radius: 12px !important;
+        height: auto !important;
+        min-height: 48px !important;
+    }
+
+    .sa-form-group textarea {
+        min-height: 100px !important;
+    }
+
+    /* Stack form rows vertically on mobile */
+    .sa-form-row {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem !important;
+    }
+
+    /* Form actions - stack vertically with full width */
+    .sa-form-actions {
+        flex-direction: column-reverse !important;
+        gap: 0.75rem !important;
+        margin-top: 1.5rem !important;
+        padding-top: 1.5rem !important;
+    }
+
+    .sa-form-actions .sa-btn-primary,
+    .sa-form-actions .sa-btn-secondary {
+        width: 100% !important;
+        height: 52px !important;
+        font-size: 0.95rem !important;
+    }
+
+    .sa-section-header,
+    .sa-form-divider {
+        font-size: 0.7rem !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .sa-error-text {
+        font-size: 0.85rem !important;
+        padding: 0.75rem !important;
+        margin-bottom: 1rem !important;
     }
 }
 

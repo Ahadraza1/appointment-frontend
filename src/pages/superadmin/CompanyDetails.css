@@ -1,15 +1,8 @@
-/* Company Details Page - Premium SaaS Aesthetic */
-
+/* Company Details Page - Premium Industrial Aesthetic */
 .sa-company-details-page {
   width: 100%;
-  padding-bottom: 3rem;
-}
-
-/* NEW: inner scroll wrapper */
-.sa-company-details-scroll {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  padding: 1rem 1.5rem 3rem;
+  animation: saFadeIn 0.4s ease-out;
 }
 
 
@@ -21,6 +14,8 @@
   align-items: center;
   margin-bottom: 2rem;
   padding: 0.5rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .sa-breadcrumbs {
@@ -78,15 +73,16 @@
 .sa-page-header {
   background: white;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 1.75rem 2rem;
+  border-radius: 20px;
+  padding: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .sa-page-header::after {
@@ -94,45 +90,58 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 4px;
+  width: 5px;
   height: 100%;
-  background: #0ea5e9;
+  background: linear-gradient(to bottom, #0ea5e9, #6366f1);
+}
+
+.sa-header-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .sa-header-title-section h2 {
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 1.75rem;
+  font-weight: 900;
   color: #0f172a;
   margin: 0;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
 }
 
 .sa-id-badge {
   display: inline-flex;
   align-items: center;
   background: #f1f5f9;
-  color: #64748b;
+  color: #475569;
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: 6px;
-  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px;
   border: 1px solid #e2e8f0;
+  letter-spacing: 0.01em;
+  width: fit-content;
+  word-break: break-all;
+  line-height: 1.4;
 }
 
 .sa-status-pill.active {
-  background: #f0fdf4;
-  color: #166534;
-  border: 1px solid #dcfce7;
-  padding: 0.5rem 1rem;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #d1fae5;
+  padding: 0.6rem 1.25rem;
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  border-radius: 9999px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  height: max-content;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);
 }
 
 .sa-status-pill .dot {
@@ -161,8 +170,6 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 3rem;
-
-  min-width: 900px; /* 🔥 desktop layout preserved */
 }
 
 
@@ -208,9 +215,14 @@
 }
 
 .sa-company-details-page .sa-stat-value {
-  font-size: 2.25rem;
-  font-weight: 800;
+  font-size: 2.75rem;
+  font-weight: 900;
   margin-top: 0.25rem;
+  letter-spacing: -0.05em;
+  background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Management Section */
@@ -239,8 +251,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-
-  min-width: 900px; /* 🔥 add this */
 }
 
 
@@ -261,9 +271,9 @@
 
 .sa-action-card:hover {
   border-color: #0ea5e9;
-  background: #f8fafc;
-  transform: translateY(-4px);
-  box-shadow: 0 12px 20px -8px rgba(14, 165, 233, 0.15);
+  background: white;
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
 }
 
 .action-icon {
@@ -280,9 +290,10 @@
 }
 
 .sa-action-card:hover .action-icon {
-  background: #e0f2fe;
-  color: #0ea5e9;
+  background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+  color: white;
   transform: rotate(-3deg) scale(1.1);
+  box-shadow: 0 8px 15px rgba(14, 165, 233, 0.2);
 }
 
 .action-info h4 {
@@ -324,21 +335,131 @@
 
 
 /* Loading & Error States */
-.sa-loading-container, .sa-error-container {
-  min-height: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  margin: 2rem auto;
-  max-width: 600px;
+/* Responsive Adjustments - Master Precision */
+@media (max-width: 1024px) {
+  .sa-company-details-page .sa-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.sa-error-container p {
-  color: #ef4444;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
+@media (max-width: 768px) {
+  .sa-company-details-page {
+    padding: 1rem 1rem 3rem;
+  }
+
+  .sa-page-header {
+    flex-direction: column;
+    align-items: stretch; /* Master precision: full width usage */
+    text-align: left;
+    gap: 2rem;
+    padding: 2rem 1.75rem;
+  }
+
+  .sa-header-title-section {
+    align-items: flex-start;
+  }
+
+  .sa-header-title-section h2 {
+    font-size: 2rem;
+  }
+
+  .sa-id-badge {
+    width: 100%;
+    font-size: 0.7rem;
+    background: #f8fafc;
+    justify-content: flex-start;
+    padding: 0.75rem 1rem;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  }
+
+  .sa-status-pill.active {
+    align-self: flex-start;
+    width: 100%;
+    justify-content: center;
+    padding: 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .sa-action-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .sa-stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  .sa-breadcrumb-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .sa-breadcrumbs {
+    justify-content: center;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    background: #f1f5f9;
+    border-radius: 12px;
+  }
+
+  .sa-back-link {
+    width: 100%;
+    justify-content: center;
+    height: 52px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    font-size: 0.9rem;
+    color: #1e293b;
+  }
+
+  .sa-action-card {
+    padding: 1.75rem;
+    gap: 1.25rem;
+    border-radius: 18px;
+  }
+
+  .action-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+  }
+
+  .sa-stat-card {
+    padding: 1.75rem;
+    align-items: center;
+    text-align: center;
+    min-height: auto;
+  }
+
+  .sa-stat-value {
+    font-size: 2.25rem !important;
+  }
+
+  .section-title {
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sa-header-title-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .sa-action-card h4 {
+    font-size: 1.05rem;
+  }
+
+  .sa-action-card p {
+    font-size: 0.85rem;
+  }
+}
+
+@keyframes saFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

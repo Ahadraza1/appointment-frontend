@@ -84,46 +84,48 @@ const CustomerAppointments = () => {
 
       {/* APPOINTMENTS TABLE */}
       <div className="sa-data-card">
-        {appointments.length === 0 ? (
-          <p className="sa-empty-state-text">
-            No appointments found for this customer.
-          </p>
-        ) : (
-          <table className="sa-data-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Service</th>
-                <th>Price</th>
-                <th>Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointments.map((appt, index) => (
-                <tr key={appt._id}>
-                  <td>{index + 1}</td>
-                  <td>{appt.serviceId?.name || "—"}</td>
-                  <td>{appt.serviceId?.price || "—"}</td>
-                  <td>
-                    {appt.date
-                      ? new Date(appt.date).toLocaleDateString()
-                      : "—"}
-                  </td>
-                  <td>
-                    <span
-                      className={`sa-status-pill ${
-                        appt.status || "pending"
-                      }`}
-                    >
-                      {appt.status || "pending"}
-                    </span>
-                  </td>
+        <div className="sa-table-wrapper">
+          {appointments.length === 0 ? (
+            <p className="sa-empty-state-text" style={{ padding: "2rem", textAlign: "center" }}>
+              No appointments found for this customer.
+            </p>
+          ) : (
+            <table className="sa-data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Service</th>
+                  <th>Price</th>
+                  <th>Date</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {appointments.map((appt, index) => (
+                  <tr key={appt._id}>
+                    <td>{index + 1}</td>
+                    <td>{appt.serviceId?.name || "—"}</td>
+                    <td>{appt.serviceId?.price || "—"}</td>
+                    <td>
+                      {appt.date
+                        ? new Date(appt.date).toLocaleDateString()
+                        : "—"}
+                    </td>
+                    <td>
+                      <span
+                        className={`sa-status-pill ${
+                          appt.status || "pending"
+                        }`}
+                      >
+                        {appt.status || "pending"}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );

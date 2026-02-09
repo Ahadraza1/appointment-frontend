@@ -651,14 +651,31 @@
         padding: 0.75rem;
     }
 
-    /* Hide desktop table on mobile */
+    /* Master Visibility Restoration: Table & Wrapper */
     .sa-table-wrapper {
-        display: none !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1rem;
     }
 
-    /* Remove table card accent bar on mobile */
+    .sa-data-table {
+        display: table !important;
+        width: 100% !important;
+        min-width: 900px !important; /* Industrial floor for master feel */
+        visibility: visible !important;
+    }
+
+    .sa-services-table-card {
+        border-radius: 20px;
+        margin-bottom: 2rem;
+    }
+
     .sa-services-table-card::before {
-        display: none !important;
+        display: block !important;
     }
 
     .sa-services-header-responsive {
@@ -668,117 +685,43 @@
         margin-bottom: 2rem;
     }
 
-    .sa-header-top-row {
-        flex-direction: row;
-        gap: 1rem;
-    }
-
     .sa-header-control-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
     }
 
     .sa-filter-select-rounded,
     .sa-add-service-btn,
     .sa-search-bar-container {
         width: 100% !important;
-        min-width: 100% !important;
+        max-width: 100% !important;
         height: 52px;
         margin: 0;
         border-radius: 14px;
-    }
-
-    .sa-add-service-btn {
-        padding: 0 1.75rem;
-        border-radius: 14px;
-        background: linear-gradient(135deg, var(--sa-secondary) 0%, #003a54 100%);
-        color: white;
-        font-weight: 700;
-        font-size: 0.9rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-        box-shadow: 0 8px 20px rgba(0, 78, 112, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    .sa-add-service-btn:active {
-        transform: scale(0.96);
-        filter: brightness(1.15);
-        box-shadow: 0 4px 10px rgba(0, 78, 112, 0.15);
-    }
-
-    /* Refined Mobile Cards */
-    .sa-mobile-cards {
-        display: flex;
-        padding: 0;
-        gap: 1rem;
-    }
-
-    .sa-service-mobile-card {
-        padding: 1.25rem;
-        gap: 1rem;
-        border-radius: 18px;
-    }
-
-    .sa-card-sno {
-        background: #eef2ff;
-        color: var(--sa-primary);
-        padding: 2px 8px;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        margin-top: 0;
-    }
-
-    .sa-service-name-text {
-        font-size: 1.1rem;
-    }
-
-    .sa-card-grid {
-        grid-template-columns: 1fr 1fr;
-        padding: 0.75rem;
-        border-radius: 12px;
-        gap: 0.75rem;
-    }
-
-    .sa-card-label {
-        font-size: 0.65rem;
-        margin-bottom: 0.15rem;
-    }
-
-    .sa-card-value {
-        font-size: 0.95rem;
     }
 
     /* Optimized Pagination */
     .sa-pagination-footer {
         flex-direction: column;
         gap: 1.25rem;
-        padding: 1.25rem;
-        border-radius: 18px;
-        margin-top: 1.5rem;
+        padding: 1.5rem;
+        border-radius: 0;
+        margin-top: 0;
+        background: #fafbfc;
     }
 
     .sa-showing-entries {
         width: 100%;
         text-align: center;
-        font-size: 0.8rem;
-        padding: 0.5rem;
+        font-size: 0.85rem;
+        background: transparent;
+        border: none;
+        box-shadow: none;
     }
 
     .sa-pag-controls {
         width: 100%;
         justify-content: center;
-        gap: 0.4rem;
-    }
-
-    .sa-pag-link {
-        height: 36px;
-        min-width: 36px;
-        padding: 0 0.75rem;
-        font-size: 0.8rem;
     }
 }
