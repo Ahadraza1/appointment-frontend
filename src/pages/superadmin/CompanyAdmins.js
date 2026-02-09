@@ -90,6 +90,7 @@ const CompanyAdmins = () => {
           <table className="sa-data-table">
             <thead>
               <tr>
+                <th style={{ width: "60px" }}>#</th>
                 <th>Company Name</th>
                 <th>Company Email</th>
                 <th>Admin Name</th>
@@ -101,13 +102,16 @@ const CompanyAdmins = () => {
             <tbody>
               {paginatedAdmins.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="sa-empty-state-row">
+                  <td colSpan="6" className="sa-empty-state-row">
                     <p className="sa-empty-state-text">No company admins found</p>
                   </td>
                 </tr>
               ) : (
-                paginatedAdmins.map((item) => (
+                paginatedAdmins.map((item, index) => (
                   <tr key={item.adminId}>
+                    <td className="sa-sno-cell">
+                      {(currentPage - 1) * itemsPerPage + index + 1}
+                    </td>
                     <td>{item.company?.companyName || "-"}</td>
                     <td>{item.company?.companyEmail || "-"}</td>
 
