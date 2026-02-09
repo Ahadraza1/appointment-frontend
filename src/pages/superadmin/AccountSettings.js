@@ -48,10 +48,16 @@ const AccountSettings = () => {
     setMessage("");
 
     try {
-      await updateSuperAdminProfile({
+      const res = await updateSuperAdminProfile({
         name: profile.name,
         phone: profile.phone,
+        email: profile.email,
       });
+
+      // 🔥 IMPORTANT: sync updated profile to state
+      if (res?.data?.profile) {
+        setProfile(res.data.profile);
+      }
 
       setMessage("Profile updated successfully");
     } catch (err) {
