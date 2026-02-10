@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
@@ -24,13 +23,13 @@ export const AuthProvider = ({ children }) => {
       try {
         const parsedUser = JSON.parse(userData);
 
-        // ✅ role normalize (SAFE FIX)
+        // ✅ normalize role
         if (parsedUser?.role) {
           parsedUser.role = parsedUser.role.toLowerCase();
         }
 
         setUser(parsedUser);
-      } catch {
+      } catch{
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         setUser(null);

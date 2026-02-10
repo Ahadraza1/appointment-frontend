@@ -59,16 +59,29 @@ const Companies = () => {
   const handleOpenAdminPanel = async (companyId) => {
     try {
       const res = await impersonateCompanyAdmin(companyId);
-
       const { token } = res.data;
 
-      // ✅ store impersonation token
-      localStorage.setItem("token", token);
+      // 🔑 decode JWT payload
+      const payload = JSON.parse(atob(token.split(".")[1]));
+
+      // ✅ set exactly what AuthContext expects
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          token,
+          user: {
+            _id: payload.id,
+            role: payload.role,
+            companyId: payload.companyId,
+            impersonatedBy: payload.impersonatedBy,
+          },
+        }),
+      );
 
       toast.success("Redirected to company admin panel");
 
-      // ✅ redirect to company admin dashboard
-      window.location.href = "/admin/dashboard";
+      // 🔁 hard reload so AuthContext re-initializes
+      window.location.replace("/admin/dashboard");
     } catch (error) {
       console.error("Impersonation error:", error);
       toast.error(
