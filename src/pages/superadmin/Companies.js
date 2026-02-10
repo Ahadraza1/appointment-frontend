@@ -7,11 +7,10 @@ import {
   deleteCompany,
   impersonateCompanyAdmin,
 } from "../../services/superAdminService";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./SuperAdminPages.css";
 
 const Companies = () => {
-  const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
