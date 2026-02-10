@@ -68,7 +68,7 @@ const Companies = () => {
       toast.success("Redirected to company admin panel");
 
       // ✅ redirect to company admin dashboard
-      navigate("/admin/dashboard");
+      window.location.href = "/admin/dashboard";
     } catch (error) {
       console.error("Impersonation error:", error);
       toast.error(
