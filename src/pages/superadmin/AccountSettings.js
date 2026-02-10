@@ -56,6 +56,12 @@ const AccountSettings = () => {
     setError("");
     setMessage("");
 
+    console.log("Submitting profile:", {
+      name: profile.name,
+      phone: profile.phone,
+      email: profile.email,
+    });
+
     try {
       const res = await updateSuperAdminProfile({
         name: profile.name,
@@ -115,8 +121,6 @@ const AccountSettings = () => {
       setLoading(false);
     }
   };
-  console.log("Submitting profile:", profile);
-
 
   return (
     <div className="sa-dashboard-container">
