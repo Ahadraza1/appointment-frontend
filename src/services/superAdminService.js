@@ -81,57 +81,44 @@ export const getCompanyCustomers = (companyId) => {
 // ================= GET CUSTOMER APPOINTMENTS (SUPER ADMIN) =================
 export const getCompanyCustomerAppointments = (companyId, customerId) => {
   return api.get(
-    `/superadmin/company/${companyId}/customers/${customerId}/appointments`
+    `/superadmin/company/${companyId}/customers/${customerId}/appointments`,
   );
 };
 
 // ADD SERVICE (SUPER ADMIN)
 export const createService = (companyId, data) => {
-  return api.post(
-    `/superadmin/company/${companyId}/services`,
-    data
-  );
+  return api.post(`/superadmin/company/${companyId}/services`, data);
 };
 
 // EDIT SERVICE (SUPER ADMIN)
 export const updateService = (serviceId, data) => {
-  return api.put(
-    `/superadmin/services/${serviceId}`,
-    data
-  );
+  return api.put(`/superadmin/services/${serviceId}`, data);
 };
-
 
 /// TOGGLE SERVICE STATUS (SUPER ADMIN)
 export const toggleServiceStatus = (serviceId, currentStatus) => {
   const newStatus = currentStatus === "active" ? "inactive" : "active";
 
-  return api.patch(
-    `/superadmin/services/${serviceId}/status`,
-    { status: newStatus }
-  );
+  return api.patch(`/superadmin/services/${serviceId}/status`, {
+    status: newStatus,
+  });
 };
 
 // DELETE SERVICE (SUPER ADMIN)
 export const deleteService = (serviceId) => {
-  return api.delete(
-    `/superadmin/services/${serviceId}`
-  );
+  return api.delete(`/superadmin/services/${serviceId}`);
 };
 
 // ================= UPDATE APPOINTMENT STATUS (SUPER ADMIN) =================
 export const updateAppointmentStatus = (
   appointmentId,
   status,
-  rejectionReason = ""
+  rejectionReason = "",
 ) => {
-  return api.put(
-    `/superadmin/appointments/${appointmentId}/status`,
-    {
-      status,
-      rejectionReason,
-    }
-  );
+  return api.put(`/superadmin/appointments/${appointmentId}/status`, {
+    status,
+    rejectionReason,
+  });
 };
 
 // ================= SUPERADMIN PROFILE =================
@@ -147,5 +134,13 @@ export const changeSuperAdminPassword = (data) => {
   return api.put("/superadmin/change-password", data);
 };
 
+// ================= SUPERADMIN PROFILE PHOTO =================
+export const updateSuperAdminProfilePhoto = (formData) => {
+  return api.put("/superadmin/profile/photo", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
 
 export default api;

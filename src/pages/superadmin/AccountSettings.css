@@ -1,0 +1,333 @@
+/* ==========================================================================
+   ACCOUNT SETTINGS - MASTER LEVEL STYLES
+   ========================================================================== */
+
+/* Main Container Override */
+.sa-settings-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* 
+   ----------------------------------------
+   TABS STYLING (PREMIUM PILL DESIGN)
+   ----------------------------------------
+*/
+.sa-tabs-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  background: transparent;
+  padding: 0;
+  border: none;
+}
+
+.sa-tabs-list {
+  display: inline-flex;
+  background: #f1f5f9; /* Slate-100 */
+  padding: 0.35rem;
+  border-radius: 12px;
+  gap: 0.25rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.sa-settings-tab {
+  padding: 0.65rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b; /* Slate-500 */
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sa-settings-tab:hover {
+  color: #1e293b;
+}
+
+.sa-settings-tab.active {
+  background: white;
+  color: #0f172a; /* Slate-900 */
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.1), 
+    0 1px 2px rgba(0, 0, 0, 0.06);
+  transform: translateY(0);
+}
+
+/* 
+   ----------------------------------------
+   PROFILE LAYOUT (SIDEBAR + FORM)
+   ----------------------------------------
+*/
+.sa-profile-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Left Sidebar (Avatar Section) */
+.sa-profile-sidebar {
+  background: white;
+  border-radius: 24px;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.02), 
+    0 10px 15px -3px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Avatar Wrapper */
+.sa-avatar-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.sa-avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background-color: #f1f5f9;
+}
+
+.sa-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
+.sa-avatar-upload-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: #0f172a;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid #fff;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sa-avatar-upload-btn:hover {
+  background: #334155;
+  transform: scale(1.1);
+}
+
+.sa-profile-role-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.5rem;
+}
+
+/* Right Content (Form Section) */
+.sa-profile-content {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.02), 
+    0 10px 15px -3px rgba(0, 0, 0, 0.03);
+}
+
+.sa-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.sa-section-desc {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+}
+
+/* Form Grid */
+.sa-grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.sa-full-width {
+  grid-column: 1 / -1;
+}
+
+/* 
+   ----------------------------------------
+   INPUT GROUPS (PREMIUM)
+   ----------------------------------------
+*/
+.sa-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sa-input-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.sa-input-wrapper {
+  position: relative;
+}
+
+.sa-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: white;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sa-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.sa-input:disabled {
+  background: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Icons inside input */
+.sa-input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.sa-input.has-icon {
+  padding-left: 2.75rem;
+}
+
+/* Buttons */
+.sa-btn-premium {
+  height: 48px;
+  padding: 0 2rem;
+  background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sa-btn-premium:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+}
+
+.sa-btn-premium:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 
+   ----------------------------------------
+   SECURITY SECTION
+   ----------------------------------------
+*/
+.sa-security-layout {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.02), 
+    0 10px 15px -3px rgba(0, 0, 0, 0.03);
+}
+
+/* 
+   ----------------------------------------
+   RESPONSIVE
+   ----------------------------------------
+*/
+@media (max-width: 768px) {
+  .sa-profile-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .sa-grid-form {
+    grid-template-columns: 1fr;
+  }
+  
+  .sa-tabs-list {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .sa-settings-tab {
+    flex: 1;
+    justify-content: center;
+    padding: 0.75rem;
+  }
+
+  .sa-profile-sidebar {
+    padding: 1.5rem;
+  }
+
+  .sa-profile-content {
+      padding: 1.5rem;
+  }
+}
