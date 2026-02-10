@@ -1,9 +1,9 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const AdminRoute = ({ children }) => {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
+ const { isAuthenticated, isAdmin, loading, user } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -19,7 +19,7 @@ const AdminRoute = ({ children }) => {
     return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
-  if (!isAdmin) {
+  if (!isAdmin && user?.impersonatedBy !== "superadmin") {
     return <Navigate to="/" replace />;
   }
 

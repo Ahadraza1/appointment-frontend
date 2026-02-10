@@ -49,6 +49,15 @@ export const deleteCompany = (companyId) => {
   return api.delete(`/superadmin/company/${companyId}`);
 };
 
+/* ================= IMPERSONATE COMPANY ADMIN ================= */
+
+// SuperAdmin login as Company Admin
+export const impersonateCompanyAdmin = (companyId) => {
+  return api.post("/superadmin/impersonate-company-admin", {
+    companyId,
+  });
+};
+
 /* ================= COMPANY DETAILS ================= */
 
 // Get company stats
