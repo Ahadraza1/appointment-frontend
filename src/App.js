@@ -169,15 +169,14 @@ function App() {
               path="/superadmin/companies/:companyId/customers"
               element={<CompanyCustomers />}
             />
+            {/* ✅ MOVED ACCOUNT SETTINGS INSIDE LAYOUT */}
+            <Route path="/superadmin/settings" element={<AccountSettings />} />
           </Route>
 
           <Route
             path="/superadmin/companies/:companyId/customers/:customerId/appointments"
             element={<CustomerAppointments />}
           />
-
-          <Route path="/superadmin/settings" element={<AccountSettings />} />
-          
         </Route>
         {/* ================= 404 ================= */}
         <Route path="*" element={<Navigate to="/" replace />} />

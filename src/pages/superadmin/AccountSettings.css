@@ -121,6 +121,7 @@
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
 }
 
+/* UPLOAD BUTTON (Bottom Right) */
 .sa-avatar-upload-btn {
   position: absolute;
   bottom: 0;
@@ -137,11 +138,44 @@
   border: 2px solid #fff;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
 }
 
 .sa-avatar-upload-btn:hover {
   background: #334155;
   transform: scale(1.1);
+}
+
+/* REMOVE BUTTON (Top Right) */
+.sa-avatar-remove-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px; /* Slightly smaller than upload */
+  height: 32px;
+  background: #ef4444; /* Red-500 */
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid #fff;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
+  padding: 0;
+}
+
+.sa-avatar-remove-btn:hover {
+  background: #dc2626; /* Red-600 */
+  transform: scale(1.1);
+}
+
+.sa-avatar-remove-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.5;
 }
 
 .sa-profile-role-badge {
