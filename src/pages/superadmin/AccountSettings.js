@@ -36,7 +36,7 @@ const AccountSettings = () => {
   const fetchProfile = async () => {
     try {
       const res = await getSuperAdminProfile();
-
+      const BASE_URL = process.env.REACT_APP_API_URL?.replace("/api", "");
       // ✅ name & phone profile state me
       setProfile({
         name: res.data.profile.name,
@@ -46,9 +46,7 @@ const AccountSettings = () => {
 
       // ✅ ADD: set preview image from backend
       if (res.data.profile.profilePhoto) {
-        setPreviewImage(
-          `${process.env.REACT_APP_API_URL}${res.data.profile.profilePhoto}`,
-        );
+        setPreviewImage(`${BASE_URL}${res.data.profile.profilePhoto}`);
       }
 
       setEmail(res.data.profile.email);
