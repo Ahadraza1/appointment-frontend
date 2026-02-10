@@ -115,6 +115,8 @@ const AccountSettings = () => {
       setLoading(false);
     }
   };
+  console.log("Submitting profile:", profile);
+
 
   return (
     <div className="sa-dashboard-container">
