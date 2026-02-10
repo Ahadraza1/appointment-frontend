@@ -35,9 +35,9 @@ const AccountSettings = () => {
       setProfile({
         name: res.data.profile.name,
         phone: res.data.profile.phone,
+        email: res.data.profile.email, // ✅ ADD THIS LINE
       });
 
-      // 🔥 email ko separate state me sync karo
       setEmail(res.data.profile.email);
     } catch (err) {
       console.error("Load profile error:", err);
@@ -60,7 +60,7 @@ const AccountSettings = () => {
       const res = await updateSuperAdminProfile({
         name: profile.name,
         phone: profile.phone,
-        email: email,
+        email: profile.email,
       });
 
       setProfile(res.data.profile);
@@ -207,8 +207,10 @@ const AccountSettings = () => {
                   <input
                     type="email"
                     className="sa-form-input"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={profile.email}
+                    onChange={(e) =>
+                      setProfile({ ...profile, email: e.target.value })
+                    }
                     placeholder="email@example.com"
                   />
 
