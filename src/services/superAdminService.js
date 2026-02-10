@@ -143,4 +143,9 @@ export const updateSuperAdminProfilePhoto = (formData) => {
   });
 };
 
+// ================= REMOVE SUPERADMIN PROFILE PHOTO =================
+export const removeSuperAdminProfilePhoto = () => {
+  return api.put("/superadmin/profile/photo/remove");
+};
+
 export default api;

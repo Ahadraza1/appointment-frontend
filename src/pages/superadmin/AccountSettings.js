@@ -4,6 +4,7 @@ import {
   updateSuperAdminProfile,
   changeSuperAdminPassword,
   updateSuperAdminProfilePhoto,
+  removeSuperAdminProfilePhoto,
 } from "../../services/superAdminService";
 import "./SuperAdminPages.css";
 import "./AccountSettings.css"; // Import new specific styles
@@ -158,6 +159,33 @@ const AccountSettings = () => {
     setPreviewImage(URL.createObjectURL(file)); // ✅ preview
   };
 
+  /* ================= REMOVE PROFILE PHOTO ================= */
+  const handleRemovePhoto = async () => {
+    try {
+      setLoading(true);
+
+      const res = await removeSuperAdminProfilePhoto();
+
+      // UI reset
+      setPreviewImage(null);
+      setProfilePhotoFile(null);
+
+      // localStorage sync (for header)
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      if (userInfo?.user) {
+        userInfo.user.profilePhoto = null;
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      }
+
+      setMessage("Profile photo removed successfully");
+    } catch (err) {
+      console.error("Remove photo error:", err);
+      setError("Failed to remove profile photo");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="sa-dashboard-container">
       <div className="sa-settings-wrapper">
@@ -277,6 +305,24 @@ const AccountSettings = () => {
                   <div className="sa-avatar-fallback">
                     {profile.name ? profile.name.charAt(0).toUpperCase() : "A"}
                   </div>
+                )}
+
+                {previewImage && (
+                  <button
+                    type="button"
+                    onClick={handleRemovePhoto}
+                    className="sa-avatar-remove-btn"
+                    style={{
+                      marginTop: "0.75rem",
+                      background: "transparent",
+                      border: "none",
+                      color: "#ef4444",
+                      fontSize: "0.8rem",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Remove Photo
+                  </button>
                 )}
 
                 <label className="sa-avatar-upload-btn" title="Upload Photo">
