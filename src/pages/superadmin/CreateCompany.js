@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createCompany } from "../../services/superAdminService";
+import { superAdminCreatedCompanyAdmin } from "../../services/bookingEmailAction";
 import "./SuperAdminPages.css";
 
 const CreateCompany = () => {
@@ -42,6 +43,15 @@ const CreateCompany = () => {
       };
 
       await createCompany(payload);
+
+      // 🔥 SEND EMAIL TO COMPANY ADMIN
+      await superAdminCreatedCompanyAdmin({
+        companyEmail: formData.companyEmail,
+        adminEmail: formData.adminEmail,
+        tempPassword: formData.adminPassword,
+        companyName: formData.companyName,
+      });
+
       navigate("/superadmin/companies");
     } catch (err) {
       console.error("Create company error:", err);
@@ -159,11 +169,7 @@ const CreateCompany = () => {
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="sa-btn-primary"
-              disabled={loading}
-            >
+            <button type="submit" className="sa-btn-primary" disabled={loading}>
               {loading ? "Creating..." : "Create Company"}
             </button>
           </div>

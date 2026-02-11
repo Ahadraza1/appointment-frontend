@@ -1,4 +1,10 @@
-import { sendAdminEmail, sendCustomerEmail, sendInvoiceEmail } from "../utils/email.js";
+import { 
+  sendAdminEmail, 
+  sendCustomerEmail, 
+  sendInvoiceEmail,
+  sendSuperAdminToCompanyAdminEmail 
+} from "../utils/email.js";
+
 
 
 /* ===============================
@@ -134,3 +140,33 @@ export const sendInvoiceToCustomer = async (invoice) => {
   });
 };
 
+/* ===============================
+   7️⃣ SUPERADMIN → COMPANY ADMIN CREATED
+================================ */
+export const superAdminCreatedCompanyAdmin = async ({
+  companyEmail,
+  adminEmail,
+  tempPassword,
+  companyName,
+}) => {
+  return sendSuperAdminToCompanyAdminEmail({
+    notification_title: "Admin Account Created",
+    notification_message:
+      "Super Admin has created an admin account for your company.",
+
+    admin_name: "Company Admin",
+
+    login_email: adminEmail,
+    login_password: tempPassword,
+
+    credentials_section_style: "",
+    booking_section_style: "display:none;",
+
+    footer_note:
+      "Please log in and Check Your Credentials.",
+
+    company_name: companyName,
+
+    to_email: companyEmail,
+  });
+};

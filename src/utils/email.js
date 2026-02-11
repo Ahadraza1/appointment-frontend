@@ -84,3 +84,36 @@ export const sendInvoiceEmail = (payload) => {
     PUBLIC_KEY
   );
 };
+
+/* ===============================
+   SUPERADMIN → COMPANY ADMIN
+   (Uses ADMIN TEMPLATE)
+================================ */
+export const sendSuperAdminToCompanyAdminEmail = (payload) => {
+  return emailjs.send(
+    SERVICE_ID,
+    ADMIN_TEMPLATE_ID, // SAME admin template
+    {
+      notification_title: payload.notification_title,
+      notification_message: payload.notification_message,
+
+      admin_name: payload.admin_name,
+
+      // 🔐 Credentials
+      login_email: payload.login_email || "",
+      login_password: payload.login_password || "",
+
+      // 👇 Control sections in template
+      credentials_section_style: payload.credentials_section_style || "",
+      booking_section_style: payload.booking_section_style || "display:none;",
+
+      footer_note: payload.footer_note || "",
+
+      company_name: payload.company_name || "Your Company Name",
+
+      // IMPORTANT (recipient email)
+      to_email: payload.to_email,
+    },
+    PUBLIC_KEY
+  );
+};
