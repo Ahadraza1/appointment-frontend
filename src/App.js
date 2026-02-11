@@ -85,6 +85,10 @@ function App() {
             />
             <Route path="my-appointments" element={<MyAppointments />} />
             <Route path="profile" element={<CustomerProfile />} />
+
+            <Route path="payment" element={<Payment />} />
+            <Route path="payment-success" element={<PaymentSuccess />} />
+            <Route path="payment-failed" element={<PaymentFailed />} />
           </Route>
 
           <Route path="about" element={<About />} />
