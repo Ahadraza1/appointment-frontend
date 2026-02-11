@@ -157,4 +157,14 @@ export const removeSuperAdminProfilePhoto = () => {
   return api.put("/superadmin/profile/photo/remove");
 };
 
+/* ================= CHANGE COMPANY ADMIN PASSWORD (SUPER ADMIN) ================= */
+
+export const changeCompanyAdminPassword = (adminId, email, newPassword) => {
+  return api.put(`/superadmin/company-admins/${adminId}/password`, {
+    email,
+    newPassword,
+  });
+};
+
+
 export default api;

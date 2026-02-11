@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCompanyCustomers} from "../../services/superAdminService";
 import "./SuperAdminPages.css";
@@ -30,6 +31,7 @@ const CompanyCustomers = () => {
       setCustomers(res.data.customers || []);
     } catch (error) {
       console.error("Fetch company customers error", error);
+      toast.error("Failed to load company customers");
     } finally {
       setLoading(false);
     }

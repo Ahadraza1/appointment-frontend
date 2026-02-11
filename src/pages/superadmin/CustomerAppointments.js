@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   getCompanyCustomerAppointments,
@@ -34,6 +35,7 @@ const CustomerAppointments = () => {
     } catch (err) {
       console.error("Fetch customer appointments error:", err);
       setError("Failed to load customer appointments");
+      toast.error("Failed to load customer appointments");
     } finally {
       setLoading(false);
     }
@@ -43,10 +45,11 @@ const CustomerAppointments = () => {
   const handleApprove = async (appointmentId) => {
     try {
       await updateAppointmentStatus(appointmentId, "approved");
+      toast.success("Appointment approved successfully");
       fetchAppointments(); // refresh list
     } catch (err) {
       console.error("Approve error:", err);
-      alert("Failed to approve appointment");
+      toast.error("Failed to approve appointment");
     }
   };
 
@@ -57,10 +60,11 @@ const CustomerAppointments = () => {
 
     try {
       await updateAppointmentStatus(appointmentId, "rejected", reason);
+      toast.success("Appointment rejected successfully");
       fetchAppointments(); // refresh list
     } catch (err) {
       console.error("Reject error:", err);
-      alert("Failed to reject appointment");
+      toast.error("Failed to reject appointment");
     }
   };
 

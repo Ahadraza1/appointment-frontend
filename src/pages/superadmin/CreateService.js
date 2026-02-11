@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
 import { createService } from "../../services/superAdminService";
 import "./SuperAdminPages.css";
@@ -30,6 +31,7 @@ const CreateService = () => {
     setError("");
 
     if (!formData.name || !formData.duration || !formData.price) {
+      toast.error("Name, duration and price are required");
       return setError("Name, duration and price are required");
     }
 
@@ -41,10 +43,12 @@ const CreateService = () => {
         price: Number(formData.price),
       });
 
+      toast.success("Service created successfully");
       navigate(`/superadmin/companies/${companyId}/services`);
     } catch (err) {
       console.error("Create service error:", err);
       setError("Failed to create service");
+      toast.error("Failed to create service");
     } finally {
       setLoading(false);
     }
@@ -56,8 +60,6 @@ const CreateService = () => {
         <div className="sa-form-header">
           <h2 className="sa-page-title-text">Add Service</h2>
         </div>
-
-        {error && <p className="sa-error-text">{error}</p>}
 
         <form onSubmit={handleSubmit} className="sa-form">
           <div className="sa-form-group">

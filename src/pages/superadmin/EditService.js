@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   updateService,
@@ -34,6 +35,7 @@ const EditService = () => {
 
       if (!service) {
         setError("Service not found");
+        toast.error("Service not found");
         return;
       }
 
@@ -47,6 +49,7 @@ const EditService = () => {
     } catch (err) {
       console.error("Fetch service error:", err);
       setError("Failed to load service details");
+      toast.error("Failed to load service details");
     } finally {
       setLoading(false);
     }
@@ -68,6 +71,7 @@ const EditService = () => {
     setError("");
 
     if (!formData.name || !formData.duration || !formData.price) {
+      toast.error("Name, duration and price are required");
       return setError("Name, duration and price are required");
     }
 
@@ -79,10 +83,12 @@ const EditService = () => {
         price: Number(formData.price),
       });
 
+      toast.success("Service updated successfully");
       navigate(`/superadmin/companies/${id}/services`);
     } catch (err) {
       console.error("Update service error:", err);
       setError("Failed to update service");
+      toast.error("Failed to update service");
     } finally {
       setSaving(false);
     }
@@ -103,8 +109,6 @@ const EditService = () => {
         <div className="sa-form-header">
           <h2 className="sa-page-title-text">Edit Service</h2>
         </div>
-
-        {error && <p className="sa-error-text">{error}</p>}
 
         <form onSubmit={handleSubmit} className="sa-form">
           <div className="sa-form-group">

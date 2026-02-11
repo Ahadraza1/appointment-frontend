@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "../customer/Auth.css";
@@ -22,7 +23,9 @@ const SuperAdminLogin = () => {
 
       // 🔒 role check (FIXED)
       if (data.role !== "superadmin") {
-        setError("Access denied. Super Admin only.");
+        const accessError = "Access denied. Super Admin only.";
+        setError(accessError);
+        toast.error(accessError);
         setLoading(false);
         return;
       }
@@ -37,9 +40,12 @@ const SuperAdminLogin = () => {
         }),
       );
 
+      toast.success("Login successful! Welcome Super Admin.");
       navigate("/superadmin/dashboard");
     } catch (err) {
-      setError(err?.response?.data?.message || "Invalid email or password");
+      const loginError = err?.response?.data?.message || "Invalid email or password";
+      setError(loginError);
+      toast.error(loginError);
     } finally {
       setLoading(false);
     }
@@ -72,15 +78,6 @@ const SuperAdminLogin = () => {
               Sign in to access the super admin panel
             </p>
           </div>
-
-          {error && (
-            <div
-              className="alert alert-error"
-              style={{ marginBottom: "var(--spacing-4)" }}
-            >
-              {error}
-            </div>
-          )}
 
           <form className="auth-form" onSubmit={submitHandler}>
             <div className="form-group">

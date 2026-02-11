@@ -1653,6 +1653,18 @@
   margin: 0;
 }
 
+.sa-modal-body {
+  padding: 1.5rem;
+}
+
+.sa-modal-body .sa-form-group {
+    margin-bottom: 1.25rem;
+}
+
+.sa-modal-body .sa-form-group:last-child {
+    margin-bottom: 0;
+}
+
 .sa-modal-footer {
   padding: 1.25rem 1.5rem;
   background: #f8fafc;
@@ -1660,6 +1672,14 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+}
+
+.sa-modal-footer .sa-btn-primary,
+.sa-modal-footer .sa-btn-secondary {
+  height: 42px;
+  padding: 0 1.25rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
 }
 
 /* Animations */

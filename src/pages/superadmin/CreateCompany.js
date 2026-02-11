@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { createCompany } from "../../services/superAdminService";
 import { superAdminCreatedCompanyAdmin } from "../../services/bookingEmailAction";
@@ -52,10 +53,13 @@ const CreateCompany = () => {
         companyName: formData.companyName,
       });
 
+      toast.success("Company created and admin notified successfully");
       navigate("/superadmin/companies");
     } catch (err) {
       console.error("Create company error:", err);
-      setError(err?.response?.data?.message || "Failed to create company");
+      const errMsg = err?.response?.data?.message || "Failed to create company";
+      setError(errMsg);
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }
@@ -71,8 +75,6 @@ const CreateCompany = () => {
             Register a new company and assign an administrator
           </p>
         </div>
-
-        {error && <p className="sa-error-text">{error}</p>}
 
         <form onSubmit={handleSubmit} className="sa-form">
           {/* SECTION 1: COMPANY INFO */}

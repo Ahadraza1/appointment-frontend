@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   getCompanyServices,
@@ -33,6 +34,7 @@ const CompanyServices = () => {
     } catch (err) {
       console.error("Fetch services error:", err);
       setError("Failed to load services");
+      toast.error("Failed to load services");
     } finally {
       setLoading(false);
     }
@@ -45,10 +47,11 @@ const CompanyServices = () => {
   const handleToggleService = async (serviceId, currentStatus) => {
     try {
       await toggleServiceStatus(serviceId, currentStatus);
+      toast.success("Service status updated");
       fetchServices();
     } catch (error) {
       console.error("Toggle service error:", error);
-      alert("Failed to update service status");
+      toast.error("Failed to update service status");
     }
   };
 
@@ -58,10 +61,11 @@ const CompanyServices = () => {
 
     try {
       await deleteService(serviceId);
+      toast.success("Service deleted successfully");
       fetchServices();
     } catch (error) {
       console.error("Delete service error:", error);
-      alert("Failed to delete service");
+      toast.error("Failed to delete service");
     }
   };
 

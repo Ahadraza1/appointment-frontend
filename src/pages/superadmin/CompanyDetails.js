@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getCompanyStats } from "../../services/superAdminService";
 import "./SuperAdminPages.css";
@@ -27,6 +28,7 @@ const CompanyDetails = () => {
     } catch (err) {
       console.error("Company stats error:", err);
       setError("Failed to load company stats");
+      toast.error("Failed to load company stats");
     } finally {
       setLoading(false);
     }

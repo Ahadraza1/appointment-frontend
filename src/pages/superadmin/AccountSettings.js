@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   getSuperAdminProfile,
   updateSuperAdminProfile,
@@ -26,7 +27,6 @@ const AccountSettings = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   // UI State for Profile Image (Frontend Only)
@@ -54,6 +54,7 @@ const AccountSettings = () => {
     } catch (err) {
       console.error("Load profile error:", err);
       setError("Failed to load profile");
+      toast.error("Failed to load profile");
     }
   };
 
@@ -66,7 +67,6 @@ const AccountSettings = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    setMessage("");
 
     console.log("Submitting profile:", {
       name: profile.name,
@@ -110,10 +110,11 @@ const AccountSettings = () => {
         }
       }
 
-      setMessage("Profile updated successfully");
+      toast.success("Profile updated successfully");
     } catch (err) {
       console.error("Profile update error:", err);
       setError(err?.response?.data?.message || "Failed to update profile");
+      toast.error(err?.response?.data?.message || "Failed to update profile");
     } finally {
       setLoading(false);
     }
@@ -123,9 +124,9 @@ const AccountSettings = () => {
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setMessage("");
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
+      toast.error("New password and confirm password do not match");
       return setError("New password and confirm password do not match");
     }
 
@@ -136,7 +137,7 @@ const AccountSettings = () => {
         newPassword: passwordData.newPassword,
       });
 
-      setMessage("Password updated successfully");
+      toast.success("Password updated successfully");
       setPasswordData({
         currentPassword: "",
         newPassword: "",
@@ -145,6 +146,7 @@ const AccountSettings = () => {
     } catch (err) {
       console.error("Password update error:", err);
       setError("Failed to update password");
+      toast.error("Failed to update password");
     } finally {
       setLoading(false);
     }
@@ -177,10 +179,11 @@ const AccountSettings = () => {
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
       }
 
-      setMessage("Profile photo removed successfully");
+      toast.success("Profile photo removed successfully");
     } catch (err) {
       console.error("Remove photo error:", err);
       setError("Failed to remove profile photo");
+      toast.error("Failed to remove profile photo");
     } finally {
       setLoading(false);
     }
@@ -246,48 +249,6 @@ const AccountSettings = () => {
             </button>
           </div>
         </div>
-
-        {/* ALERTS */}
-        {error && (
-          <div
-            className="sa-alert-box error"
-            style={{ maxWidth: "800px", margin: "0 auto 2rem auto" }}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            {error}
-          </div>
-        )}
-
-        {message && (
-          <div
-            className="sa-alert-box success"
-            style={{ maxWidth: "800px", margin: "0 auto 2rem auto" }}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            {message}
-          </div>
-        )}
 
         {/* ================= PROFILE TAB ================= */}
         {activeTab === "profile" && (

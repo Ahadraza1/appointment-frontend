@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { getAllCompanies } from "../../services/superAdminService";
 import { useNavigate } from "react-router-dom"; // Assuming standard routing for dashboard actions
 import "./SuperAdminPages.css"; // MASTER CSS
@@ -35,6 +36,7 @@ const SuperAdminDashboard = () => {
     } catch (err) {
       console.error("Dashboard stats error:", err);
       setError("Failed to load dashboard stats");
+      toast.error("Failed to load dashboard stats");
     } finally {
       setLoading(false);
     }
