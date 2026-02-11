@@ -644,7 +644,6 @@
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  backdrop-filter: blur(4px);
   position: relative;
 }
 

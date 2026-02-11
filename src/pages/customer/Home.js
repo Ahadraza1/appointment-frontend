@@ -1,28 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 import "./Home.css";
 
 const Home = () => {
   const [user, setUser] = useState(null);
   const [bookingUsed, setBookingUsed] = useState(0);
   const [bookingLimit, setBookingLimit] = useState(10);
+  const navigate = useNavigate();
 
- useEffect(() => {
-  const storedUser = localStorage.getItem("user");
-  if (!storedUser) return;
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) return;
 
-  const parsedUser = JSON.parse(storedUser);
-  setUser(parsedUser);
+    const parsedUser = JSON.parse(storedUser);
+    setUser(parsedUser);
 
-  // Free vs Paid
-  const limit = parsedUser.planType === "free" ? 10 : Infinity;
-  setBookingLimit(limit);
+    // Free vs Paid
+    const limit = parsedUser.planType === "free" ? 10 : Infinity;
+    setBookingLimit(limit);
 
-  // ✅ booking count directly from user object (safe)
-  setBookingUsed(parsedUser.bookingUsed || 0);
-}, []);
+    // booking count
+    const used = parsedUser.bookingUsed || 0;
+    setBookingUsed(used);
+
+    // 🔥 If free plan limit reached → redirect to pricing
+    if (parsedUser.planType === "free" && used >= 10) {
+      toast.warning("Upgrade your plan to continue booking");
+      navigate("/pricing");
+    }
+  }, [navigate]);
+
+  const formatExpiryDate = (date) => {
+    if (!date) return null;
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <div className="home-page">
@@ -96,7 +113,15 @@ const Home = () => {
                     color: "#2ecc71",
                   }}
                 >
-                  Unlimited bookings (Pro plan)
+                  <div>Active Plan: {user.planType.toUpperCase()}</div>
+
+                  {user.subscriptionEndDate && (
+                    <div>
+                      Plan Expiry: {formatExpiryDate(user.subscriptionEndDate)}
+                    </div>
+                  )}
+
+                  <div>Unlimited bookings available</div>
                 </div>
               )}
             </div>

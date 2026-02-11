@@ -122,6 +122,38 @@ const BookAppointment = () => {
       if (!appointment?._id) {
         throw new Error("Invalid booking response");
       }
+      // 🔥 AUTO UPDATE BOOKING COUNT (FREE PLAN ONLY)
+      if (user?.planType === "free") {
+        const newBookingUsed =
+          res?.user?.bookingUsed ?? (user.bookingUsed || 0) + 1;
+
+        const updatedUser = {
+          ...user,
+          bookingUsed: newBookingUsed,
+        };
+
+        // Update localStorage
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+
+        // Update global auth state
+        if (typeof updateUser === "function") {
+          updateUser(updatedUser);
+        }
+
+        const limit = user.bookingLimit || 10;
+
+        if (newBookingUsed >= limit) {
+          SaaSToast.error({
+            title: "Free Plan Limit Reached",
+            description:
+              "Your free plan limit is completed. Please upgrade your plan.",
+            onAction: () => navigate("/pricing"),
+          });
+
+          navigate("/pricing");
+          return;
+        }
+      }
 
       // ✅ BOOKING SUCCESS (PRIMARY)
       navigate(`/confirmation/${appointment._id}`);
