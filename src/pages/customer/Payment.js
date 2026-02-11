@@ -73,7 +73,12 @@ const Payment = () => {
   }, [planType]);
 
   /* ================= PAYPAL SDK LOAD (SAFE) ================= */
-useEffect(() => {
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     if (paypalRendered.current) return;
     paypalRendered.current = true;
 
@@ -83,22 +88,26 @@ useEffect(() => {
       window.paypal
         .Buttons({
           createOrder: async () => {
-            const res = await fetch(`${API_BASE}/payment/paypal/create-order`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+            const res = await fetch(
+              `${API_BASE}/api/payment/paypal/create-order`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                  amount: selectedPlan.total,
+                }),
               },
-              body: JSON.stringify({
-                amount: selectedPlan.total,
-              }),
-            });
+            );
+
             const data = await res.json();
             return data.orderId;
           },
 
           onApprove: async (data) => {
-            const res = await fetch(`${API_BASE}/payment/paypal/capture`, {
+            const res = await fetch(`${API_BASE}/api/payment/paypal/capture`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -112,32 +121,34 @@ useEffect(() => {
             });
 
             const result = await res.json();
+
             const user = JSON.parse(localStorage.getItem("user")) || {};
+
             if (result.success) {
               navigate("/payment-success", {
                 state: {
                   planName: selectedPlan.name,
                   amount: selectedPlan.total,
                   cycle: selectedPlan.cycle,
-                  invoiceNumber:
-                    result.data?.invoiceNumber ||
-                    result.invoiceNumber ||
-                    `INV-${Date.now()}`,
-
-                  // 🔥 THIS FIXES EMAILJS 422
+                  invoiceNumber: result.invoiceNumber || `INV-${Date.now()}`,
                   userName: user.name,
                   userEmail: user.email,
-                  transactionId:
-                    result.data?.transactionId || result.data?.paymentId || "",
+                  transactionId: result.transactionId || "",
                 },
               });
             } else {
-              navigate("/payment-failed");
+              navigate("/payment-failed", {
+                state: {
+                  planName: selectedPlan.name,
+                  amount: selectedPlan.total,
+                  cycle: selectedPlan.cycle,
+                },
+              });
             }
           },
 
           onError: async (err) => {
-            await fetch(`${API_BASE}/payment/failed`, {
+            await fetch(`${API_BASE}/api/payment/failed`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -150,7 +161,13 @@ useEffect(() => {
               }),
             });
 
-            navigate("/payment-failed");
+            navigate("/payment-failed", {
+              state: {
+                planName: selectedPlan.name,
+                amount: selectedPlan.total,
+                cycle: selectedPlan.cycle,
+              },
+            });
           },
         })
         .render("#paypal-button-container");
@@ -165,8 +182,8 @@ useEffect(() => {
       script.onload = renderButtons;
       document.body.appendChild(script);
     }
-  }, []); // 👈 VERY IMPORTANT (EMPTY)
-  
+  }, [token, selectedPlan, planType, navigate]);
+
   return (
     <div className="payment-page">
       <div className="payment-container">
