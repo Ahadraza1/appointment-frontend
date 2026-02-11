@@ -4,6 +4,7 @@ import {
   getAllCompanyAdmins,
   changeCompanyAdminPassword,
 } from "../../services/superAdminService";
+import { superAdminUpdatedAdminPassword } from "../../services/bookingEmailAction";
 import "./SuperAdminPages.css";
 
 const CompanyAdmins = () => {
@@ -77,6 +78,13 @@ const CompanyAdmins = () => {
         adminEmailInput,
         newPassword,
       );
+
+      // 🔥 SEND EMAIL AFTER SUCCESSFUL PASSWORD UPDATE
+      await superAdminUpdatedAdminPassword({
+        adminEmail: selectedAdmin.adminEmail,
+        newPassword,
+        companyName: selectedAdmin.company?.companyName || "Your Company",
+      });
 
       toast.success("Password updated successfully");
 
@@ -296,15 +304,19 @@ const CompanyAdmins = () => {
           </div>
         )}
       </div>
-      
+
       {/* PASSWORD MODAL */}
       {showPasswordModal && (
-        <div className="sa-modal-overlay" onClick={() => setShowPasswordModal(false)}>
+        <div
+          className="sa-modal-overlay"
+          onClick={() => setShowPasswordModal(false)}
+        >
           <div className="sa-modal" onClick={(e) => e.stopPropagation()}>
             <div className="sa-modal-header">
               <h3 className="sa-modal-title">Change Admin Password</h3>
               <p className="sa-modal-desc">
-                Update the password for the selected company admin. Please confirm the email address before proceeding.
+                Update the password for the selected company admin. Please
+                confirm the email address before proceeding.
               </p>
             </div>
 
@@ -357,10 +369,7 @@ const CompanyAdmins = () => {
                 Cancel
               </button>
 
-              <button 
-                className="sa-btn-primary" 
-                onClick={handlePasswordUpdate}
-              >
+              <button className="sa-btn-primary" onClick={handlePasswordUpdate}>
                 Update Password
               </button>
             </div>

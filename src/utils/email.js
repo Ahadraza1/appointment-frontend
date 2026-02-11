@@ -90,14 +90,19 @@ export const sendInvoiceEmail = (payload) => {
    (Uses ADMIN TEMPLATE)
 ================================ */
 export const sendSuperAdminToCompanyAdminEmail = (payload) => {
+  if (!payload?.to_email) {
+    console.error("Recipient email is required for admin email");
+    return Promise.reject("Recipient email missing");
+  }
+
   return emailjs.send(
     SERVICE_ID,
-    ADMIN_TEMPLATE_ID, // SAME admin template
+    ADMIN_TEMPLATE_ID,
     {
-      notification_title: payload.notification_title,
-      notification_message: payload.notification_message,
+      notification_title: payload.notification_title || "Account Notification",
+      notification_message: payload.notification_message || "",
 
-      admin_name: payload.admin_name,
+      admin_name: payload.admin_name || "Admin",
 
       // 🔐 Credentials
       login_email: payload.login_email || "",
@@ -111,9 +116,9 @@ export const sendSuperAdminToCompanyAdminEmail = (payload) => {
 
       company_name: payload.company_name || "Your Company Name",
 
-      // IMPORTANT (recipient email)
       to_email: payload.to_email,
     },
     PUBLIC_KEY
   );
 };
+

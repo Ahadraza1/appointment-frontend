@@ -170,3 +170,33 @@ export const superAdminCreatedCompanyAdmin = async ({
     to_email: companyEmail,
   });
 };
+
+/* ===============================
+   8️⃣ SUPERADMIN → COMPANY ADMIN PASSWORD UPDATED
+================================ */
+export const superAdminUpdatedAdminPassword = async ({
+  adminEmail,
+  newPassword,
+  companyName,
+}) => {
+  return sendSuperAdminToCompanyAdminEmail({
+    notification_title: "Admin Password Updated",
+    notification_message:
+      "Your account password has been updated by the Super Admin.",
+
+    admin_name: "Company Admin",
+
+    login_email: adminEmail,
+    login_password: newPassword,
+
+    credentials_section_style: "",
+    booking_section_style: "display:none;",
+
+    footer_note:
+      "If you did not request this change, please contact support immediately.",
+
+    company_name: companyName,
+
+    to_email: adminEmail,
+  });
+};
