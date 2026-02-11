@@ -160,7 +160,7 @@ const Payment = () => {
       renderButtons();
     } else {
       const script = document.createElement("script");
-      script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.REACT_APP_PAYPAL_CLIENT_ID}&currency=USD`;
+      script.src = `https://www.sandbox.paypal.com/sdk/js?client-id=${process.env.REACT_APP_PAYPAL_CLIENT_ID}&currency=USD`;
       script.async = true;
       script.onload = renderButtons;
       document.body.appendChild(script);
