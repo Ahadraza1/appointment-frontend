@@ -1,16 +1,20 @@
-import React, { useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import './PaymentFailed.css';
+import React, { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./PaymentFailed.css";
 
 const PaymentFailed = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const {
-    planName = 'Professional',
-    amount = '399',
-    cycle = planName?.toLowerCase().includes('monthly') ? 'Monthly' : 'Yearly'
-  } = location.state || {};
+  const stateData = location.state;
+
+  const planName = stateData?.planName || "Unknown Plan";
+  const amount = stateData?.amount || "0";
+  const cycle =
+    stateData?.cycle ||
+    (stateData?.planName?.toLowerCase().includes("monthly")
+      ? "Monthly"
+      : "Yearly");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -21,14 +25,22 @@ const PaymentFailed = () => {
       <div className="fail-container">
         <header className="fail-hero">
           <div className="fail-icon-wrapper">
-            <svg className="fail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg
+              className="fail-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
               <circle cx="12" cy="12" r="10" />
               <line x1="15" y1="9" x2="9" y2="15" />
               <line x1="9" y1="9" x2="15" y2="15" />
             </svg>
           </div>
           <h1 className="fail-title">Payment Failed</h1>
-          <p className="fail-subtitle">We couldn’t process your payment this time.</p>
+          <p className="fail-subtitle">
+            We couldn’t process your payment this time.
+          </p>
         </header>
 
         <div className="fail-card">
@@ -66,7 +78,8 @@ const PaymentFailed = () => {
 
         <footer className="fail-footer">
           <p>
-            If the amount was deducted, it will be automatically refunded within 5–7 business days.
+            If the amount was deducted, it will be automatically refunded within
+            5–7 business days.
           </p>
           <p className="support-link">
             Need help? <Link to="/contact">Contact Support</Link>

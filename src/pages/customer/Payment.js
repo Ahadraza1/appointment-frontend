@@ -73,7 +73,7 @@ const Payment = () => {
   }, [planType]);
 
   /* ================= PAYPAL SDK LOAD (SAFE) ================= */
-  useEffect(() => {
+useEffect(() => {
     if (paypalRendered.current) return;
     paypalRendered.current = true;
 
@@ -166,7 +166,7 @@ const Payment = () => {
       document.body.appendChild(script);
     }
   }, []); // 👈 VERY IMPORTANT (EMPTY)
-
+  
   return (
     <div className="payment-page">
       <div className="payment-container">
