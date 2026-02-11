@@ -89,7 +89,7 @@ const Payment = () => {
         .Buttons({
           createOrder: async () => {
             const res = await fetch(
-              `${API_BASE}/api/payment/paypal/create-order`,
+              `${API_BASE}/payment/paypal/create-order`,
               {
                 method: "POST",
                 headers: {
@@ -107,7 +107,7 @@ const Payment = () => {
           },
 
           onApprove: async (data) => {
-            const res = await fetch(`${API_BASE}/api/payment/paypal/capture`, {
+            const res = await fetch(`${API_BASE}/payment/paypal/capture`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -148,7 +148,7 @@ const Payment = () => {
           },
 
           onError: async (err) => {
-            await fetch(`${API_BASE}/api/payment/failed`, {
+            await fetch(`${API_BASE}/payment/failed`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
