@@ -41,6 +41,7 @@ import SuperAdminLogin from "./pages/superadmin/Login";
 import SuperAdminDashboard from "./pages/superadmin/superAdminDashboard";
 import Companies from "./pages/superadmin/Companies";
 import CompanyAdmins from "./pages/superadmin/CompanyAdmins";
+import Customers from "./pages/superadmin/Customers";
 import CompanyDetails from "./pages/superadmin/CompanyDetails";
 import CompanyServices from "./pages/superadmin/CompanyServices";
 import CreateCompany from "./pages/superadmin/CreateCompany";
@@ -173,6 +174,8 @@ function App() {
               path="/superadmin/companies/:companyId/customers"
               element={<CompanyCustomers />}
             />
+
+            <Route path="/superadmin/customers" element={<Customers />} />
             {/* ✅ MOVED ACCOUNT SETTINGS INSIDE LAYOUT */}
             <Route path="/superadmin/settings" element={<AccountSettings />} />
           </Route>

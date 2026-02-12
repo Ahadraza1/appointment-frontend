@@ -77,6 +77,11 @@ export const getAllCompanyAdmins = () => {
   return api.get("/superadmin/company-admins");
 };
 
+// ================= GET ALL CUSTOMERS (SUPER ADMIN) =================
+export const getAllCustomers = () => {
+  return api.get("/superadmin/customers");
+};
+
 // ================= GET COMPANY SERVICES (SUPER ADMIN) =================
 export const getCompanyServices = (companyId) => {
   return api.get(`/superadmin/company/${companyId}/services`);
