@@ -32,6 +32,10 @@ export const sendAdminEmail = (payload) => {
    ADMIN → CUSTOMER (Template 2)
 ================================ */
 export const sendCustomerEmail = (payload) => {
+  if (!payload.customer_email) {
+    console.error("Email missing:", payload);
+    return;
+  }
   return emailjs.send(
     SERVICE_ID,
     CUSTOMER_TEMPLATE_ID,
