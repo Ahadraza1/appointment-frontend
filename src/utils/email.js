@@ -24,7 +24,7 @@ export const sendAdminEmail = (payload) => {
       customer_message: payload.customer_message || "-",
       company_name: "Book ME",
     },
-    PUBLIC_KEY
+    PUBLIC_KEY,
   );
 };
 
@@ -40,6 +40,7 @@ export const sendCustomerEmail = (payload) => {
       email_message: payload.email_message,
       customer_name: payload.customer_name,
       customer_email: payload.customer_email,
+      to_email: payload.customer_email,
       service_name: payload.service_name,
       booking_date: payload.booking_date,
       booking_time: payload.booking_time,
@@ -48,10 +49,9 @@ export const sendCustomerEmail = (payload) => {
       company_name: "Book ME",
       current_year: new Date().getFullYear(),
     },
-    PUBLIC_KEY
+    PUBLIC_KEY,
   );
 };
-
 
 /* ===============================
    CUSTOMER → INVOICE EMAIL
@@ -62,7 +62,8 @@ export const sendInvoiceEmail = (payload) => {
     CUSTOMER_TEMPLATE_ID, // SAME template
     {
       email_title: "Your Invoice",
-      email_message: "Thank you for your payment. Below are your invoice details.",
+      email_message:
+        "Thank you for your payment. Below are your invoice details.",
 
       customer_name: payload.customer_name,
       customer_email: payload.customer_email,
@@ -81,7 +82,7 @@ export const sendInvoiceEmail = (payload) => {
       company_name: "Book ME",
       current_year: new Date().getFullYear(),
     },
-    PUBLIC_KEY
+    PUBLIC_KEY,
   );
 };
 
@@ -118,7 +119,6 @@ export const sendSuperAdminToCompanyAdminEmail = (payload) => {
 
       to_email: payload.to_email,
     },
-    PUBLIC_KEY
+    PUBLIC_KEY,
   );
 };
-
