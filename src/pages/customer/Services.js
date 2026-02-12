@@ -4,13 +4,20 @@ import { servicesAPI } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import './Services.css';
 
+// Pagination configuration
+const PAGE_SIZE = 8;
+
 const Services = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
-  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [filterStatus, setFilterStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginationLoading, setPaginationLoading] = useState(false);
 
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -18,6 +25,11 @@ const Services = () => {
   useEffect(() => {
     fetchServices();
   }, [filterStatus]);
+
+  // Reset pagination when search term changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
  const fetchServices = async () => {
   try {
@@ -63,6 +75,72 @@ const Services = () => {
     return service.name?.toLowerCase().includes(searchLower) || 
            service.description?.toLowerCase().includes(searchLower);
   });
+
+  // Pagination calculations
+  const totalItems = filteredServices.length;
+  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = Math.min(startIndex + PAGE_SIZE, totalItems);
+  const paginatedServices = filteredServices.slice(startIndex, endIndex);
+
+  // Pagination handlers
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    
+    setPaginationLoading(true);
+    // Smooth transition to top of listing section
+    window.scrollTo({
+      top: document.querySelector('.services-listing-wrapper').offsetTop - 100,
+      behavior: 'smooth'
+    });
+
+    setTimeout(() => {
+      setCurrentPage(page);
+      setPaginationLoading(false);
+    }, 300);
+  };
+
+  const handlePrevPage = () => handlePageChange(currentPage - 1);
+  const handleNextPage = () => handlePageChange(currentPage + 1);
+
+  // Generate page numbers for desktop pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      
+      let start = Math.max(2, currentPage - 1);
+      let end = Math.min(totalPages - 1, currentPage + 1);
+      
+      if (currentPage <= 2) {
+        end = 4;
+      } else if (currentPage >= totalPages - 1) {
+        start = totalPages - 3;
+      }
+      
+      if (start > 2) {
+        pages.push("ellipsis-start");
+      }
+      
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      
+      if (end < totalPages - 1) {
+        pages.push("ellipsis-end");
+      }
+      
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
 
   if (loading) {
     return (
@@ -146,7 +224,7 @@ const Services = () => {
             </div>
           )}
 
-          {(!Array.isArray(services) || services.length === 0) ? (
+          {(!Array.isArray(filteredServices) || filteredServices.length === 0) ? (
             <div className="empty-state">
               <div className="empty-state-icon">📋</div>
               <h3 className="empty-state-title">No Services Available</h3>
@@ -155,62 +233,139 @@ const Services = () => {
               </p>
             </div>
           ) : (
-            <div className="services-grid">
-              {filteredServices.map((service, index) => (
-                <div key={service._id} className="service-card" style={{ '--card-index': index }}>
-                  <div className="service-card-image">
-                    <div className="grid-overlay"></div>
-                    <div className="service-icon-container">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                      </svg>
-                    </div>
-                    <div className="service-unit-tag">UNIT_{service._id?.slice(-4).toUpperCase()}</div>
-                  </div>
-                  <div className="service-card-body">
-                    <div className="service-type-label">SERVICE UNIT</div>
-                    <h3 className="service-card-title">{service.name}</h3>
-                    <p className="service-card-description">
-                      {service.description || 'Precision professional service with industrial-grade standards.'}
-                    </p>
-                    
-                    <div className="service-specs">
-                      <div className="spec-item">
-                        <span className="spec-label">EST. DURATION</span>
-                        <span className="spec-value">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                          </svg>
-                          {formatDuration(service.duration)}
-                        </span>
+            <>
+              <div className={`services-grid ${paginationLoading ? 'pagination-loading' : ''}`}>
+                {paginatedServices.map((service, index) => (
+                  <div key={service._id} className="service-card" style={{ '--card-index': index }}>
+                    <div className="service-card-image">
+                      <div className="grid-overlay"></div>
+                      <div className="service-icon-container">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
                       </div>
-                      <div className="spec-item">
-                        <span className="spec-label">AVAILABILITY</span>
-                        <span className="spec-value status-active">ONLINE</span>
-                      </div>
+                      <div className="service-unit-tag">UNIT_{service._id?.slice(-4).toUpperCase()}</div>
                     </div>
-
-                    <div className="service-card-footer">
-                      <div className="price-block">
-                        <span className="price-label">FIXED RATE</span>
-                        <div className="service-price">
-                          {formatPrice(service.price)}
+                    <div className="service-card-body">
+                      <div className="service-type-label">SERVICE UNIT</div>
+                      <h3 className="service-card-title">{service.name}</h3>
+                      <p className="service-card-description">
+                        {service.description || 'Precision professional service with industrial-grade standards.'}
+                      </p>
+                      
+                      <div className="service-specs">
+                        <div className="spec-item">
+                          <span className="spec-label">EST. DURATION</span>
+                          <span className="spec-value">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            {formatDuration(service.duration)}
+                          </span>
+                        </div>
+                        <div className="spec-item">
+                          <span className="spec-label">AVAILABILITY</span>
+                          <span className="spec-value status-active">ONLINE</span>
                         </div>
                       </div>
-                      <button 
-                        className="service-book-btn"
-                        onClick={() => handleBookClick(service._id)}
-                      >
-                        BOOK NOW
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                        </svg>
-                      </button>
+
+                      <div className="service-card-footer">
+                        <div className="price-block">
+                          <span className="price-label">FIXED RATE</span>
+                          <div className="service-price">
+                            {formatPrice(service.price)}
+                          </div>
+                        </div>
+                        <button 
+                          className="service-book-btn"
+                          onClick={() => handleBookClick(service._id)}
+                        >
+                          BOOK NOW
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="pagination-container">
+                  <div className="pagination-summary hide-mobile">
+                    Showing {startIndex + 1}–{endIndex} of {totalItems} units
+                  </div>
+
+                  <div className="pagination-controls">
+                    <button
+                      className="pagination-btn pagination-nav"
+                      onClick={handlePrevPage}
+                      disabled={currentPage === 1}
+                      aria-label="Previous page"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="15 18 9 12 15 6" />
+                      </svg>
+                      <span className="hide-mobile">Previous</span>
+                    </button>
+
+                    <div className="pagination-pages hide-mobile">
+                      {getPageNumbers().map((page, index) => (
+                        typeof page === 'number' ? (
+                          <button
+                            key={page}
+                            className={`pagination-btn pagination-page ${currentPage === page ? 'active' : ''}`}
+                            onClick={() => handlePageChange(page)}
+                            aria-label={`Go to page ${page}`}
+                            aria-current={currentPage === page ? 'page' : undefined}
+                          >
+                            {page}
+                          </button>
+                        ) : (
+                          <span key={index} className="pagination-ellipsis">
+                            •••
+                          </span>
+                        )
+                      ))}
+                    </div>
+
+                    <div className="pagination-mobile-indicator hide-desktop hide-tablet">
+                      <span className="current-page">{currentPage}</span>
+                      <span className="page-separator">/</span>
+                      <span className="total-pages">{totalPages}</span>
+                    </div>
+
+                    <button
+                      className="pagination-btn pagination-nav"
+                      onClick={handleNextPage}
+                      disabled={currentPage === totalPages}
+                      aria-label="Next page"
+                    >
+                      <span className="hide-mobile">Next</span>
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </div>
