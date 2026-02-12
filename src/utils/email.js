@@ -22,7 +22,7 @@ export const sendAdminEmail = (payload) => {
       booking_time: payload.booking_time || "N/A",
       booking_id: payload.booking_id || "N/A",
       customer_message: payload.customer_message || "-",
-      company_name: "Your Company Name",
+      company_name: "Book ME",
     },
     PUBLIC_KEY
   );
@@ -45,7 +45,7 @@ export const sendCustomerEmail = (payload) => {
       booking_time: payload.booking_time,
       booking_id: payload.booking_id,
       rejection_reason: payload.rejection_reason || "",
-      company_name: "Your Company Name",
+      company_name: "Book ME",
       current_year: new Date().getFullYear(),
     },
     PUBLIC_KEY
@@ -114,7 +114,7 @@ export const sendSuperAdminToCompanyAdminEmail = (payload) => {
 
       footer_note: payload.footer_note || "",
 
-      company_name: payload.company_name || "Your Company Name",
+      company_name: payload.company_name || "Book ME",
 
       to_email: payload.to_email,
     },
