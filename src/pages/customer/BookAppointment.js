@@ -200,31 +200,33 @@ const BookAppointment = () => {
 
       return;
     } catch (err) {
-      const errorCode = err?.response?.data?.code;
+      const status = err?.response?.status;
+      const redirect = err?.response?.data?.redirect;
+      const message =
+        err?.response?.data?.message || err?.message || "Booking failed";
 
-      if (errorCode === "BOOKING_LIMIT_REACHED") {
+      // 🔥 FREE PLAN LIMIT REACHED (Backend 403 + redirect)
+      if (status === 403 && redirect === "pricing") {
         SaaSToast.limitReached({
           onAction: () => navigate("/pricing"),
         });
+
+        navigate("/pricing");
         return;
       }
 
-      if (
-        errorCode === "PLAN_EXPIRED" ||
-        errorCode === "SUBSCRIPTION_EXPIRED"
-      ) {
+      // 🔥 PLAN EXPIRED
+      if (status === 403 && message.toLowerCase().includes("expired")) {
         SaaSToast.planExpired({
           onAction: () => navigate("/pricing"),
         });
         return;
       }
 
-      const errorMsg =
-        err?.response?.data?.message || err?.message || "Booking failed";
-
+      // 🔴 Default Error
       SaaSToast.error({
         title: "Booking Failed",
-        description: errorMsg,
+        description: message,
       });
     } finally {
       setSubmitting(false);

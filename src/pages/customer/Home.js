@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "./Home.css";
 
@@ -11,25 +11,46 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (!storedUser) return;
+    const fetchUser = async () => {
+      try {
+        const storedUser = localStorage.getItem("user");
+        if (!storedUser) return;
 
-    const parsedUser = JSON.parse(storedUser);
-    setUser(parsedUser);
+        const parsedUser = JSON.parse(storedUser);
 
-    // Free vs Paid
-    const limit = parsedUser.planType === "free" ? 10 : Infinity;
-    setBookingLimit(limit);
+        const token = parsedUser.token || localStorage.getItem("token");
 
-    // booking count
-    const used = parsedUser.bookingUsed || 0;
-    setBookingUsed(used);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/users/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
 
-    // 🔥 If free plan limit reached → redirect to pricing
-    if (parsedUser.planType === "free" && used >= 10) {
-      toast.warning("Upgrade your plan to continue booking");
-      navigate("/pricing");
-    }
+        const freshUser = res.data;
+
+        // update localStorage
+        localStorage.setItem("user", JSON.stringify(freshUser));
+
+        setUser(freshUser);
+
+        const limit = freshUser.planType === "free" ? 10 : Infinity;
+        setBookingLimit(limit);
+
+        const used = freshUser.bookingUsed || 0;
+        setBookingUsed(used);
+
+        if (freshUser.planType === "free" && used >= 10) {
+          toast.warning("Upgrade your plan to continue booking");
+        }
+      } catch (error) {
+        console.error("User fetch error:", error);
+      }
+    };
+
+    fetchUser();
   }, [navigate]);
 
   const formatExpiryDate = (date) => {
