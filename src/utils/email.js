@@ -78,7 +78,7 @@ export const sendInvoiceEmail = (payload) => {
       amount: payload.amount,
       transaction_id: payload.transaction_id,
 
-      company_name: "Your Company Name",
+      company_name: "Book ME",
       current_year: new Date().getFullYear(),
     },
     PUBLIC_KEY
