@@ -24,7 +24,7 @@ const BookAppointment = () => {
   const [loading, setLoading] = useState(true);
   const [slotsLoading, setSlotsLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 

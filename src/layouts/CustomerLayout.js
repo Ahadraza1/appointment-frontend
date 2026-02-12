@@ -455,9 +455,9 @@ const avatarUrl = useMemo(() => {
                 <Link to="/contact" className="footer-link">
                   Contact Us
                 </Link>
-                <a href="#" className="footer-link">
-                  FAQ
-                </a>
+                <Link to="/faqs" className="footer-link">
+                  FAQs
+                </Link>
               </div>
             </div>
 
@@ -470,12 +470,12 @@ const avatarUrl = useMemo(() => {
                 <Link to="/terms" className="footer-link">
                   Terms of Service
                 </Link>
-                <a href="#" className="footer-link">
+                <Link to="/cookie-policy" className="footer-link">
                   Cookie Policy
-                </a>
-                <a href="#" className="footer-link">
+                </Link>
+                <Link to="/gdpr" className="footer-link">
                   GDPR
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -489,9 +489,9 @@ const avatarUrl = useMemo(() => {
               <Link to="/terms" className="footer-link">
                 Terms
               </Link>
-              <a href="#" className="footer-link">
+              <Link to="/cookie-policy" className="footer-link">
                 Cookies
-              </a>
+              </Link>
             </div>
           </div>
         </div>
