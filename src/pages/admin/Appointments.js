@@ -195,114 +195,116 @@ const Appointments = () => {
       </div>
 
       <div className="data-card">
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th style={{ width: "60px" }}>S.No</th>
-              <th>Customer</th>
-              <th>Service</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedAppointments.length === 0 ? (
+        <div className="table-wrapper">
+          <table className="data-table">
+            <thead>
               <tr>
-                <td colSpan="7" className="empty-state-row">
-                  <p className="empty-state-text">No appointments found</p>
-                </td>
+                <th style={{ width: "60px" }}>S.No</th>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ) : (
-              paginatedAppointments.map((apt, index) => (
-                <tr key={apt._id}>
-                  <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                  <td>
-                    <div className="user-cell">
-                      <div className="user-avatar">
-                        {getInitials(apt.userId?.name)}
-                      </div>
-                      <div className="user-info">
-                        <span className="user-name">
-                          {apt.userId?.name || "Unknown"}
-                        </span>
-                        <span className="user-email">{apt.userId?.email}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>{apt.serviceId?.name || "Service"}</td>
-                  <td>{formatDate(apt.date)}</td>
-                  <td>{apt.timeSlot}</td>
-                  <td>
-                    <span className={`status-pill ${apt.status}`}>
-                      {apt.status}
-                    </span>
-                  </td>
-                  <td>
-                    <div className="actions-cell">
-                      {(apt.status === "pending" ||
-                        apt.status === "rescheduled") && (
-                        <>
-                          <button
-                            className="action-btn approve"
-                            onClick={() =>
-                              handleStatusUpdate(apt._id, "approved")
-                            }
-                            disabled={processingId === apt._id}
-                            title="Approve"
-                          >
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          </button>
-                          <button
-                            className="action-btn reject"
-                            onClick={() => {
-                              const reason = prompt(
-                                "Rejection reason (optional):",
-                              );
-                              if (reason !== null)
-                                handleStatusUpdate(apt._id, "rejected", reason);
-                            }}
-                            disabled={processingId === apt._id}
-                            title="Reject"
-                          >
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <line x1="18" y1="6" x2="6" y2="18" />
-                              <line x1="6" y1="6" x2="18" y2="18" />
-                            </svg>
-                          </button>
-                        </>
-                      )}
-                      <button className="action-btn" title="View Details">
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                          <circle cx="12" cy="12" r="3" />
-                        </svg>
-                      </button>
-                    </div>
+            </thead>
+            <tbody>
+              {paginatedAppointments.length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="empty-state-row">
+                    <p className="empty-state-text">No appointments found</p>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                paginatedAppointments.map((apt, index) => (
+                  <tr key={apt._id}>
+                    <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                    <td>
+                      <div className="user-cell">
+                        <div className="user-avatar">
+                          {getInitials(apt.userId?.name)}
+                        </div>
+                        <div className="user-info">
+                          <span className="user-name">
+                            {apt.userId?.name || "Unknown"}
+                          </span>
+                          <span className="user-email">{apt.userId?.email}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{apt.serviceId?.name || "Service"}</td>
+                    <td>{formatDate(apt.date)}</td>
+                    <td>{apt.timeSlot}</td>
+                    <td>
+                      <span className={`status-pill ${apt.status}`}>
+                        {apt.status}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="actions-cell">
+                        {(apt.status === "pending" ||
+                          apt.status === "rescheduled") && (
+                          <>
+                            <button
+                              className="action-btn approve"
+                              onClick={() =>
+                                handleStatusUpdate(apt._id, "approved")
+                              }
+                              disabled={processingId === apt._id}
+                              title="Approve"
+                            >
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            </button>
+                            <button
+                              className="action-btn reject"
+                              onClick={() => {
+                                const reason = prompt(
+                                  "Rejection reason (optional):",
+                                );
+                                if (reason !== null)
+                                  handleStatusUpdate(apt._id, "rejected", reason);
+                              }}
+                              disabled={processingId === apt._id}
+                              title="Reject"
+                            >
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                              </svg>
+                            </button>
+                          </>
+                        )}
+                        <button className="action-btn" title="View Details">
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                            <circle cx="12" cy="12" r="3" />
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
         {/* Improved Pagination Controls */}
         {filteredAppointments.length > 0 && (
